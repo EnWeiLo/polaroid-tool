@@ -327,9 +327,10 @@
     .ratios { grid-template-columns:repeat(4,minmax(0,1fr)); min-width:0; }
     .frames button, .ratios button, .sides button {
       border:0; min-height:40px; border-radius:var(--r-sm); font-weight:700; font-size:12.5px; padding:2px 4px;
-      background:#EFE8DC; color:var(--ink); box-shadow:inset 0 0 0 1px var(--line);
+      background:var(--char); color:var(--ink); box-shadow:inset 0 0 0 1px var(--line);
       transition:transform .12s, box-shadow .12s;
     }
+    .ratios button, .sides button { background:var(--field-bg); color:var(--ink); }
     .frames .w { background:#f7f3ec; color:#2a2218; }
     .frames .k { background:#111; color:#f6efe4; box-shadow:inset 0 0 0 1px #444; }
     .frames .t { background:linear-gradient(90deg,#8a6a4a,#5a4032); color:#fff; }
