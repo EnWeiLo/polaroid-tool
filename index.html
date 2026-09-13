@@ -339,6 +339,8 @@
     .frames button:active, .ratios button:active, .sides button:active, .pbtn:active { transform:scale(.96); }
     .sides { grid-template-columns:1fr 1fr; }
 
+    .stage.collapsed .polaroid-container { max-width:140px; }
+    .stage.collapsed .editor-tip { display:none; }
     .stage {
       display:grid; place-items:center; padding:18px;
       border-radius:var(--r-lg);
@@ -535,10 +537,10 @@ body.banner-preview .wrap{max-width:1680px}.editor-shell>*,.form,.preset-grid>di
           </div></div>
         </div>
       </section>
-      <div class="stage" id="stage">
+      <div class="stage collapsed" id="stage">
         <div class="polaroid-container"><canvas id="mainCanvas"></canvas></div>
         <p class="hint editor-tip">拖曳照片調整裁切，雙指或滾輪縮放。</p>
-        <button type="button" class="stage-toggle" id="stageToggle" title="收合／展開預覽">﹀</button>
+        <button type="button" class="stage-toggle" id="stageToggle" title="收合／展開預覽">﹁</button>
       </div>
       <div class="form">
       <!-- 特定照片同步設定區塊 -->
@@ -1513,6 +1515,7 @@ async function appendFiles(files) {
     activeState = itemsList[currentIndex];
     renderThumbnails();
     syncUIFromState();prepareTextFonts(activeState);drawAll(false);
+    if (window.setPolaroidStageCollapsed) window.setPolaroidStageCollapsed(false);
   }
 }
 
@@ -1530,6 +1533,7 @@ function deletePhoto(idx, e) {
   if (itemsList.length === 0) {
     activeState = createDefaultItemState();
     currentIndex = 0;
+    if (window.setPolaroidStageCollapsed) window.setPolaroidStageCollapsed(true);
   } else {
     if (currentIndex >= itemsList.length) {
       currentIndex = itemsList.length - 1;
@@ -1996,11 +2000,13 @@ $("#file").addEventListener("change", e => {
     if(canvas.style.height!==nextH)canvas.style.height=nextH;
   }
 
-  toggle.addEventListener("click", () => {
-    stage.classList.toggle("collapsed");
+  function setCollapsed(on){
+    stage.classList.toggle("collapsed", !!on);
     toggle.textContent = stage.classList.contains("collapsed") ? "﹁" : "﹀";
     apply();
-  });
+  }
+  window.setPolaroidStageCollapsed = setCollapsed;
+  toggle.addEventListener("click", () => setCollapsed(!stage.classList.contains("collapsed")));
 
   let resizeTimer = null;
   window.addEventListener("resize", () => {
@@ -2137,15 +2143,21 @@ syncUIFromState();prepareTextFonts(activeState);drawAll(false);
     document.body.style.overflow=prevOverflow || 'hidden';
   }
 
+  let tourSavedCollapse=null;
   function open(start){
     i=start||0;
+    const stage=document.getElementById('stage');
+    tourSavedCollapse=stage?stage.classList.contains('collapsed'):true;
+    if (window.setPolaroidStageCollapsed) window.setPolaroidStageCollapsed(true);
     tour.hidden=false;
     document.body.style.overflow='hidden';
-    place();
+    requestAnimationFrame(()=>place());
   }
   function close(markSeen){
     tour.hidden=true;
     document.body.style.overflow='';
+    const hasPhotos=typeof itemsList!=='undefined' && itemsList.length>0;
+    if (window.setPolaroidStageCollapsed) window.setPolaroidStageCollapsed(!hasPhotos);
     if (markSeen) {
       try { localStorage.setItem(SEEN,'1'); } catch(e) {}
     }
