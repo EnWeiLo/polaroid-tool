@@ -106,7 +106,7 @@
       background:var(--card); color:var(--ink);
       border:1px solid var(--line); border-radius:18px;
       box-shadow:var(--shadow), 0 18px 40px rgba(0,0,0,.18);
-      padding:16px 16px 14px; z-index:2;
+      padding:16px 16px 14px; z-index:2; max-width:calc(100vw - 24px);
       transition:top .28s ease, left .28s ease;
     }
     .tour-kicker { margin:0 0 6px; color:var(--muted); font-size:11px; font-weight:700; letter-spacing:.06em; }
@@ -2072,38 +2072,69 @@ syncUIFromState();prepareTextFonts(activeState);drawAll(false);
     return document.querySelector(step.el) || document.querySelector('.brand');
   }
 
+  function viewport(){
+    const vv=window.visualViewport;
+    return {
+      w: (vv && vv.width) || window.innerWidth,
+      h: (vv && vv.height) || window.innerHeight,
+      x: (vv && vv.offsetLeft) || 0,
+      y: (vv && vv.offsetTop) || 0
+    };
+  }
+
   function place(){
     const step=steps[i];
     const el=target(step);
-    el.scrollIntoView({ block:'nearest', behavior:'smooth' });
-    const r=el.getBoundingClientRect();
-    const pad=10;
-    const top=Math.max(8, r.top-pad);
-    const left=Math.max(8, r.left-pad);
-    const width=Math.min(window.innerWidth-16, r.width+pad*2);
-    const height=Math.min(window.innerHeight-16, r.height+pad*2);
-    spot.style.top=top+'px';
-    spot.style.left=left+'px';
-    spot.style.width=width+'px';
-    spot.style.height=height+'px';
-    const radius=window.getComputedStyle(el).borderRadius || '16px';
-    spot.style.borderRadius=radius==='0px'?'0px':'16px';
-
     title.textContent=step.title;
     body.textContent=step.text;
     stepLabel.textContent=(i+1)+' / '+steps.length;
     prevBtn.disabled=i===0;
     nextBtn.textContent=i===steps.length-1?'完成':'下一步';
 
-    requestAnimationFrame(()=>{
-      const ch=card.offsetHeight;
-      const cw=card.offsetWidth;
-      let cardTop=top+height+12;
-      if (cardTop+ch>window.innerHeight-12) cardTop=Math.max(12, top-ch-12);
-      let cardLeft=Math.min(Math.max(12, left), window.innerWidth-cw-12);
-      card.style.top=cardTop+'px';
-      card.style.left=cardLeft+'px';
-    });
+    const prevOverflow=document.body.style.overflow;
+    document.body.style.overflow='';
+    el.scrollIntoView({ block:'center', inline:'nearest', behavior:'auto' });
+
+    const vp=viewport();
+    const r=el.getBoundingClientRect();
+    const pad=8;
+    let left=Math.max(vp.x+8, r.left-pad);
+    let top=Math.max(vp.y+8, r.top-pad);
+    let right=Math.min(vp.x+vp.w-8, r.right+pad);
+    let bottom=Math.min(vp.y+vp.h-8, r.bottom+pad);
+    if (right-left<48) { left=vp.x+12; right=vp.x+vp.w-12; }
+    if (bottom-top<48) { top=vp.y+12; bottom=Math.min(vp.y+vp.h*0.38, vp.y+160); }
+    if (bottom<=top) { top=vp.y+12; bottom=vp.y+120; }
+    if (right<=left) { left=vp.x+12; right=vp.x+vp.w-12; }
+
+    const maxSpotH=vp.h*0.42;
+    if (bottom-top>maxSpotH) bottom=top+maxSpotH;
+
+    spot.style.top=top+'px';
+    spot.style.left=left+'px';
+    spot.style.width=(right-left)+'px';
+    spot.style.height=(bottom-top)+'px';
+    const radius=window.getComputedStyle(el).borderRadius || '16px';
+    spot.style.borderRadius=radius==='0px'?'0px':'16px';
+
+    card.style.maxHeight=(vp.h*0.5)+'px';
+    card.style.overflow='auto';
+    const cw=Math.min(360, vp.w-24);
+    card.style.width=cw+'px';
+    const ch=card.offsetHeight;
+    const gap=10;
+    const spaceBelow=vp.y+vp.h-bottom;
+    const spaceAbove=top-vp.y;
+    let cardTop;
+    if (spaceBelow>=ch+gap+8) cardTop=bottom+gap;
+    else if (spaceAbove>=ch+gap+8) cardTop=top-ch-gap;
+    else cardTop=vp.y+vp.h-ch-12;
+    cardTop=Math.max(vp.y+8, Math.min(cardTop, vp.y+vp.h-ch-8));
+    let cardLeft=left;
+    cardLeft=Math.max(vp.x+12, Math.min(cardLeft, vp.x+vp.w-cw-12));
+    card.style.top=cardTop+'px';
+    card.style.left=cardLeft+'px';
+    document.body.style.overflow=prevOverflow || 'hidden';
   }
 
   function open(start){
