@@ -471,9 +471,31 @@ body.banner-preview .wrap{max-width:1680px}.editor-shell>*,.form,.preset-grid>di
 #ratios [data-aspect="instagram-story"]{grid-column:8 / span 5;grid-row:2}
 #ratios button[data-aspect^="instagram"]{white-space:normal;font-size:12px;gap:5px}
 @media(min-width:860px){body.banner-preview .top{padding-inline:max(16px,calc((100vw - 1680px)/2))}body.banner-preview .editor-shell{grid-template-columns:minmax(0,1fr) clamp(360px,30vw,440px);gap:24px}body.banner-preview .stage{padding:10px}.preset-grid{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}}
-@media(max-width:859px){body.banner-preview .stage{transition:none;position:relative;top:auto;margin-inline:0;padding:8px;order:-1}body.banner-preview .polaroid-container{max-width:100%;width:auto}.stage.collapsed .polaroid-container{max-width:120px}.preset-grid{grid-template-columns:minmax(0,1fr)}#ratios button[data-aspect^="instagram"]{font-size:11.5px}.stage>.editor-tip{font-size:12px}}
-@media(max-width:859px){.stage{will-change:transform;transition:none}.stage-toggle{backdrop-filter:none}.polaroid-container{box-shadow:0 8px 18px rgba(42,36,30,.16)}}
+@media(max-width:859px){body.banner-preview .stage{transition:none;position:sticky;top:calc(var(--header-h) + var(--safe-t) - 2px);margin-inline:0;padding:8px;order:-1}body.banner-preview .polaroid-container{max-width:100%;width:auto}.stage.collapsed .polaroid-container{max-width:120px}.preset-grid{grid-template-columns:minmax(0,1fr)}#ratios button[data-aspect^="instagram"]{font-size:11.5px}.stage>.editor-tip{font-size:12px}}
+@media(max-width:859px){.stage{transition:none}.stage-toggle{backdrop-filter:none}.polaroid-container{box-shadow:0 8px 18px rgba(42,36,30,.16)}}
 
+@media(max-width:859px){
+ .stage,body.banner-preview .stage,.stage.collapsed{padding-bottom:40px;margin-bottom:0}
+ .stage>.editor-tip,.stage.collapsed .editor-tip{display:block;top:auto;bottom:6px;left:12px;right:48px;margin:0;font-size:11px;line-height:1.3;pointer-events:none}
+}
+
+@media(max-width:859px){
+ /* Keep the sticky canvas and animated SVG in bounded compositing layers. */
+ .stage{contain:paint;transform:translateZ(0)}
+ .brand-mark{contain:strict;transform:translateZ(0)}
+ body.page-scrolling .brand-mark .bm-sheet{animation-play-state:paused}
+}
+@media(min-width:860px){
+ .stage.collapsed .polaroid-container{max-width:min(100%,480px)}
+ body.banner-preview .stage.collapsed .polaroid-container{max-width:100%}
+ .stage.collapsed .editor-tip{display:block}
+ body.preview-fullscreen{overflow:hidden}
+ #stage.desktop-fullscreen{position:fixed;inset:0;z-index:70;margin:0;padding:48px 32px 52px;border:0;border-radius:0;box-sizing:border-box;background:var(--desk);display:flex;align-items:center;justify-content:center;transform:none;contain:none}
+ #stage.desktop-fullscreen .polaroid-container{width:auto;max-width:none;flex:none;margin:0;animation:none}
+ #stage.desktop-fullscreen #mainCanvas{max-width:none}
+ #stage.desktop-fullscreen .stage-toggle{top:12px;right:16px;bottom:auto;width:36px;height:36px}
+ #stage.desktop-fullscreen>.editor-tip{top:auto;bottom:12px;left:48px;right:48px;margin:0;display:block}
+}
   </style>
 </head>
 <body>
@@ -1091,7 +1113,7 @@ function drawFrameBackground(ctx,{totalW,totalH,sideMargin,safeBottom=0,bottomMa
     }
     ctx.fillStyle = "#e09f3e";
     ctx.font = `700 ${Math.round(totalW * 0.02)}px ${FONTS.mono}`;
-    if(banner){ctx.textAlign="left";ctx.textBaseline="bottom";ctx.font=`700 18px ${FONTS.mono}`;ctx.fillText("▶ 12A",60,totalH-12);}else ctx.fillText("▶ 12A", totalW - sideMargin * 2, totalH - safeBottom - bottomMargin * 0.25);
+    if(banner){ctx.textAlign="left";ctx.textBaseline="bottom";ctx.font=`700 18px ${FONTS.mono}`;ctx.fillText("▶ 12A",60,totalH-12);}else {ctx.textAlign="left";ctx.textBaseline="alphabetic";ctx.fillText("▶ 12A", totalW - sideMargin * 2, totalH - safeBottom - bottomMargin * 0.25);}
   } else {
     ctx.fillStyle = banner ? "#ffffff" : "#f7f3ec";
     ctx.fillRect(0, 0, totalW, totalH);
@@ -1849,6 +1871,9 @@ $("#file").addEventListener("change", e => {
   let startPosVal = 0;
   let pinching = false, startZ = 1, startDist = 0;
   let tap=null,ignoreMouseUntil=0,wheelUntil=0;
+  let gestureScale=1,gesturePhotoHeight=1,renderFrame=0,renderState=null;
+  function flushRender(){if(!renderFrame)return;cancelAnimationFrame(renderFrame);renderFrame=0;const state=renderState;renderState=null;if(!exportingBatch&&state===activeState)drawAll(false);}
+  function queueRender(){renderState=activeState;if(!renderFrame)renderFrame=requestAnimationFrame(flushRender);}
   const inPhoto=({x,y})=>{const g=getCardGeometry();return x>=g.sideMargin&&x<=g.sideMargin+g.photoDim.w&&y>=g.topMargin&&y<=g.topMargin+g.photoDim.h;};
 
   const pt = e => e.touches ? e.touches[0] : e;
@@ -1871,6 +1896,8 @@ $("#file").addEventListener("change", e => {
     if(exportingBatch)return;
     if(!e.touches&&(e.button!==0||Date.now()<ignoreMouseUntil))return;
     if(e.touches)ignoreMouseUntil=Date.now()+800;
+    const rect=canvas.getBoundingClientRect();
+    gestureScale=canvas.width/rect.width;gesturePhotoHeight=getTargetPhotoSize().h;
     const point=pt(e);
     if(e.touches?.length>=2){if(tap)tap.moved=true;}
     else tap={x:point.clientX,y:point.clientY,moved:false,eligible:inPhoto(getCanvasCoords(e))&&Date.now()>wheelUntil};
@@ -1921,14 +1948,12 @@ $("#file").addEventListener("change", e => {
       e.preventDefault();
       const d = dist(e);
       activeState.crop.z = Math.max(1, Math.min(4, startZ * (d / Math.max(1, startDist))));
-      drawAll(false);
+      queueRender();
       return;
     }
 
     e.preventDefault();
-    const photoDim = getTargetPhotoSize();
-    const rect = canvas.getBoundingClientRect();
-    const scale = canvas.width / rect.width;
+    const scale = gestureScale;
 
     const dx = (pt(e).clientX - sx) * scale;
     const dy = (pt(e).clientY - sy) * scale;
@@ -1937,11 +1962,11 @@ $("#file").addEventListener("change", e => {
       activeState.crop.x = ox + dx;
       activeState.crop.y = oy + dy;
     } else if (mode === "stamp") {
-      const deltaPercent = (dy / photoDim.h) * 100;
+      const deltaPercent = (dy / gesturePhotoHeight) * 100;
       activeState.datePos = Math.max(4, Math.min(86, startPosVal + deltaPercent));
     }
 
-    drawAll(false);
+    queueRender();
   };
 
   const up = e => {
@@ -1953,11 +1978,12 @@ $("#file").addEventListener("change", e => {
     const point=e.changedTouches?.[0]||e;
     const rect=canvas.getBoundingClientRect(),scale=canvas.width/rect.width;
     const click=tap&&tap.eligible&&!tap.moved&&!pinching&&Date.now()>wheelUntil&&Math.hypot(point.clientX-tap.x,point.clientY-tap.y)<=6&&inPhoto({x:(point.clientX-rect.left)*scale,y:(point.clientY-rect.top)*scale});
+    flushRender();
     mode=null;pinching=false;tap=null;canvas.style.cursor='grab';
     if(e.changedTouches){ignoreMouseUntil=Date.now()+800;if(e.cancelable)e.preventDefault();}
     if(click)openPhotoPicker();
   };
-  window.addEventListener('touchcancel',()=>{tap=null;mode=null;pinching=false;ignoreMouseUntil=Date.now()+800;});
+  window.addEventListener('touchcancel',()=>{flushRender();tap=null;mode=null;pinching=false;ignoreMouseUntil=Date.now()+800;});
   canvas.addEventListener("mousedown", down);
   window.addEventListener("mousemove", move);
   window.addEventListener("mouseup", up);
@@ -1972,8 +1998,19 @@ $("#file").addEventListener("change", e => {
     if (!activeState || !activeState.source) return;
     e.preventDefault();
     activeState.crop.z = Math.max(1, Math.min(4, activeState.crop.z + (e.deltaY < 0 ? 0.08 : -0.08)));
-    drawAll(false);
+    queueRender();
   }, { passive: false });
+})();
+
+// Suspend only the decorative header animation during native mobile scrolling.
+(function bindScrollCompositing(){
+ let scrolling=false,idleTimer=0;
+ window.addEventListener('scroll',()=>{
+  if(window.innerWidth>859)return;
+  if(!scrolling){scrolling=true;document.body.classList.add('page-scrolling');}
+  clearTimeout(idleTimer);
+  idleTimer=setTimeout(()=>{scrolling=false;document.body.classList.remove('page-scrolling');},180);
+ },{passive:true});
 })();
 
 // 手機版：依「可用高度」而非單純寬度縮放預覽，避免直式照片把畫面佔滿
@@ -1985,18 +2022,52 @@ $("#file").addEventListener("change", e => {
 
   function isMobile() { return window.innerWidth <= 859; }
   let sizingWidth=window.innerWidth, sizingHeight=window.innerHeight, previousAspect=null, otherCollapsed=stage.classList.contains("collapsed");
-  function syncToggle(){const collapsed=stage.classList.contains("collapsed"),label=collapsed?"放大預覽":"縮小預覽";toggle.querySelector("path").setAttribute("d",collapsed?"M6 15L12 9L18 15":"M6 9L12 15L18 9");toggle.title=label;toggle.setAttribute("aria-label",label);toggle.setAttribute("aria-expanded",String(!collapsed));}
+  let previewKey="",desktopFullscreen=false,previousFocus=null;
+  const inertBefore=new Map();
+  function syncToggle(){
+    const collapsed=stage.classList.contains('collapsed');
+    const label=isMobile()?(collapsed?'放大預覽':'縮小預覽'):(desktopFullscreen?'返回一般預覽':'全螢幕預覽');
+    const icon=isMobile()?(collapsed?'M6 15L12 9L18 15':'M6 9L12 15L18 9'):
+      desktopFullscreen?'M9 3V9H3M15 3V9H21M9 21V15H3M15 21V15H21':'M9 3H3V9M15 3H21V9M3 15V21H9M21 15V21H15';
+    toggle.querySelector('path').setAttribute('d',icon);toggle.title=label;toggle.setAttribute('aria-label',label);
+    toggle.setAttribute('aria-expanded',String(isMobile()?!collapsed:desktopFullscreen));
+  }
+  function setFullscreen(on){
+    on=!!on&&!isMobile();if(on===desktopFullscreen)return;
+    desktopFullscreen=on;
+    stage.classList.toggle('desktop-fullscreen',on);document.body.classList.toggle('preview-fullscreen',on);
+    if(on){
+      previousFocus=document.activeElement;
+      for(const el of document.querySelectorAll('.top,.setup-panel,.form')){inertBefore.set(el,el.inert);el.inert=true;}
+      stage.setAttribute('role','dialog');stage.setAttribute('aria-modal','true');stage.setAttribute('aria-label','全螢幕相片預覽');
+    }else{
+      for(const [el,inert] of inertBefore)el.inert=inert;inertBefore.clear();
+      stage.removeAttribute('role');stage.removeAttribute('aria-modal');stage.removeAttribute('aria-label');
+    }
+    previewKey='';apply();
+    if(on)toggle.focus({preventScroll:true});else previousFocus?.focus({preventScroll:true});
+  }
+  document.addEventListener('keydown',e=>{
+    if(!desktopFullscreen)return;
+    if(e.key==='Escape'){e.preventDefault();setFullscreen(false);}
+    else if(e.key==='Tab'){e.preventDefault();toggle.focus();}
+  });
 
   function apply() {
+    if(desktopFullscreen&&isMobile())setFullscreen(false);
     if(window.innerWidth!==sizingWidth){sizingWidth=window.innerWidth;sizingHeight=window.innerHeight;}
     const banner = activeState?.aspect === 'banner';
     if(isMobile()&&banner&&previousAspect!=='banner'){otherCollapsed=stage.classList.contains('collapsed');stage.classList.remove('collapsed');}
     if(isMobile()&&!banner&&previousAspect==='banner')stage.classList.toggle('collapsed',otherCollapsed);
-    previousAspect=activeState?.aspect;syncToggle();
+    previousAspect=activeState?.aspect;
+    const key=[sizingWidth,isMobile()?sizingHeight:window.innerHeight,canvas.width,canvas.height,banner,stage.classList.contains('collapsed'),desktopFullscreen].join('|');
+    if(key===previewKey)return;previewKey=key;
+    syncToggle();
     document.body.classList.toggle('banner-preview', banner);
     if (!isMobile()) {
-      canvas.style.width = "";
-      canvas.style.height = "";
+      const scale=Math.min(Math.max(1,innerWidth-64)/canvas.width,Math.max(1,innerHeight-100)/canvas.height);
+      canvas.style.width = desktopFullscreen ? (canvas.width*scale)+"px" : "";
+      canvas.style.height = desktopFullscreen ? (canvas.height*scale)+"px" : "";
       return;
     }
     if (!canvas.width || !canvas.height) return;
@@ -2017,12 +2088,13 @@ $("#file").addEventListener("change", e => {
   }
 
   function setCollapsed(on){
+    if(!isMobile()){apply();return;}
     stage.classList.toggle("collapsed", !!on);
     syncToggle();
     apply();
   }
   window.setPolaroidStageCollapsed = setCollapsed;
-  toggle.addEventListener("click", () => setCollapsed(!stage.classList.contains("collapsed")));
+  toggle.addEventListener("click", () => isMobile()?setCollapsed(!stage.classList.contains("collapsed")):setFullscreen(!desktopFullscreen));
 
   let resizeTimer = null;
   window.addEventListener("resize", () => {
