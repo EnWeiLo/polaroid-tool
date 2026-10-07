@@ -496,9 +496,423 @@ body.banner-preview .wrap{max-width:1680px}.editor-shell>*,.form,.preset-grid>di
  #stage.desktop-fullscreen .stage-toggle{top:12px;right:16px;bottom:auto;width:36px;height:36px}
  #stage.desktop-fullscreen>.editor-tip{top:auto;bottom:12px;left:48px;right:48px;margin:0;display:block}
 }
+
+/* ==========================================================================
+   Liquid Glass layer
+   Everything below rides on top of the original styles. Each theme only
+   defines tokens; the glass recipe itself is shared, so all seven themes get
+   the same material with their own tint, rim light and ambient colour.
+   ========================================================================== */
+:root{
+  /* ambient light behind the glass */
+  --amb-base:#EFE6D8;
+  --blob-a:rgba(255,160,110,.55);
+  --blob-b:rgba(255,212,140,.55);
+  --blob-c:rgba(160,196,170,.40);
+  --amb-texture:none;
+  /* glass material */
+  --g-blur:26px;
+  --g-sat:1.8;
+  --g-fill:rgba(255,252,246,.50);
+  --g-fill-hi:rgba(255,253,249,.74);
+  --g-well:rgba(255,255,255,.46);
+  --g-sheen:rgba(255,255,255,.62);
+  --g-rim:rgba(255,255,255,.95);
+  --g-rim-low:rgba(255,255,255,.35);
+  --g-edge:rgba(255,255,255,.55);
+  --g-hair:rgba(42,36,30,.07);
+  --g-shadow:0 1px 1px rgba(60,40,20,.04), 0 14px 34px -6px rgba(120,76,36,.16);
+  --g-shadow-sm:0 1px 1px rgba(60,40,20,.05), 0 6px 14px -4px rgba(120,76,36,.18);
+  --seg-on:rgba(255,255,255,.90);
+  --seg-on-ink:var(--ink);
+  --on-accent:#fff;
+  --accent-glow:color-mix(in srgb, var(--fuji) 38%, transparent);
+  --cap-r:24px;
+  --spring:cubic-bezier(.34,1.5,.64,1);
+}
+html[data-theme="space"]{
+  --amb-base:#060A18;
+  --blob-a:rgba(78,110,255,.50);
+  --blob-b:rgba(150,92,255,.40);
+  --blob-c:rgba(40,190,220,.24);
+  --amb-texture:
+    radial-gradient(1px 1px at 12% 22%, rgba(255,255,255,.8) 50%, transparent 51%),
+    radial-gradient(1px 1px at 68% 14%, rgba(255,255,255,.6) 50%, transparent 51%),
+    radial-gradient(1.5px 1.5px at 84% 62%, rgba(200,215,255,.7) 50%, transparent 51%),
+    radial-gradient(1px 1px at 32% 78%, rgba(255,255,255,.5) 50%, transparent 51%),
+    radial-gradient(1px 1px at 52% 44%, rgba(255,255,255,.45) 50%, transparent 51%),
+    radial-gradient(1.5px 1.5px at 6% 92%, rgba(255,255,255,.55) 50%, transparent 51%);
+  --g-fill:rgba(18,26,52,.46);
+  --g-fill-hi:rgba(26,36,70,.72);
+  --g-well:rgba(4,8,22,.38);
+  --g-sheen:rgba(190,210,255,.13);
+  --g-rim:rgba(205,220,255,.42);
+  --g-rim-low:rgba(205,220,255,.10);
+  --g-edge:rgba(170,190,255,.16);
+  --g-hair:rgba(170,190,255,.10);
+  --g-shadow:0 18px 40px -8px rgba(0,0,10,.55);
+  --g-shadow-sm:0 8px 18px -6px rgba(0,0,10,.6);
+  --seg-on:rgba(190,210,255,.22);
+  --on-accent:#08102A;
+}
+html[data-theme="wa"]{
+  --amb-base:#EBE1CF;
+  --blob-a:rgba(196,72,60,.30);
+  --blob-b:rgba(70,92,140,.26);
+  --blob-c:rgba(140,166,110,.30);
+  --amb-texture:repeating-linear-gradient(90deg, rgba(120,90,60,.025) 0 1px, transparent 1px 7px);
+  --g-fill:rgba(255,250,240,.52);
+  --g-fill-hi:rgba(255,251,243,.76);
+  --g-well:rgba(255,252,246,.50);
+  --g-sheen:rgba(255,255,255,.55);
+  --g-shadow:0 1px 1px rgba(70,50,30,.05), 0 14px 32px -8px rgba(80,50,30,.16);
+  --g-shadow-sm:0 6px 14px -5px rgba(80,50,30,.18);
+  --g-hair:rgba(42,36,30,.08);
+}
+html[data-theme="cn"]{
+  --amb-base:#EED9AE;
+  --blob-a:rgba(210,40,30,.34);
+  --blob-b:rgba(240,180,60,.50);
+  --blob-c:rgba(150,30,40,.22);
+  --g-fill:rgba(255,246,222,.50);
+  --g-fill-hi:rgba(255,248,228,.76);
+  --g-well:rgba(255,250,232,.48);
+  --g-sheen:rgba(255,248,220,.6);
+  --g-rim:rgba(255,236,180,.95);
+  --g-rim-low:rgba(200,150,50,.30);
+  --g-edge:rgba(230,190,110,.55);
+  --g-hair:rgba(160,110,30,.14);
+  --g-shadow:0 1px 1px rgba(90,40,10,.05), 0 14px 32px -8px rgba(120,50,10,.20);
+  --g-shadow-sm:0 6px 14px -5px rgba(120,50,10,.22);
+}
+html[data-theme="pixel"]{
+  --amb-base:#150F22;
+  --blob-a:rgba(255,77,141,.42);
+  --blob-b:rgba(110,80,255,.40);
+  --blob-c:rgba(60,220,200,.24);
+  --amb-texture:
+    linear-gradient(rgba(255,255,255,.035) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,.035) 1px, transparent 1px);
+  --g-blur:14px;
+  --g-fill:rgba(42,33,64,.55);
+  --g-fill-hi:rgba(50,40,76,.82);
+  --g-well:rgba(12,8,22,.45);
+  --g-sheen:rgba(255,255,255,.10);
+  --g-rim:rgba(255,255,255,.40);
+  --g-rim-low:rgba(255,255,255,.08);
+  --g-edge:rgba(255,255,255,.16);
+  --g-hair:rgba(255,255,255,.10);
+  --g-shadow:4px 4px 0 #000;
+  --g-shadow-sm:3px 3px 0 #000;
+  --seg-on:rgba(255,255,255,.20);
+  --accent-glow:#000;
+  --cap-r:0px;
+}
+html[data-theme="scifi"]{
+  --amb-base:#03060C;
+  --blob-a:rgba(0,229,255,.26);
+  --blob-b:rgba(0,120,255,.28);
+  --blob-c:rgba(120,255,210,.12);
+  --amb-texture:
+    linear-gradient(rgba(0,229,255,.045) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0,229,255,.045) 1px, transparent 1px);
+  --g-fill:rgba(8,20,34,.48);
+  --g-fill-hi:rgba(10,28,46,.76);
+  --g-well:rgba(0,8,16,.42);
+  --g-sheen:rgba(120,240,255,.10);
+  --g-rim:rgba(120,240,255,.55);
+  --g-rim-low:rgba(0,229,255,.12);
+  --g-edge:rgba(0,229,255,.22);
+  --g-hair:rgba(0,229,255,.12);
+  --g-shadow:0 0 0 1px rgba(0,229,255,.05), 0 16px 40px -10px rgba(0,229,255,.18);
+  --g-shadow-sm:0 6px 16px -6px rgba(0,229,255,.25);
+  --seg-on:rgba(0,229,255,.16);
+  --on-accent:#00151B;
+}
+html[data-theme="oled"]{
+  /* stays almost entirely black: two faint glows give the glass something to bend */
+  --amb-base:#000;
+  --blob-a:rgba(255,106,58,.16);
+  --blob-b:rgba(120,90,255,.12);
+  --blob-c:rgba(255,255,255,.04);
+  --g-fill:rgba(255,255,255,.035);
+  --g-fill-hi:rgba(22,22,22,.80);
+  --g-well:rgba(255,255,255,.04);
+  --g-sheen:rgba(255,255,255,.07);
+  --g-rim:rgba(255,255,255,.30);
+  --g-rim-low:rgba(255,255,255,.07);
+  --g-edge:rgba(255,255,255,.11);
+  --g-hair:rgba(255,255,255,.08);
+  --g-shadow:0 20px 40px -12px rgba(0,0,0,.9);
+  --g-shadow-sm:0 6px 14px -6px rgba(0,0,0,.9);
+  --seg-on:rgba(255,255,255,.14);
+}
+
+/* ---------- ambient light layer ---------- */
+html[data-theme] body{ background:transparent; font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","PingFang TC","Noto Sans TC","Microsoft JhengHei",sans-serif; }
+html{ background:var(--amb-base); }
+.lg-ambient{
+  position:fixed; inset:0; z-index:-1; pointer-events:none; overflow:hidden;
+  background:var(--amb-texture), var(--amb-base);
+  background-size:auto;
+}
+html[data-theme="pixel"] .lg-ambient,
+html[data-theme="scifi"] .lg-ambient{ background-size:24px 24px, 24px 24px, auto; }
+.lg-ambient i{
+  position:absolute; width:70vmax; height:70vmax; border-radius:50%;
+  will-change:transform;
+  animation:lg-drift 34s ease-in-out infinite alternate;
+}
+.lg-ambient i:nth-child(1){ left:-24vmax; top:-30vmax; background:radial-gradient(circle, var(--blob-a), transparent 64%); }
+.lg-ambient i:nth-child(2){ right:-28vmax; top:8vh; background:radial-gradient(circle, var(--blob-b), transparent 64%); animation-duration:41s; animation-delay:-12s; }
+.lg-ambient i:nth-child(3){ left:4vmax; bottom:-40vmax; background:radial-gradient(circle, var(--blob-c), transparent 64%); animation-duration:47s; animation-delay:-20s; }
+/* pixel: stepped, banded light instead of smooth falloff */
+html[data-theme="pixel"] .lg-ambient i:nth-child(1){ background:radial-gradient(circle, var(--blob-a) 0 22%, color-mix(in srgb,var(--blob-a) 55%,transparent) 22% 40%, color-mix(in srgb,var(--blob-a) 22%,transparent) 40% 58%, transparent 58%); }
+html[data-theme="pixel"] .lg-ambient i:nth-child(2){ background:radial-gradient(circle, var(--blob-b) 0 22%, color-mix(in srgb,var(--blob-b) 55%,transparent) 22% 40%, color-mix(in srgb,var(--blob-b) 22%,transparent) 40% 58%, transparent 58%); }
+html[data-theme="pixel"] .lg-ambient i:nth-child(3){ background:radial-gradient(circle, var(--blob-c) 0 22%, color-mix(in srgb,var(--blob-c) 55%,transparent) 22% 40%, transparent 40%); }
+@keyframes lg-drift{
+  0%{ transform:translate3d(0,0,0) scale(1); }
+  50%{ transform:translate3d(6vmax,4vmax,0) scale(1.08); }
+  100%{ transform:translate3d(-4vmax,7vmax,0) scale(.96); }
+}
+/* the light stays still on phones (re-blurring a moving backdrop costs battery) */
+@media (max-width:859px){ .lg-ambient i{ animation:none; } }
+body.page-scrolling .lg-ambient i{ animation-play-state:paused; }
+@media (prefers-reduced-motion:reduce){ .lg-ambient i{ animation:none; } }
+
+/* ---------- header: a floating glass capsule ---------- */
+html[data-theme] .top{
+  --top-px:24px;
+  padding-inline:var(--top-px);
+  background:linear-gradient(180deg, color-mix(in srgb, var(--amb-base) 78%, transparent) 0%, color-mix(in srgb, var(--amb-base) 40%, transparent) 70%, transparent 100%);
+  -webkit-backdrop-filter:none; backdrop-filter:none;
+  border-bottom:0;
+}
+html[data-theme] .top::before{
+  content:""; position:absolute; z-index:-1;
+  top:calc(6px + var(--safe-t)); bottom:6px;
+  left:calc(var(--top-px) - 12px); right:calc(var(--top-px) - 12px);
+  border-radius:var(--cap-r);
+  background:linear-gradient(180deg, var(--g-sheen), transparent 70%), var(--g-fill-hi);
+  -webkit-backdrop-filter:blur(var(--g-blur)) saturate(var(--g-sat));
+  backdrop-filter:blur(var(--g-blur)) saturate(var(--g-sat));
+  box-shadow:inset 0 1px 0 var(--g-rim), inset 0 0 0 1px var(--g-edge), inset 0 -1px 0 var(--g-rim-low), var(--g-shadow);
+}
+@media (min-width:860px){
+  html[data-theme] .top{ --top-px:max(28px, calc((100vw - 1160px) / 2 + 12px)); }
+  html[data-theme] body.banner-preview .top{ --top-px:max(28px, calc((100vw - 1680px) / 2 + 12px)); }
+}
+@media (max-width:859px){
+  /* the preview docks right under the header on phones, so keep the strip behind the capsule solid */
+  html[data-theme] .top{ background:linear-gradient(180deg, color-mix(in srgb, var(--amb-base) 96%, transparent), color-mix(in srgb, var(--amb-base) 90%, transparent)); }
+}
+@media (max-width:520px){
+  html[data-theme] .top{ --top-px:16px; gap:8px; }
+}
+html[data-theme] .brand-mark{ border-radius:9px; box-shadow:inset 0 0 0 1px rgba(0,0,0,.06), 0 2px 6px rgba(0,0,0,.12); }
+html[data-theme="pixel"] .brand-mark{ border-radius:0; }
+
+/* small glass chips in the header */
+html[data-theme] .theme-pick select,
+html[data-theme] .help-btn,
+html[data-theme] .image-status{
+  background-color:var(--g-well);
+  box-shadow:inset 0 1px 0 var(--g-rim-low), inset 0 0 0 1px var(--g-hair), 0 1px 2px rgba(0,0,0,.06);
+  border:0;
+}
+html[data-theme] .help-btn{ transition:transform .35s var(--spring); }
+html[data-theme] .help-btn:active{ transform:scale(.9); }
+html[data-theme] option{ background:var(--card); color:var(--ink); }
+
+/* ---------- glass panels ---------- */
+html[data-theme] .setup-panel,
+html[data-theme] .control-panel,
+html[data-theme] .sync-box{
+  border:0;
+  background:linear-gradient(180deg, var(--g-sheen) 0, transparent 72px), var(--g-fill);
+  -webkit-backdrop-filter:blur(var(--g-blur)) saturate(var(--g-sat));
+  backdrop-filter:blur(var(--g-blur)) saturate(var(--g-sat));
+  box-shadow:
+    inset 0 1px 0 var(--g-rim),
+    inset 0 0 0 1px var(--g-edge),
+    inset 0 -1px 0 var(--g-rim-low),
+    var(--g-shadow);
+}
+html[data-theme] .section-heading h3,
+html[data-theme] details.control-panel summary{ font-size:15px; font-weight:650; letter-spacing:.01em; }
+html[data-theme] .preset-grid{ border-top-color:var(--g-hair); }
+html[data-theme] .text-group{ border-top-color:var(--g-hair); }
+html[data-theme] details.control-panel[open] summary{ border-bottom-color:var(--g-hair); }
+
+/* ---------- preview stage ---------- */
+html[data-theme] .stage{
+  border:0;
+  background:
+    radial-gradient(120% 70% at 50% 0%, var(--g-sheen), transparent 60%),
+    var(--g-fill);
+  -webkit-backdrop-filter:blur(calc(var(--g-blur) + 6px)) saturate(var(--g-sat));
+  backdrop-filter:blur(calc(var(--g-blur) + 6px)) saturate(var(--g-sat));
+  box-shadow:inset 0 1px 0 var(--g-rim), inset 0 0 0 1px var(--g-edge), inset 0 -1px 0 var(--g-rim-low), var(--g-shadow);
+}
+html[data-theme] .polaroid-container{ box-shadow:0 1px 2px rgba(0,0,0,.12), 0 22px 44px -12px rgba(0,0,0,.38); }
+@media (max-width:859px){
+  /* the sticky preview floats as a sheet instead of a full-bleed slab */
+  html[data-theme] .stage,
+  html[data-theme] body.banner-preview .stage{
+    margin-inline:-6px; border-radius:26px;
+    background:radial-gradient(120% 70% at 50% 0%, var(--g-sheen), transparent 60%), var(--g-fill-hi);
+    -webkit-backdrop-filter:blur(18px) saturate(var(--g-sat));
+    backdrop-filter:blur(18px) saturate(var(--g-sat));
+  }
+  html[data-theme="pixel"] .stage{ border-radius:0; }
+}
+html[data-theme] .stage-toggle{
+  border:0; background:var(--g-fill-hi);
+  box-shadow:inset 0 1px 0 var(--g-rim), inset 0 0 0 1px var(--g-edge), var(--g-shadow-sm);
+  transition:transform .35s var(--spring);
+}
+html[data-theme] .stage-toggle:active{ transform:scale(.88); }
+@media (min-width:860px){
+  html[data-theme] #stage.desktop-fullscreen{
+    background:color-mix(in srgb, var(--amb-base) 55%, transparent);
+    -webkit-backdrop-filter:blur(40px) saturate(1.6); backdrop-filter:blur(40px) saturate(1.6);
+    box-shadow:none;
+  }
+}
+
+/* ---------- segmented choices: ratio + date side ---------- */
+html[data-theme] .ratios button,
+html[data-theme] .sides button{
+  position:relative;
+  background:var(--g-well);
+  box-shadow:inset 0 0 0 1px var(--g-hair), inset 0 1px 0 var(--g-rim-low);
+  transition:transform .4s var(--spring), box-shadow .25s ease, background-color .25s ease;
+}
+html[data-theme] .ratios button.on,
+html[data-theme] .sides button.on{
+  background:radial-gradient(120% 100% at 50% 0%, var(--seg-on), color-mix(in srgb, var(--seg-on) 60%, transparent));
+  color:var(--seg-on-ink);
+  box-shadow:
+    inset 0 1px 0 var(--g-rim),
+    inset 0 0 0 1px var(--g-edge),
+    inset 0 -2px 5px -2px rgba(0,0,0,.10),
+    0 0 0 1.5px var(--fuji),
+    0 8px 18px -6px var(--accent-glow);
+  transform:scale(1.03);
+  z-index:1;
+}
+html[data-theme="pixel"] .ratios button.on,
+html[data-theme="pixel"] .sides button.on{ box-shadow:inset 0 0 0 2px var(--fuji), 3px 3px 0 #000; transform:translate(-1px,-1px); }
+
+/* ---------- frame swatches keep their colour, gain a glass sheen ---------- */
+html[data-theme] .frames button{
+  position:relative; overflow:hidden; isolation:isolate;
+  transition:transform .4s var(--spring), box-shadow .25s ease;
+}
+html[data-theme] .frames button::after{
+  content:""; position:absolute; inset:0; z-index:-1; pointer-events:none; border-radius:inherit;
+  background:linear-gradient(180deg, rgba(255,255,255,.42), rgba(255,255,255,.06) 48%, transparent 52%, rgba(255,255,255,.08));
+}
+html[data-theme] .frames .w{ box-shadow:inset 0 0 0 1px rgba(42,34,24,.10), 0 2px 6px -2px rgba(0,0,0,.18); }
+html[data-theme] .frames .k{ box-shadow:inset 0 0 0 1px #444, 0 2px 6px -2px rgba(0,0,0,.30); }
+html[data-theme] .frames .t{ box-shadow:inset 0 0 0 1px rgba(255,255,255,.18), 0 2px 6px -2px rgba(0,0,0,.25); }
+html[data-theme] .frames .v{ box-shadow:inset 0 0 0 1px #a89f8b, 0 2px 6px -2px rgba(0,0,0,.18); }
+html[data-theme] .frames .f{ box-shadow:inset 0 0 0 1px #e09f3e, 0 2px 6px -2px rgba(0,0,0,.30); }
+html[data-theme] .frames button.on{
+  transform:scale(1.04); z-index:1;
+  box-shadow:inset 0 0 0 1px rgba(255,255,255,.5), 0 0 0 2px var(--fuji), 0 10px 20px -8px var(--accent-glow);
+}
+html[data-theme="pixel"] .frames button::after{ background:linear-gradient(180deg, rgba(255,255,255,.28) 0 40%, transparent 40%); }
+html[data-theme="pixel"] .frames button.on{ transform:translate(-1px,-1px); box-shadow:inset 0 0 0 2px var(--fuji), 3px 3px 0 #000; }
+
+/* ---------- buttons ---------- */
+html[data-theme] .pbtn{ transition:transform .4s var(--spring), box-shadow .2s ease, opacity .15s; }
+html[data-theme] .pbtn:active,
+html[data-theme] .frames button:active,
+html[data-theme] .ratios button:active,
+html[data-theme] .sides button:active{ transform:scale(.94); }
+html[data-theme] .pbtn.ghost{
+  background:linear-gradient(180deg, var(--g-sheen), transparent 80%), var(--g-well);
+  box-shadow:inset 0 1px 0 var(--g-rim), inset 0 0 0 1px var(--g-edge), var(--g-shadow-sm);
+}
+html[data-theme] .pbtn.red,
+html[data-theme] .pick{
+  color:var(--on-accent);
+  background:
+    linear-gradient(180deg, rgba(255,255,255,.34), rgba(255,255,255,0) 52%),
+    var(--fuji);
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.55),
+    inset 0 -1px 0 rgba(0,0,0,.14),
+    inset 0 0 0 1px color-mix(in srgb, var(--fuji) 70%, #fff),
+    0 10px 24px -8px var(--accent-glow);
+}
+html[data-theme="pixel"] .pbtn.red,
+html[data-theme="pixel"] .pick{ box-shadow:inset 0 2px 0 rgba(255,255,255,.35), 4px 4px 0 #000; }
+html[data-theme="pixel"] .pbtn.ghost{ box-shadow:inset 0 0 0 1px var(--g-edge), 3px 3px 0 #000; }
+/* the sync "apply" button had an inline border colour; keep it reading as accent */
+html[data-theme] #apply-sync-btn{ color:var(--fuji) !important; box-shadow:inset 0 1px 0 var(--g-rim), inset 0 0 0 1.5px var(--fuji), var(--g-shadow-sm); }
+/* share + download sit together like a dock */
+html[data-theme] .action-group > .row2:nth-of-type(2){
+  padding:6px; gap:6px; border-radius:calc(var(--cap-r) + 4px);
+  background:var(--g-fill);
+  -webkit-backdrop-filter:blur(var(--g-blur)) saturate(var(--g-sat));
+  backdrop-filter:blur(var(--g-blur)) saturate(var(--g-sat));
+  box-shadow:inset 0 1px 0 var(--g-rim), inset 0 0 0 1px var(--g-edge), var(--g-shadow);
+}
+html[data-theme="pixel"] .action-group > .row2:nth-of-type(2){ border-radius:0; }
+
+/* ---------- photo picker + thumbnails ---------- */
+html[data-theme] .pick{ min-height:56px; font-size:15px; letter-spacing:.04em; }
+html[data-theme] .pick:hover{ transform:translateY(-1px); }
+html[data-theme] .thumb-item{
+  background:var(--g-well);
+  box-shadow:inset 0 0 0 1px var(--g-hair), 0 4px 10px -4px rgba(0,0,0,.25);
+  transition:transform .35s var(--spring), border-color .15s;
+}
+html[data-theme] .thumb-item.active{ transform:translateY(-2px); box-shadow:0 0 0 2px var(--fuji), 0 8px 16px -6px var(--accent-glow); border-color:transparent; }
+html[data-theme] .thumb-item:not(.active){ border-color:transparent; }
+html[data-theme] .thumb-add{ background:var(--g-well); border-color:var(--g-edge); }
+html[data-theme] .thumb-del{ box-shadow:0 0 0 2px var(--amb-base), 0 2px 6px rgba(0,0,0,.25); border:0; }
+
+/* ---------- form fields: recessed glass wells ---------- */
+html[data-theme] .field input,
+html[data-theme] .field select,
+html[data-theme] .field textarea{
+  background-color:var(--g-well);
+  box-shadow:inset 0 1px 2px rgba(0,0,0,.06), inset 0 0 0 1px var(--g-hair);
+}
+html[data-theme] .field input:focus,
+html[data-theme] .field select:focus{
+  background-color:var(--g-well);
+  box-shadow:inset 0 0 0 1px var(--fuji), 0 0 0 4px var(--fuji-dim);
+}
+html[data-theme] .field select{
+  appearance:none; -webkit-appearance:none; padding-right:30px;
+  background-image:linear-gradient(45deg,transparent 50%,var(--muted) 50%),linear-gradient(135deg,var(--muted) 50%,transparent 50%);
+  background-position:calc(100% - 16px) 50%, calc(100% - 11px) 50%;
+  background-size:5px 5px, 5px 5px; background-repeat:no-repeat;
+}
+
+/* ---------- onboarding tour ---------- */
+html[data-theme] .tour-dim{ background:rgba(6,6,10,.38); -webkit-backdrop-filter:blur(3px); backdrop-filter:blur(3px); }
+html[data-theme] .tour-spot{ box-shadow:0 0 0 2px var(--fuji), 0 0 24px 2px var(--accent-glow), 0 0 0 9999px rgba(6,6,10,.42); }
+html[data-theme] .tour-card{
+  border:0; border-radius:max(var(--cap-r), 0px);
+  background:linear-gradient(180deg, var(--g-sheen), transparent 90px), var(--g-fill-hi);
+  -webkit-backdrop-filter:blur(30px) saturate(1.8); backdrop-filter:blur(30px) saturate(1.8);
+  box-shadow:inset 0 1px 0 var(--g-rim), inset 0 0 0 1px var(--g-edge), 0 24px 60px -12px rgba(0,0,0,.45);
+}
+
+/* browsers without backdrop-filter: make the glass opaque enough to read */
+@supports not ((backdrop-filter:blur(1px)) or (-webkit-backdrop-filter:blur(1px))){
+  html[data-theme] .setup-panel, html[data-theme] .control-panel, html[data-theme] .sync-box,
+  html[data-theme] .stage, html[data-theme] .tour-card, html[data-theme] .top::before{ background-color:var(--card); }
+}
   </style>
 </head>
 <body>
+  <div class="lg-ambient" aria-hidden="true"><i></i><i></i><i></i></div>
   <div class="shutter" id="shutter"></div>
   <div class="tour" id="tour" hidden>
     <div class="tour-dim" id="tour-dim"></div>
