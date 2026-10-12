@@ -13,9 +13,9 @@
   <script>
   (function(){
     var KEY='polaroid-room-theme';
-    var ok=['desk','space','wa','cn','pixel','scifi','oled'];
+    var ok=['desk','blush','mist','dusk','oled'],old={wa:'desk',cn:'desk',space:'dusk',scifi:'dusk',pixel:'dusk'};
     try {
-      var t=localStorage.getItem(KEY);
+      var t=localStorage.getItem(KEY);if(old[t])t=old[t];
       if (ok.indexOf(t)!==-1) document.documentElement.setAttribute('data-theme', t);
     } catch (e) {}
   })();
@@ -115,9 +115,6 @@
     .tour-body { margin:0 0 14px; font-size:14px; line-height:1.65; color:var(--ink); }
     .tour-nav { display:flex; align-items:center; justify-content:space-between; gap:8px; }
     .tour-nav-right { display:flex; gap:6px; }
-    html[data-theme="pixel"] .tour-spot,
-    html[data-theme="pixel"] .tour-card,
-    html[data-theme="pixel"] .help-btn { border-radius:0; }
     @media (max-width:720px) {
       .help-btn { width:32px; height:32px; font-size:15px; }
     }
@@ -133,61 +130,38 @@
       max-width:42vw;
     }
 
-    html[data-theme="space"] {
-      --desk:#070B16; --desk-2:#0B1222; --card:#10182A; --card-2:#0E1628;
-      --ink:#E8EEFF; --muted:#8B97B8; --cream:#E8EEFF; --sumi:#070B16;
-      --line:rgba(170,190,255,.16); --line-strong:rgba(170,190,255,.3);
-      --paper:#0C1426; --char:#0C1426; --panel:#10182A; --panel-2:#141E34;
-      --fuji:#8FB3FF; --fuji-dim:rgba(143,179,255,.22);
-      --stage-bg:radial-gradient(circle at 20% 0%, #1B2A55, #070B16 62%);
-      --field-bg:#0C1426; --glow:rgba(90,130,255,.28);
-      --shadow:0 12px 32px rgba(0,0,0,.35);
-      --check-a:#1A2440; --check-b:#0C1426;
+    html[data-theme="blush"] {
+      --desk:#F6E9EE; --desk-2:#EFDCE5; --card:#FBF1F4; --card-2:#F6E7EC;
+      --ink:#3A2430; --muted:#8F6F7E; --cream:#3A2430; --sumi:#F6E9EE;
+      --line:rgba(58,36,48,.12); --line-strong:rgba(58,36,48,.22);
+      --paper:#FFF8FA; --char:#F1DDE6; --panel:#FBF1F4; --panel-2:#F6E7EC;
+      --fuji:#E0457B; --fuji-dim:rgba(224,69,123,.18);
+      --stage-bg:linear-gradient(180deg,#F1DCE6,#E8CCDA);
+      --field-bg:#FFF8FA; --glow:rgba(255,255,255,.55);
+      --shadow:0 10px 28px rgba(120,40,80,.08);
+      --check-a:#E9D3DD; --check-b:#F7ECF1;
     }
-    html[data-theme="wa"] {
-      --desk:#EDE4D4; --desk-2:#E4D8C4; --card:#F7F0E4; --card-2:#F3EAD9;
-      --ink:#2A2420; --muted:#7A6E62; --cream:#2A2420; --sumi:#EDE4D4;
-      --line:rgba(42,36,30,.14); --line-strong:rgba(42,36,30,.26);
-      --paper:#FFF9F0; --char:#E8DCC8; --panel:#F7F0E4; --panel-2:#F3EAD9;
-      --fuji:#9C2B2B; --fuji-dim:rgba(156,43,43,.16);
-      --stage-bg:linear-gradient(180deg,#E6D8C2,#D9C9AF);
-      --field-bg:#FFF9F0; --glow:rgba(255,250,240,.5);
-      --shadow:0 10px 24px rgba(70,50,30,.08);
-      --check-a:#D4C6AE; --check-b:#EDE4D4;
+    html[data-theme="mist"] {
+      --desk:#E6EEF3; --desk-2:#DAE6ED; --card:#F3F8FB; --card-2:#EAF2F7;
+      --ink:#1B2A35; --muted:#6A808F; --cream:#1B2A35; --sumi:#E6EEF3;
+      --line:rgba(27,42,53,.12); --line-strong:rgba(27,42,53,.22);
+      --paper:#F8FCFE; --char:#DCE8EF; --panel:#F3F8FB; --panel-2:#EAF2F7;
+      --fuji:#2C7BE5; --fuji-dim:rgba(44,123,229,.18);
+      --stage-bg:linear-gradient(180deg,#D8E6EE,#C9DBE6);
+      --field-bg:#F8FCFE; --glow:rgba(255,255,255,.55);
+      --shadow:0 10px 28px rgba(20,60,90,.08);
+      --check-a:#CBDCE6; --check-b:#EAF3F8;
     }
-    html[data-theme="cn"] {
-      --desk:#F1E2C4; --desk-2:#E6D2A8; --card:#F8ECD0; --card-2:#F3E4C0;
-      --ink:#1A120C; --muted:#7A6248; --cream:#1A120C; --sumi:#F1E2C4;
-      --line:rgba(160,110,30,.28); --line-strong:rgba(160,110,30,.45);
-      --paper:#FFF6DE; --char:#EAD6A8; --panel:#F8ECD0; --panel-2:#F3E4C0;
-      --fuji:#C41A1A; --fuji-dim:rgba(196,26,26,.16);
-      --stage-bg:linear-gradient(180deg,#E8D09A,#D4B36E);
-      --field-bg:#FFF6DE; --glow:rgba(255,230,170,.45);
-      --shadow:0 10px 24px rgba(90,40,10,.08);
-      --check-a:#D9C08A; --check-b:#F1E2C4;
-    }
-    html[data-theme="pixel"] {
-      --desk:#1B1528; --desk-2:#241C36; --card:#2A2140; --card-2:#32284C;
-      --ink:#F4ECFF; --muted:#A894C4; --cream:#F4ECFF; --sumi:#1B1528;
-      --line:rgba(255,255,255,.16); --line-strong:rgba(255,120,180,.45);
-      --paper:#191326; --char:#191326; --panel:#2A2140; --panel-2:#32284C;
-      --fuji:#FF4D8D; --fuji-dim:rgba(255,77,141,.22);
-      --r-lg:0px; --r-md:0px; --r-sm:0px;
-      --stage-bg:#120E1C;
-      --field-bg:#191326; --glow:transparent;
-      --shadow:4px 4px 0 #000;
-      --check-a:#3A2E55; --check-b:#191326;
-    }
-    html[data-theme="scifi"] {
-      --desk:#05070C; --desk-2:#080C16; --card:#0B1220; --card-2:#0E1730;
-      --ink:#D7F7FF; --muted:#6FA8B8; --cream:#D7F7FF; --sumi:#05070C;
-      --line:rgba(0,229,255,.22); --line-strong:rgba(0,229,255,.4);
-      --paper:#071018; --char:#071018; --panel:#0B1220; --panel-2:#0E1730;
-      --fuji:#00E5FF; --fuji-dim:rgba(0,229,255,.18);
-      --stage-bg:linear-gradient(180deg,#071422,#05070C);
-      --field-bg:#071018; --glow:rgba(0,229,255,.16);
-      --shadow:0 0 24px rgba(0,229,255,.08);
-      --check-a:#0C2230; --check-b:#071018;
+    html[data-theme="dusk"] {
+      --desk:#0C0E1E; --desk-2:#111430; --card:#151833; --card-2:#12152C;
+      --ink:#EEF0FF; --muted:#9AA0C8; --cream:#EEF0FF; --sumi:#0C0E1E;
+      --line:rgba(190,200,255,.14); --line-strong:rgba(190,200,255,.28);
+      --paper:#0F1226; --char:#0F1226; --panel:#151833; --panel-2:#1A1E3E;
+      --fuji:#7B66FF; --fuji-dim:rgba(123,102,255,.26);
+      --stage-bg:radial-gradient(circle at 20% 0%, #1E2250, #0C0E1E 62%);
+      --field-bg:#0F1226; --glow:rgba(110,90,255,.25);
+      --shadow:0 12px 32px rgba(0,0,0,.4);
+      --check-a:#1B1F40; --check-b:#0F1226;
     }
     html[data-theme="oled"] {
       --desk:#000; --desk-2:#000; --card:#000; --card-2:#050505;
@@ -256,7 +230,7 @@
 /* ==========================================================================
    Liquid Glass layer
    Everything below rides on top of the original styles. Each theme only
-   defines tokens; the glass recipe itself is shared, so all seven themes get
+   defines tokens; the glass recipe itself is shared, so all themes get
    the same material with their own tint, rim light and ambient colour.
    ========================================================================== */
 :root{
@@ -286,104 +260,46 @@
   --cap-r:24px;
   --spring:cubic-bezier(.34,1.5,.64,1);
 }
-html[data-theme="space"]{
-  --amb-base:#060A18;
-  --blob-a:rgba(78,110,255,.50);
-  --blob-b:rgba(150,92,255,.40);
-  --blob-c:rgba(40,190,220,.24);
-  --amb-texture:
-    radial-gradient(1px 1px at 12% 22%, rgba(255,255,255,.8) 50%, transparent 51%),
-    radial-gradient(1px 1px at 68% 14%, rgba(255,255,255,.6) 50%, transparent 51%),
-    radial-gradient(1.5px 1.5px at 84% 62%, rgba(200,215,255,.7) 50%, transparent 51%),
-    radial-gradient(1px 1px at 32% 78%, rgba(255,255,255,.5) 50%, transparent 51%),
-    radial-gradient(1px 1px at 52% 44%, rgba(255,255,255,.45) 50%, transparent 51%),
-    radial-gradient(1.5px 1.5px at 6% 92%, rgba(255,255,255,.55) 50%, transparent 51%);
-  --g-fill:rgba(18,26,52,.46);
-  --g-fill-hi:rgba(26,36,70,.72);
-  --g-well:rgba(4,8,22,.38);
-  --g-sheen:rgba(190,210,255,.13);
-  --g-rim:rgba(205,220,255,.42);
-  --g-rim-low:rgba(205,220,255,.10);
-  --g-edge:rgba(170,190,255,.16);
-  --g-hair:rgba(170,190,255,.10);
-  --g-shadow:0 18px 40px -8px rgba(0,0,10,.55);
-  --g-shadow-sm:0 8px 18px -6px rgba(0,0,10,.6);
-  --seg-on:rgba(190,210,255,.22);
-  --on-accent:#08102A;
+html[data-theme="blush"]{
+  --amb-base:#F4E4EC;
+  --blob-a:rgba(255,120,170,.52);
+  --blob-b:rgba(190,150,255,.46);
+  --blob-c:rgba(255,196,150,.44);
+  --g-fill:rgba(255,248,251,.52);
+  --g-fill-hi:rgba(255,250,252,.76);
+  --g-well:rgba(255,255,255,.50);
+  --g-hair:rgba(58,36,48,.07);
+  --g-shadow:0 1px 1px rgba(80,30,60,.04), 0 14px 34px -6px rgba(170,60,120,.20);
+  --g-shadow-sm:0 1px 1px rgba(80,30,60,.05), 0 6px 14px -4px rgba(170,60,120,.20);
 }
-html[data-theme="wa"]{
-  --amb-base:#EBE1CF;
-  --blob-a:rgba(196,72,60,.30);
-  --blob-b:rgba(70,92,140,.26);
-  --blob-c:rgba(140,166,110,.30);
-  --amb-texture:repeating-linear-gradient(90deg, rgba(120,90,60,.025) 0 1px, transparent 1px 7px);
-  --g-fill:rgba(255,250,240,.52);
-  --g-fill-hi:rgba(255,251,243,.76);
-  --g-well:rgba(255,252,246,.50);
-  --g-sheen:rgba(255,255,255,.55);
-  --g-shadow:0 1px 1px rgba(70,50,30,.05), 0 14px 32px -8px rgba(80,50,30,.16);
-  --g-shadow-sm:0 6px 14px -5px rgba(80,50,30,.18);
-  --g-hair:rgba(42,36,30,.08);
+html[data-theme="mist"]{
+  --amb-base:#DFEAF0;
+  --blob-a:rgba(80,165,255,.50);
+  --blob-b:rgba(110,220,200,.46);
+  --blob-c:rgba(170,160,255,.40);
+  --g-fill:rgba(246,251,254,.52);
+  --g-fill-hi:rgba(248,252,254,.76);
+  --g-well:rgba(255,255,255,.50);
+  --g-hair:rgba(27,42,53,.07);
+  --g-shadow:0 1px 1px rgba(20,50,80,.04), 0 14px 34px -6px rgba(40,100,160,.20);
+  --g-shadow-sm:0 1px 1px rgba(20,50,80,.05), 0 6px 14px -4px rgba(40,100,160,.20);
 }
-html[data-theme="cn"]{
-  --amb-base:#EED9AE;
-  --blob-a:rgba(210,40,30,.34);
-  --blob-b:rgba(240,180,60,.50);
-  --blob-c:rgba(150,30,40,.22);
-  --g-fill:rgba(255,246,222,.50);
-  --g-fill-hi:rgba(255,248,228,.76);
-  --g-well:rgba(255,250,232,.48);
-  --g-sheen:rgba(255,248,220,.6);
-  --g-rim:rgba(255,236,180,.95);
-  --g-rim-low:rgba(200,150,50,.30);
-  --g-edge:rgba(230,190,110,.55);
-  --g-hair:rgba(160,110,30,.14);
-  --g-shadow:0 1px 1px rgba(90,40,10,.05), 0 14px 32px -8px rgba(120,50,10,.20);
-  --g-shadow-sm:0 6px 14px -5px rgba(120,50,10,.22);
-}
-html[data-theme="pixel"]{
-  --amb-base:#150F22;
-  --blob-a:rgba(255,77,141,.42);
-  --blob-b:rgba(110,80,255,.40);
-  --blob-c:rgba(60,220,200,.24);
-  --amb-texture:
-    linear-gradient(rgba(255,255,255,.035) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255,255,255,.035) 1px, transparent 1px);
-  --g-blur:14px;
-  --g-fill:rgba(42,33,64,.55);
-  --g-fill-hi:rgba(50,40,76,.82);
-  --g-well:rgba(12,8,22,.45);
-  --g-sheen:rgba(255,255,255,.10);
-  --g-rim:rgba(255,255,255,.40);
-  --g-rim-low:rgba(255,255,255,.08);
-  --g-edge:rgba(255,255,255,.16);
-  --g-hair:rgba(255,255,255,.10);
-  --g-shadow:4px 4px 0 #000;
-  --g-shadow-sm:3px 3px 0 #000;
-  --seg-on:rgba(255,255,255,.20);
-  --accent-glow:#000;
-  --cap-r:0px;
-}
-html[data-theme="scifi"]{
-  --amb-base:#03060C;
-  --blob-a:rgba(0,229,255,.26);
-  --blob-b:rgba(0,120,255,.28);
-  --blob-c:rgba(120,255,210,.12);
-  --amb-texture:
-    linear-gradient(rgba(0,229,255,.045) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(0,229,255,.045) 1px, transparent 1px);
-  --g-fill:rgba(8,20,34,.48);
-  --g-fill-hi:rgba(10,28,46,.76);
-  --g-well:rgba(0,8,16,.42);
-  --g-sheen:rgba(120,240,255,.10);
-  --g-rim:rgba(120,240,255,.55);
-  --g-rim-low:rgba(0,229,255,.12);
-  --g-edge:rgba(0,229,255,.22);
-  --g-hair:rgba(0,229,255,.12);
-  --g-shadow:0 0 0 1px rgba(0,229,255,.05), 0 16px 40px -10px rgba(0,229,255,.18);
-  --g-shadow-sm:0 6px 16px -6px rgba(0,229,255,.25);
-  --seg-on:rgba(0,229,255,.16);
-  --on-accent:#00151B;
+html[data-theme="dusk"]{
+  --amb-base:#080A18;
+  --blob-a:rgba(110,90,255,.56);
+  --blob-b:rgba(255,90,170,.38);
+  --blob-c:rgba(40,190,220,.30);
+  --g-fill:rgba(24,28,60,.46);
+  --g-fill-hi:rgba(30,34,72,.72);
+  --g-well:rgba(8,10,28,.40);
+  --g-sheen:rgba(200,210,255,.12);
+  --g-rim:rgba(215,225,255,.40);
+  --g-rim-low:rgba(215,225,255,.10);
+  --g-edge:rgba(180,195,255,.16);
+  --g-hair:rgba(180,195,255,.10);
+  --g-shadow:0 18px 40px -8px rgba(0,0,12,.55);
+  --g-shadow-sm:0 8px 18px -6px rgba(0,0,12,.6);
+  --seg-on:rgba(200,210,255,.20);
 }
 html[data-theme="oled"]{
   /* stays almost entirely black: two faint glows give the glass something to bend */
@@ -412,8 +328,6 @@ html{ background:var(--amb-base); }
   background:var(--amb-texture), var(--amb-base);
   background-size:auto;
 }
-html[data-theme="pixel"] .lg-ambient,
-html[data-theme="scifi"] .lg-ambient{ background-size:24px 24px, 24px 24px, auto; }
 .lg-ambient i{
   position:absolute; width:70vmax; height:70vmax; border-radius:50%;
   will-change:transform;
@@ -422,10 +336,6 @@ html[data-theme="scifi"] .lg-ambient{ background-size:24px 24px, 24px 24px, auto
 .lg-ambient i:nth-child(1){ left:-24vmax; top:-30vmax; background:radial-gradient(circle, var(--blob-a), transparent 64%); }
 .lg-ambient i:nth-child(2){ right:-28vmax; top:8vh; background:radial-gradient(circle, var(--blob-b), transparent 64%); animation-duration:41s; animation-delay:-12s; }
 .lg-ambient i:nth-child(3){ left:4vmax; bottom:-40vmax; background:radial-gradient(circle, var(--blob-c), transparent 64%); animation-duration:47s; animation-delay:-20s; }
-/* pixel: stepped, banded light instead of smooth falloff */
-html[data-theme="pixel"] .lg-ambient i:nth-child(1){ background:radial-gradient(circle, var(--blob-a) 0 22%, color-mix(in srgb,var(--blob-a) 55%,transparent) 22% 40%, color-mix(in srgb,var(--blob-a) 22%,transparent) 40% 58%, transparent 58%); }
-html[data-theme="pixel"] .lg-ambient i:nth-child(2){ background:radial-gradient(circle, var(--blob-b) 0 22%, color-mix(in srgb,var(--blob-b) 55%,transparent) 22% 40%, color-mix(in srgb,var(--blob-b) 22%,transparent) 40% 58%, transparent 58%); }
-html[data-theme="pixel"] .lg-ambient i:nth-child(3){ background:radial-gradient(circle, var(--blob-c) 0 22%, color-mix(in srgb,var(--blob-c) 55%,transparent) 22% 40%, transparent 40%); }
 @keyframes lg-drift{
   0%{ transform:translate3d(0,0,0) scale(1); }
   50%{ transform:translate3d(6vmax,4vmax,0) scale(1.08); }
@@ -466,7 +376,6 @@ html[data-theme] .top::before{
   html[data-theme] .top{ --top-px:16px; gap:8px; }
 }
 html[data-theme] .brand-mark{ border-radius:9px; box-shadow:inset 0 0 0 1px rgba(0,0,0,.06), 0 2px 6px rgba(0,0,0,.12); }
-html[data-theme="pixel"] .brand-mark{ border-radius:0; }
 
 /* small glass chips in the header */
 html[data-theme] .theme-pick select,
@@ -484,14 +393,7 @@ html[data-theme] option{ background:var(--card); color:var(--ink); }
    Layout + components — one layer, driven by the tokens above.
    Structure:  header → stage (preview) + dock (tabs card + action bar)
    ========================================================================== */
-html[data-theme="pixel"]{ --cap-r:0px; }
-html[data-theme="pixel"] .top{ backdrop-filter:none; background:var(--desk); }
 html[data-theme="oled"] .top{ backdrop-filter:none; background:#000; border-bottom-color:rgba(255,255,255,.1); }
-html[data-theme="space"] .top,
-html[data-theme="scifi"] .top{ background:color-mix(in srgb, var(--desk) 78%, transparent); }
-html[data-theme="pixel"] .pbtn,
-html[data-theme="pixel"] .image-status,
-html[data-theme="pixel"] .theme-pick select{ border-radius:0; }
 
 .wrap{ max-width:1160px; margin:0 auto; padding:18px 16px calc(28px + var(--safe-b)); }
 body.banner-preview .wrap{ max-width:1680px; }
@@ -668,10 +570,6 @@ label.field{ display:grid; gap:6px; min-width:0; font-size:12px; font-weight:600
   box-shadow:inset 0 0 0 1px rgba(255,255,255,.5), 0 0 0 2px var(--fuji), 0 10px 20px -8px var(--accent-glow);
 }
 .frames button.on, .ratios button.on, .sides button.on{ transform:scale(1.03); z-index:1; }
-html[data-theme="pixel"] .frames button, html[data-theme="pixel"] .ratios button, html[data-theme="pixel"] .sides button{ border-radius:0; }
-html[data-theme="pixel"] .ratios button.on, html[data-theme="pixel"] .sides button.on,
-html[data-theme="pixel"] .frames button.on{ transform:translate(-1px,-1px); box-shadow:inset 0 0 0 2px var(--fuji), 3px 3px 0 #000; }
-html[data-theme="pixel"] .frames button::after{ background:linear-gradient(180deg, rgba(255,255,255,.28) 0 40%, transparent 40%); }
 
 /* ---------- buttons ---------- */
 .pbtn{ transition:transform .4s var(--spring), box-shadow .2s ease, opacity .15s; }
@@ -685,8 +583,6 @@ html[data-theme="pixel"] .frames button::after{ background:linear-gradient(180de
   background:linear-gradient(180deg, rgba(255,255,255,.34), rgba(255,255,255,0) 52%), var(--fuji);
   box-shadow:inset 0 1px 0 rgba(255,255,255,.55), inset 0 -1px 0 rgba(0,0,0,.14), inset 0 0 0 1px color-mix(in srgb, var(--fuji) 70%, #fff), 0 10px 24px -8px var(--accent-glow);
 }
-html[data-theme="pixel"] .pbtn.red, html[data-theme="pixel"] .pick{ box-shadow:inset 0 2px 0 rgba(255,255,255,.35), 4px 4px 0 #000; }
-html[data-theme="pixel"] .pbtn.ghost{ box-shadow:inset 0 0 0 1px var(--g-edge), 3px 3px 0 #000; }
 .panel-actions{ display:flex; }
 .panel-actions .pbtn{ flex:1; }
 
@@ -812,13 +708,11 @@ html[data-theme="pixel"] .pbtn.ghost{ box-shadow:inset 0 0 0 1px var(--g-edge), 
       </g>
     </svg><h1>拍立得小房間</h1></div>
     <label class="theme-pick"><select id="theme-select" aria-label="介面主題">
-      <option value="desk">工作桌</option>
-      <option value="space">太空</option>
-      <option value="wa">日式</option>
-      <option value="cn">中式</option>
-      <option value="pixel">像素</option>
-      <option value="scifi">科幻</option>
-      <option value="oled">OLED 全黑</option>
+      <option value="desk">晨光</option>
+      <option value="blush">粉霧</option>
+      <option value="mist">海霧</option>
+      <option value="dusk">夜光</option>
+      <option value="oled">全黑</option>
     </select></label>
     <button type="button" class="help-btn" id="help-btn" title="功能教學" aria-label="再次播放功能教學">?</button>
     <span class="image-status" id="imageStatus">尚未選取照片</span>
@@ -2519,7 +2413,7 @@ syncUIFromState();prepareTextFonts(activeState);drawAll(false);
 
   const steps=[
     { el:'.brand', title:'歡迎來到拍立得小房間', text:'把照片加上拍立得邊框、相機資訊，再下載或分享。全部都在瀏覽器裡完成，照片不會上傳。' },
-    { el:'#theme-select', title:'切換主題', text:'工作桌、太空、日式、中式、像素、科幻，還有 OLED 全黑。選過會記住，下次打開還在。' },
+    { el:'#theme-select', title:'切換主題', text:'晨光、粉霧、海霧、夜光，還有全黑。選過會記住，下次打開還在。' },
     { el:'#mainPickLabel', tab:'photo', title:'選擇照片', text:'一次最多 20 張。選完後按系統的「加入／完成」。縮圖可點來切換，右上角叉叉可刪除。' },
     { el:'#frames', tab:'style', title:'邊框樣式', text:'白框、黑框、取色、復古、底片。取色會跟照片配色。選好後還能改比例。' },
     { el:'#ratios', tab:'style', title:'照片比例', text:'原圖、Mini、方框、Wide、橫幅，以及 Instagram 貼文、限時動態。橫幅或限動時預覽會自動變大。' },
