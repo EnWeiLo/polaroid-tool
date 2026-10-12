@@ -201,17 +201,6 @@
       --check-a:#1A1A1A; --check-b:#000;
     }
 
-    html[data-theme="pixel"] .top { backdrop-filter:none; background:var(--desk); }
-    html[data-theme="pixel"] .pbtn,
-    html[data-theme="pixel"] .image-status,
-    html[data-theme="pixel"] .theme-pick select { border-radius:0; }
-    html[data-theme="pixel"] .pick { border-radius:0; box-shadow:4px 4px 0 #000; }
-    html[data-theme="oled"] .top { backdrop-filter:none; background:#000; border-bottom-color:rgba(255,255,255,.1); }
-    html[data-theme="oled"] .setup-panel,
-    html[data-theme="oled"] .control-panel,
-    html[data-theme="oled"] .sync-box { box-shadow:none; }
-    html[data-theme="space"] .top,
-    html[data-theme="scifi"] .top { background:color-mix(in srgb, var(--desk) 78%, transparent); }
 
     @media (max-width:600px) {
       .theme-pick select { font-size:11px; padding-right:22px; max-width:38vw; }
@@ -263,239 +252,6 @@
     .pbtn.full { width:100%; }
     .pbtn.sm { min-height:36px; padding:0 12px; font-size:13px; }
 
-    .wrap { max-width:1160px; margin:0 auto; padding:18px 16px calc(32px + var(--safe-b)); }
-    .editor-shell { display:flex; flex-direction:column; gap:16px; }
-
-    .setup-panel, .control-panel, .sync-box {
-      background:var(--card);
-      border:1px solid var(--line);
-      border-radius:var(--r-lg);
-      box-shadow:var(--shadow);
-    }
-    .setup-panel { padding:16px; }
-    .section-heading { display:flex; align-items:baseline; justify-content:space-between; gap:12px; margin:0 0 12px; }
-    .section-heading h3 { margin:0; font-size:14px; font-weight:700; letter-spacing:.02em; }
-    .section-heading p { margin:0; color:var(--muted); font-size:12px; }
-
-    .pick {
-      position:relative; display:grid; place-items:center;
-      width:100%; min-height:52px; margin:0 0 12px;
-      border:0; border-radius:var(--r-md); background:var(--fuji); color:#fff;
-      font-weight:700; font-size:14px; transition:transform .15s, box-shadow .15s;
-      box-shadow:0 8px 18px rgba(226,106,58,.22);
-    }
-    .pick:hover { transform:translateY(-1px); }
-    .pick input {
-      position:absolute; inset:0; width:100%; height:100%;
-      opacity:0; margin:0; cursor:pointer; font-size:16px;
-    }
-
-    .thumb-list {
-      display:flex; gap:10px; overflow-x:auto; padding:2px 2px 6px; margin:0 0 4px;
-      scroll-snap-type:x proximity; -webkit-overflow-scrolling:touch;
-    }
-    .thumb-list::-webkit-scrollbar { height:4px; }
-    .thumb-list::-webkit-scrollbar-thumb { background:var(--line-strong); border-radius:4px; }
-    .thumb-item {
-      width:60px; height:60px; border-radius:12px; border:2px solid transparent;
-      overflow:visible; cursor:pointer; flex-shrink:0; position:relative; background:#ddd6cb;
-      scroll-snap-align:start; transition:border-color .15s;
-    }
-    .thumb-item img { width:100%; height:100%; object-fit:cover; border-radius:9px; display:block; }
-    .thumb-item.active { border-color:var(--fuji); }
-    .thumb-del {
-      position:absolute; top:-6px; right:-6px; width:20px; height:20px;
-      border-radius:50%; background:var(--fuji); color:#fff; border:2px solid var(--desk);
-      font-size:11px; font-weight:bold; display:grid; place-items:center;
-      line-height:1; cursor:pointer; z-index:2; box-shadow:0 2px 6px rgba(0,0,0,.2);
-    }
-    .thumb-del:hover { transform:scale(1.12); }
-    .thumb-add {
-      width:60px; height:60px; border-radius:12px; border:2px dashed var(--line-strong);
-      display:flex; align-items:center; justify-content:center;
-      color:var(--muted); font-size:20px; font-weight:bold; flex-shrink:0; position:relative;
-      background:rgba(255,255,255,.35); cursor:pointer;
-    }
-    .thumb-add input { position:absolute; inset:0; width:100%; height:100%; opacity:0; cursor:pointer; }
-    .thumb-add:hover { border-color:var(--fuji); color:var(--ink); }
-
-    .setup-help { margin:8px 1px 0; }
-    .hint { color:var(--muted); font-size:12px; line-height:1.6; }
-
-    .preset-grid { display:grid; grid-template-columns:1.3fr 1fr; gap:16px; margin-top:16px; padding-top:14px; border-top:1px solid var(--line); }
-    .preset-label { display:block; margin:0 0 8px; color:var(--muted); font-size:11px; font-weight:700; letter-spacing:.03em; }
-    .frames, .ratios { display:grid; gap:6px; margin:0; }
-    .ratios { grid-template-columns:repeat(4,minmax(0,1fr)); min-width:0; }
-    .frames button, .ratios button, .sides button {
-      border:0; min-height:40px; border-radius:var(--r-sm); font-weight:700; font-size:12.5px; padding:2px 4px;
-      background:var(--char); color:var(--ink); box-shadow:inset 0 0 0 1px var(--line);
-      transition:transform .12s, box-shadow .12s;
-    }
-    .ratios button, .sides button { background:var(--field-bg); color:var(--ink); }
-    .frames .w { background:#f7f3ec; color:#2a2218; }
-    .frames .k { background:#111; color:#f6efe4; box-shadow:inset 0 0 0 1px #444; }
-    .frames .t { background:linear-gradient(90deg,#8a6a4a,#5a4032); color:#fff; }
-    .frames .v { background:#e8dfcb; color:#4a3b2c; box-shadow:inset 0 0 0 1px #a89f8b; }
-    .frames .f { background:#0d0d0d; color:#e09f3e; box-shadow:inset 0 0 0 1px #e09f3e; }
-    .frames button.on, .ratios button.on, .sides button.on { box-shadow:inset 0 0 0 2px var(--fuji), 0 0 0 3px var(--fuji-dim); }
-    .frames button:active, .ratios button:active, .sides button:active, .pbtn:active { transform:scale(.96); }
-    .sides { grid-template-columns:1fr 1fr; }
-
-    .stage.collapsed .polaroid-container { max-width:140px; }
-    .stage.collapsed .editor-tip { display:none; }
-    .stage {
-      display:grid; place-items:center; padding:18px;
-      border-radius:var(--r-lg);
-      background:var(--stage-bg);
-      border:1px solid var(--line);
-      box-shadow:inset 0 1px 0 rgba(255,255,255,.12);
-    }
-    .polaroid-container {
-      width:fit-content;
-      max-width:min(100%, 480px);
-      margin-inline:auto;
-      box-shadow:0 18px 40px rgba(42,36,30,.18);
-      animation:drop .5s cubic-bezier(.2,1.1,.3,1);
-      overflow:hidden; border-radius:6px;
-      background-image:
-        linear-gradient(45deg, var(--check-a) 25%, transparent 25%),
-        linear-gradient(-45deg, var(--check-a) 25%, transparent 25%),
-        linear-gradient(45deg, transparent 75%, var(--check-a) 75%),
-        linear-gradient(-45deg, transparent 75%, var(--check-a) 75%);
-      background-size:16px 16px;
-      background-position:0 0, 0 8px, 8px -8px, -8px 0px;
-      background-color:var(--check-b);
-    }
-    #mainCanvas { width:100%; height:auto; display:block; cursor:grab; touch-action:none; user-select:none; }
-    @keyframes drop { from { opacity:0; transform:translateY(-18px) rotate(-4deg);} to { opacity:1; transform:none;} }
-
-    .form { display:flex; flex-direction:column; gap:14px; }
-    label.field { display:grid; gap:6px; font-size:12px; font-weight:600; color:var(--muted); }
-    .field input, .field select, .field textarea {
-      width:100%; min-height:44px; border:0; background:var(--field-bg); border-radius:var(--r-sm); padding:10px 12px;
-      box-shadow:inset 0 0 0 1px var(--line); outline:none; font-size:14px; color:var(--ink);
-      transition:box-shadow .15s, background .15s;
-    }
-    .field input:focus, .field select:focus { background:var(--field-bg); box-shadow:inset 0 0 0 1px var(--fuji), 0 0 0 3px var(--fuji-dim); }
-    .field input[type="color"] { height:44px; min-height:44px; padding:5px; border-radius:var(--r-sm); cursor:pointer; }
-    .row2 { display:grid; grid-template-columns:1fr 1fr; gap:8px; }
-    .row3 { display:grid; grid-template-columns:1fr 1fr 1fr; gap:8px; }
-
-    .sync-box { display:grid; grid-template-columns:1fr auto; gap:10px; align-items:end; padding:12px; }
-
-    .control-panel { padding:16px; display:grid; gap:12px; }
-    details.control-panel { padding:0; overflow:hidden; }
-    details.control-panel[open] { padding:16px; }
-    details.control-panel summary {
-      list-style:none; padding:16px; cursor:pointer; font-size:14px; font-weight:700;
-      display:flex; align-items:center; justify-content:space-between;
-    }
-    details.control-panel summary::-webkit-details-marker { display:none; }
-    details.control-panel summary::after { content:'⌄'; color:var(--muted); transition:transform .2s; font-size:16px; }
-    details.control-panel[open] summary { padding:0 0 13px; border-bottom:1px solid var(--line); margin-bottom:13px; }
-    details.control-panel[open] summary::after { transform:rotate(180deg); }
-
-    .action-group { display:flex; flex-direction:column; gap:8px; }
-    .action-group .pbtn { min-height:48px; }
-    .action-group > .row2:nth-of-type(2) { order:-1; }
-
-    .shutter { position:fixed; inset:0; background:#fff; opacity:0; pointer-events:none; z-index:40; }
-    .shutter.go { animation:flash .42s ease; }
-    @keyframes flash { 0%{opacity:0} 20%{opacity:1} 100%{opacity:0} }
-
-    .editor-tip { margin:0; padding:0 2px; }
-
-    @media (min-width:860px) {
-      .top { padding-inline:max(16px, calc((100vw - 1160px) / 2)); }
-      .editor-shell { display:grid; grid-template-columns:minmax(0,1.05fr) minmax(360px,.95fr); grid-template-rows:auto auto; gap:20px; align-items:start; }
-      .setup-panel { grid-column:1 / -1; grid-row:1; }
-      .stage { grid-column:1; grid-row:2; position:sticky; top:calc(var(--header-h) + 20px); }
-      .form { grid-column:2; grid-row:2; }
-      .editor-tip { grid-column:1 / -1; }
-    }
-
-    @media (max-width:859px) {
-      .stage {
-        order:-1; position:sticky; z-index:10;
-        top:calc(var(--header-h) + var(--safe-t) - 2px);
-        margin:0 -16px; border-radius:0 0 22px 22px; padding:12px 16px 14px;
-        display:flex; justify-content:center; align-items:center;
-      }
-      .polaroid-container { width:auto; max-width:min(78vw, 320px); }
-      #mainCanvas { width:auto; height:auto; max-width:100%; display:block; }
-      .stage.collapsed { padding-top:6px; padding-bottom:6px; }
-      .stage.collapsed .polaroid-container { max-width:120px; }
-      .stage-toggle {
-        position:absolute; right:14px; bottom:8px; z-index:11;
-        width:30px; height:30px; border-radius:50%; border:0;
-        background:rgba(250,247,241,.86); color:var(--ink);
-        box-shadow:inset 0 0 0 1px var(--line-strong); backdrop-filter:blur(6px);
-        display:grid; place-items:center; font-size:13px; line-height:1;
-      }
-      .stage-toggle:active { transform:scale(.94); }
-    }
-
-    @media (max-width:520px) {
-      .top { padding-inline:12px; }
-      .top .pbtn { min-height:36px; padding-inline:12px; font-size:13px; }
-      .wrap { padding:14px 12px calc(28px + var(--safe-b)); }
-      .stage { margin-inline:-12px; }
-      .image-status { padding:5px 10px; font-size:11px; }
-      .setup-panel, .control-panel { border-radius:16px; }
-      .preset-grid { grid-template-columns:1fr; gap:12px; }
-      .frames button { font-size:10.5px; }
-      .row2 { gap:7px; }
-      .sync-box { grid-template-columns:1fr; }
-    }
-
-#exif-row-1 { align-items:start; }
-.frames { grid-template-columns:repeat(3,minmax(0,1fr)); }
-.frames button { display:flex; align-items:center; justify-content:center; gap:5px; }
-.ratios button[data-aspect^="instagram"] { min-width:0; display:flex; align-items:center; justify-content:center; gap:5px;  }
-.ratios button.on { box-shadow:inset 0 0 0 2px var(--fuji); }
-.ig-icon { width:16px; height:16px; flex:none; }
-.stage-toggle { display:grid;place-items:center;position:absolute;right:14px;bottom:8px;z-index:11;width:30px;height:30px;border:1px solid var(--line-strong);border-radius:50%;background:var(--card);color:var(--ink); }
-body.banner-preview .stage.collapsed .polaroid-container { max-width:140px; }
-@media(max-width:859px) { .stage-toggle { display:grid; } }
-.text-group{display:grid;gap:12px;border-top:1px solid var(--line);padding-top:14px;margin-top:4px}#text-settings>.section-heading{margin-bottom:0}.text-group .hint{margin:0}.text-group h4{margin:0;color:var(--ink);font-size:13px}.text-group .row2{margin:0;align-items:start}.camera-fields{display:grid;gap:10px;align-content:start}#exif-row-1{grid-template-columns:minmax(0,1fr);align-items:start}#text-settings .field{min-width:0}#text-settings .field input,#text-settings .field select{min-width:0;width:100%}@media(max-width:600px){#text-settings .row2{grid-template-columns:minmax(0,1fr)}.top{flex-wrap:wrap}.top .brand{min-width:140px}}
-#lens-controls{display:grid;gap:10px}#lens-field{display:grid}
-#camera-brand-manual,#camera-manual-field,#lens-field{min-height:44px;font-size:0;gap:0}#camera-brand-text,#cam,#lens{font-size:14px}
-#exif-row-1{gap:10px}#lens-controls{grid-template-columns:minmax(0,1fr) minmax(0,1fr);align-items:end;gap:8px}#lens-controls>label:first-child{grid-row:1}#lens-field{grid-column:2;grid-row:1}
-#text-settings .camera-source-stack{grid-template-columns:minmax(0,1fr);gap:10px}.camera-fields{grid-template-columns:minmax(0,1fr) minmax(0,1fr);align-items:end;gap:8px}#camera-brand-manual,#camera-manual-field{grid-column:2;grid-row:1}#lens-controls>label:first-child{grid-column:1}.stage{margin-bottom:28px}.stage>.editor-tip{position:absolute;top:100%;left:0;right:0;margin:6px 0 0;padding:0;font-size:13px;line-height:1.5;text-align:center;pointer-events:none}
-.display-heading{display:flex;justify-content:space-between;align-items:center;gap:12px}#shot-on-control{font-size:13px;align-items:center;gap:6px}#shot-on-control:not([hidden]){display:flex}#shot-on{accent-color:var(--fuji);width:18px;height:18px}
-body.banner-preview .wrap{max-width:1680px}.editor-shell>*,.form,.preset-grid>div{min-width:0}body.banner-preview .polaroid-container{width:100%;max-width:100%}
-#ratios{grid-template-columns:repeat(12,minmax(0,1fr));grid-template-rows:52px 52px}
-#ratios button{grid-column:span 3;min-width:0;height:52px;min-height:52px;padding:4px;line-height:1.15}
-#ratios [data-aspect="banner"]{grid-column:1 / span 2;grid-row:2}
-#ratios [data-aspect="instagram"]{grid-column:3 / span 5;grid-row:2}
-#ratios [data-aspect="instagram-story"]{grid-column:8 / span 5;grid-row:2}
-#ratios button[data-aspect^="instagram"]{white-space:normal;font-size:12px;gap:5px}
-@media(min-width:860px){body.banner-preview .top{padding-inline:max(16px,calc((100vw - 1680px)/2))}body.banner-preview .editor-shell{grid-template-columns:minmax(0,1fr) clamp(360px,30vw,440px);gap:24px}body.banner-preview .stage{padding:10px}.preset-grid{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}}
-@media(max-width:859px){body.banner-preview .stage{transition:none;position:sticky;top:calc(var(--header-h) + var(--safe-t) - 2px);margin-inline:0;padding:8px;order:-1}body.banner-preview .polaroid-container{max-width:100%;width:auto}.stage.collapsed .polaroid-container{max-width:120px}.preset-grid{grid-template-columns:minmax(0,1fr)}#ratios button[data-aspect^="instagram"]{font-size:11.5px}.stage>.editor-tip{font-size:12px}}
-@media(max-width:859px){.stage{transition:none}.stage-toggle{backdrop-filter:none}.polaroid-container{box-shadow:0 8px 18px rgba(42,36,30,.16)}}
-
-@media(max-width:859px){
- .stage,body.banner-preview .stage,.stage.collapsed{padding-bottom:40px;margin-bottom:0}
- .stage>.editor-tip,.stage.collapsed .editor-tip{display:block;top:auto;bottom:6px;left:12px;right:48px;margin:0;font-size:11px;line-height:1.3;pointer-events:none}
-}
-
-@media(max-width:859px){
- /* Keep the sticky canvas and animated SVG in bounded compositing layers. */
- .stage{contain:paint;transform:translateZ(0)}
- .brand-mark{contain:strict;transform:translateZ(0)}
- body.page-scrolling .brand-mark .bm-sheet{animation-play-state:paused}
-}
-@media(min-width:860px){
- .stage.collapsed .polaroid-container{max-width:min(100%,480px)}
- body.banner-preview .stage.collapsed .polaroid-container{max-width:100%}
- .stage.collapsed .editor-tip{display:block}
- body.preview-fullscreen{overflow:hidden}
- #stage.desktop-fullscreen{position:fixed;inset:0;z-index:70;margin:0;padding:48px 32px 52px;border:0;border-radius:0;box-sizing:border-box;background:var(--desk);display:flex;align-items:center;justify-content:center;transform:none;contain:none}
- #stage.desktop-fullscreen .polaroid-container{width:auto;max-width:none;flex:none;margin:0;animation:none}
- #stage.desktop-fullscreen #mainCanvas{max-width:none}
- #stage.desktop-fullscreen .stage-toggle{top:12px;right:16px;bottom:auto;width:36px;height:36px}
- #stage.desktop-fullscreen>.editor-tip{top:auto;bottom:12px;left:48px;right:48px;margin:0;display:block}
-}
 
 /* ==========================================================================
    Liquid Glass layer
@@ -724,191 +480,301 @@ html[data-theme] .help-btn{ transition:transform .35s var(--spring); }
 html[data-theme] .help-btn:active{ transform:scale(.9); }
 html[data-theme] option{ background:var(--card); color:var(--ink); }
 
-/* ---------- glass panels ---------- */
-html[data-theme] .setup-panel,
-html[data-theme] .control-panel,
-html[data-theme] .sync-box{
-  border:0;
-  background:linear-gradient(180deg, var(--g-sheen) 0, transparent 72px), var(--g-fill);
-  -webkit-backdrop-filter:blur(var(--g-blur)) saturate(var(--g-sat));
-  backdrop-filter:blur(var(--g-blur)) saturate(var(--g-sat));
-  box-shadow:
-    inset 0 1px 0 var(--g-rim),
-    inset 0 0 0 1px var(--g-edge),
-    inset 0 -1px 0 var(--g-rim-low),
-    var(--g-shadow);
-}
-html[data-theme] .section-heading h3,
-html[data-theme] details.control-panel summary{ font-size:15px; font-weight:650; letter-spacing:.01em; }
-html[data-theme] .preset-grid{ border-top-color:var(--g-hair); }
-html[data-theme] .text-group{ border-top-color:var(--g-hair); }
-html[data-theme] details.control-panel[open] summary{ border-bottom-color:var(--g-hair); }
+/* ==========================================================================
+   Layout + components — one layer, driven by the tokens above.
+   Structure:  header → stage (preview) + dock (tabs card + action bar)
+   ========================================================================== */
+html[data-theme="pixel"]{ --cap-r:0px; }
+html[data-theme="pixel"] .top{ backdrop-filter:none; background:var(--desk); }
+html[data-theme="oled"] .top{ backdrop-filter:none; background:#000; border-bottom-color:rgba(255,255,255,.1); }
+html[data-theme="space"] .top,
+html[data-theme="scifi"] .top{ background:color-mix(in srgb, var(--desk) 78%, transparent); }
+html[data-theme="pixel"] .pbtn,
+html[data-theme="pixel"] .image-status,
+html[data-theme="pixel"] .theme-pick select{ border-radius:0; }
+
+.wrap{ max-width:1160px; margin:0 auto; padding:18px 16px calc(28px + var(--safe-b)); }
+body.banner-preview .wrap{ max-width:1680px; }
+.editor-shell{ display:flex; flex-direction:column; gap:16px; }
+.editor-shell>*{ min-width:0; }
 
 /* ---------- preview stage ---------- */
-html[data-theme] .stage{
-  border:0;
-  background:
-    radial-gradient(120% 70% at 50% 0%, var(--g-sheen), transparent 60%),
-    var(--g-fill);
+.stage{
+  position:relative; display:grid; place-items:center; padding:18px; margin-bottom:28px;
+  border-radius:var(--cap-r);
+  background:radial-gradient(120% 70% at 50% 0%, var(--g-sheen), transparent 60%), var(--g-fill);
   -webkit-backdrop-filter:blur(calc(var(--g-blur) + 6px)) saturate(var(--g-sat));
   backdrop-filter:blur(calc(var(--g-blur) + 6px)) saturate(var(--g-sat));
   box-shadow:inset 0 1px 0 var(--g-rim), inset 0 0 0 1px var(--g-edge), inset 0 -1px 0 var(--g-rim-low), var(--g-shadow);
 }
-html[data-theme] .polaroid-container{ box-shadow:0 1px 2px rgba(0,0,0,.12), 0 22px 44px -12px rgba(0,0,0,.38); }
-@media (max-width:859px){
-  /* the sticky preview floats as a sheet instead of a full-bleed slab */
-  html[data-theme] .stage,
-  html[data-theme] body.banner-preview .stage{
-    margin-inline:-6px; border-radius:26px;
-    background:radial-gradient(120% 70% at 50% 0%, var(--g-sheen), transparent 60%), var(--g-fill-hi);
-    -webkit-backdrop-filter:blur(18px) saturate(var(--g-sat));
-    backdrop-filter:blur(18px) saturate(var(--g-sat));
-  }
-  html[data-theme="pixel"] .stage{ border-radius:0; }
+.polaroid-container{
+  width:fit-content; max-width:min(100%, 480px); margin-inline:auto;
+  overflow:hidden; border-radius:6px;
+  box-shadow:0 1px 2px rgba(0,0,0,.12), 0 22px 44px -12px rgba(0,0,0,.38);
+  animation:drop .5s cubic-bezier(.2,1.1,.3,1);
+  background-image:
+    linear-gradient(45deg, var(--check-a) 25%, transparent 25%),
+    linear-gradient(-45deg, var(--check-a) 25%, transparent 25%),
+    linear-gradient(45deg, transparent 75%, var(--check-a) 75%),
+    linear-gradient(-45deg, transparent 75%, var(--check-a) 75%);
+  background-size:16px 16px;
+  background-position:0 0, 0 8px, 8px -8px, -8px 0;
+  background-color:var(--check-b);
 }
-html[data-theme] .stage-toggle{
-  border:0; background:var(--g-fill-hi);
+body.banner-preview .polaroid-container{ width:100%; max-width:100%; }
+#mainCanvas{ width:100%; height:auto; display:block; cursor:grab; touch-action:none; user-select:none; }
+@keyframes drop{ from{ opacity:0; transform:translateY(-18px) rotate(-4deg); } to{ opacity:1; transform:none; } }
+.editor-tip{ margin:0; padding:0 2px; }
+.stage-toggle{
+  position:absolute; right:14px; bottom:8px; z-index:11; width:30px; height:30px;
+  display:grid; place-items:center; border:0; border-radius:50%;
+  background:var(--g-fill-hi); color:var(--ink);
   box-shadow:inset 0 1px 0 var(--g-rim), inset 0 0 0 1px var(--g-edge), var(--g-shadow-sm);
   transition:transform .35s var(--spring);
 }
-html[data-theme] .stage-toggle:active{ transform:scale(.88); }
-@media (min-width:860px){
-  html[data-theme] #stage.desktop-fullscreen{
-    background:color-mix(in srgb, var(--amb-base) 55%, transparent);
-    -webkit-backdrop-filter:blur(40px) saturate(1.6); backdrop-filter:blur(40px) saturate(1.6);
-    box-shadow:none;
-  }
-}
+.stage-toggle:active{ transform:scale(.88); }
 
-/* ---------- segmented choices: ratio + date side ---------- */
-html[data-theme] .ratios button,
-html[data-theme] .sides button{
-  position:relative;
-  background:var(--g-well);
-  box-shadow:inset 0 0 0 1px var(--g-hair), inset 0 1px 0 var(--g-rim-low);
-  transition:transform .4s var(--spring), box-shadow .25s ease, background-color .25s ease;
-}
-html[data-theme] .ratios button.on,
-html[data-theme] .sides button.on{
-  background:radial-gradient(120% 100% at 50% 0%, var(--seg-on), color-mix(in srgb, var(--seg-on) 60%, transparent));
-  color:var(--seg-on-ink);
-  box-shadow:
-    inset 0 1px 0 var(--g-rim),
-    inset 0 0 0 1px var(--g-edge),
-    inset 0 -2px 5px -2px rgba(0,0,0,.10),
-    0 0 0 1.5px var(--fuji),
-    0 8px 18px -6px var(--accent-glow);
-  transform:scale(1.03);
-  z-index:1;
-}
-html[data-theme="pixel"] .ratios button.on,
-html[data-theme="pixel"] .sides button.on{ box-shadow:inset 0 0 0 2px var(--fuji), 3px 3px 0 #000; transform:translate(-1px,-1px); }
-
-/* ---------- frame swatches keep their colour, gain a glass sheen ---------- */
-html[data-theme] .frames button{
-  position:relative; overflow:hidden; isolation:isolate;
-  transition:transform .4s var(--spring), box-shadow .25s ease;
-}
-html[data-theme] .frames button::after{
-  content:""; position:absolute; inset:0; z-index:-1; pointer-events:none; border-radius:inherit;
-  background:linear-gradient(180deg, rgba(255,255,255,.42), rgba(255,255,255,.06) 48%, transparent 52%, rgba(255,255,255,.08));
-}
-html[data-theme] .frames .w{ box-shadow:inset 0 0 0 1px rgba(42,34,24,.10), 0 2px 6px -2px rgba(0,0,0,.18); }
-html[data-theme] .frames .k{ box-shadow:inset 0 0 0 1px #444, 0 2px 6px -2px rgba(0,0,0,.30); }
-html[data-theme] .frames .t{ box-shadow:inset 0 0 0 1px rgba(255,255,255,.18), 0 2px 6px -2px rgba(0,0,0,.25); }
-html[data-theme] .frames .v{ box-shadow:inset 0 0 0 1px #a89f8b, 0 2px 6px -2px rgba(0,0,0,.18); }
-html[data-theme] .frames .f{ box-shadow:inset 0 0 0 1px #e09f3e, 0 2px 6px -2px rgba(0,0,0,.30); }
-html[data-theme] .frames button.on{
-  transform:scale(1.04); z-index:1;
-  box-shadow:inset 0 0 0 1px rgba(255,255,255,.5), 0 0 0 2px var(--fuji), 0 10px 20px -8px var(--accent-glow);
-}
-html[data-theme="pixel"] .frames button::after{ background:linear-gradient(180deg, rgba(255,255,255,.28) 0 40%, transparent 40%); }
-html[data-theme="pixel"] .frames button.on{ transform:translate(-1px,-1px); box-shadow:inset 0 0 0 2px var(--fuji), 3px 3px 0 #000; }
-
-/* ---------- buttons ---------- */
-html[data-theme] .pbtn{ transition:transform .4s var(--spring), box-shadow .2s ease, opacity .15s; }
-html[data-theme] .pbtn:active,
-html[data-theme] .frames button:active,
-html[data-theme] .ratios button:active,
-html[data-theme] .sides button:active{ transform:scale(.94); }
-html[data-theme] .pbtn.ghost{
-  background:linear-gradient(180deg, var(--g-sheen), transparent 80%), var(--g-well);
-  box-shadow:inset 0 1px 0 var(--g-rim), inset 0 0 0 1px var(--g-edge), var(--g-shadow-sm);
-}
-html[data-theme] .pbtn.red,
-html[data-theme] .pick{
-  color:var(--on-accent);
-  background:
-    linear-gradient(180deg, rgba(255,255,255,.34), rgba(255,255,255,0) 52%),
-    var(--fuji);
-  box-shadow:
-    inset 0 1px 0 rgba(255,255,255,.55),
-    inset 0 -1px 0 rgba(0,0,0,.14),
-    inset 0 0 0 1px color-mix(in srgb, var(--fuji) 70%, #fff),
-    0 10px 24px -8px var(--accent-glow);
-}
-html[data-theme="pixel"] .pbtn.red,
-html[data-theme="pixel"] .pick{ box-shadow:inset 0 2px 0 rgba(255,255,255,.35), 4px 4px 0 #000; }
-html[data-theme="pixel"] .pbtn.ghost{ box-shadow:inset 0 0 0 1px var(--g-edge), 3px 3px 0 #000; }
-/* the sync "apply" button had an inline border colour; keep it reading as accent */
-html[data-theme] #apply-sync-btn{ color:var(--fuji) !important; box-shadow:inset 0 1px 0 var(--g-rim), inset 0 0 0 1.5px var(--fuji), var(--g-shadow-sm); }
-/* share + download sit together like a dock */
-html[data-theme] .action-group > .row2:nth-of-type(2){
-  padding:6px; gap:6px; border-radius:calc(var(--cap-r) + 4px);
-  background:var(--g-fill);
+/* ---------- dock: tabs card + action bar ---------- */
+.dock{ display:flex; flex-direction:column; gap:12px; min-width:0; }
+.card{
+  border-radius:var(--cap-r);
+  background:linear-gradient(180deg, var(--g-sheen) 0, transparent 72px), var(--g-fill);
   -webkit-backdrop-filter:blur(var(--g-blur)) saturate(var(--g-sat));
   backdrop-filter:blur(var(--g-blur)) saturate(var(--g-sat));
-  box-shadow:inset 0 1px 0 var(--g-rim), inset 0 0 0 1px var(--g-edge), var(--g-shadow);
+  box-shadow:inset 0 1px 0 var(--g-rim), inset 0 0 0 1px var(--g-edge), inset 0 -1px 0 var(--g-rim-low), var(--g-shadow);
 }
-html[data-theme="pixel"] .action-group > .row2:nth-of-type(2){ border-radius:0; }
-
-/* ---------- photo picker + thumbnails ---------- */
-html[data-theme] .pick{ min-height:56px; font-size:15px; letter-spacing:.04em; }
-html[data-theme] .pick:hover{ transform:translateY(-1px); }
-html[data-theme] .thumb-item{
-  background:var(--g-well);
-  box-shadow:inset 0 0 0 1px var(--g-hair), 0 4px 10px -4px rgba(0,0,0,.25);
-  transition:transform .35s var(--spring), border-color .15s;
+.tabs{
+  display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:4px;
+  margin:12px 12px 0; padding:4px; border-radius:calc(var(--r-md) + 2px);
+  background:var(--g-well); box-shadow:inset 0 0 0 1px var(--g-hair);
 }
-html[data-theme] .thumb-item.active{ transform:translateY(-2px); box-shadow:0 0 0 2px var(--fuji), 0 8px 16px -6px var(--accent-glow); border-color:transparent; }
-html[data-theme] .thumb-item:not(.active){ border-color:transparent; }
-html[data-theme] .thumb-add{ background:var(--g-well); border-color:var(--g-edge); }
-html[data-theme] .thumb-del{ box-shadow:0 0 0 2px var(--amb-base), 0 2px 6px rgba(0,0,0,.25); border:0; }
+.tabs button{
+  border:0; min-height:38px; padding:0 4px; border-radius:var(--r-sm);
+  background:transparent; color:var(--muted); font-size:13.5px; font-weight:650; letter-spacing:.02em;
+  transition:background-color .2s ease, color .2s ease, box-shadow .2s ease;
+}
+.tabs button[aria-selected="true"]{
+  background:var(--seg-on); color:var(--seg-on-ink);
+  box-shadow:inset 0 1px 0 var(--g-rim), 0 1px 4px rgba(0,0,0,.14);
+}
+.tab-panel{ display:grid; gap:18px; padding:16px; }
+.tab-panel[hidden]{ display:none; }
+.group{ display:grid; gap:10px; min-width:0; }
+.group + .group{ border-top:1px solid var(--g-hair); padding-top:16px; }
+.group h4{ margin:0; font-size:13px; font-weight:700; color:var(--ink); }
+.group-head{ display:flex; align-items:center; justify-content:space-between; gap:12px; }
+.section-heading{ display:flex; align-items:baseline; justify-content:space-between; gap:12px; }
+.section-heading h3{ margin:0; font-size:15px; font-weight:650; letter-spacing:.01em; }
+.section-heading p{ margin:0; color:var(--muted); font-size:12px; }
+.hint{ margin:0; color:var(--muted); font-size:12px; line-height:1.6; }
 
-/* ---------- form fields: recessed glass wells ---------- */
-html[data-theme] .field input,
-html[data-theme] .field select,
-html[data-theme] .field textarea{
+/* ---------- fields ---------- */
+.fields{ display:grid; grid-template-columns:repeat(auto-fit, minmax(140px, 1fr)); gap:10px; align-items:end; }
+label.field{ display:grid; gap:6px; min-width:0; font-size:12px; font-weight:600; color:var(--muted); }
+.field input, .field select, .field textarea{
+  width:100%; min-width:0; min-height:44px; padding:10px 12px;
+  border:0; border-radius:var(--r-sm); outline:none; font-size:14px; color:var(--ink);
   background-color:var(--g-well);
   box-shadow:inset 0 1px 2px rgba(0,0,0,.06), inset 0 0 0 1px var(--g-hair);
+  transition:box-shadow .15s ease;
 }
-html[data-theme] .field input:focus,
-html[data-theme] .field select:focus{
-  background-color:var(--g-well);
-  box-shadow:inset 0 0 0 1px var(--fuji), 0 0 0 4px var(--fuji-dim);
-}
-html[data-theme] .field select{
+.field input:focus, .field select:focus{ box-shadow:inset 0 0 0 1px var(--fuji), 0 0 0 4px var(--fuji-dim); }
+.field select{
   appearance:none; -webkit-appearance:none; padding-right:30px;
   background-image:linear-gradient(45deg,transparent 50%,var(--muted) 50%),linear-gradient(135deg,var(--muted) 50%,transparent 50%);
   background-position:calc(100% - 16px) 50%, calc(100% - 11px) 50%;
   background-size:5px 5px, 5px 5px; background-repeat:no-repeat;
 }
+.field input[type="color"]{ padding:4px; cursor:pointer; }
+.field input[type="color"]::-webkit-color-swatch-wrapper{ padding:0; }
+.field input[type="color"]::-webkit-color-swatch{ border:0; border-radius:6px; }
+.field input[type="color"]::-moz-color-swatch{ border:0; border-radius:6px; }
+.check{ display:flex; align-items:center; gap:8px; font-size:13px; }
+.check[hidden]{ display:none; }
+#shot-on{ accent-color:var(--fuji); width:18px; height:18px; }
+/* JS hides optional fields with inert / disabled; collapse them instead of leaving a gap */
+#camera-brand-manual[inert], #camera-manual-field[inert], #lens-field[inert], #lens-controls[inert]{ display:none !important; }
+#exposure-display-field:has(#show-exp:disabled){ display:none !important; }
 
-/* ---------- onboarding tour ---------- */
-html[data-theme] .tour-dim{ background:rgba(6,6,10,.38); -webkit-backdrop-filter:blur(3px); backdrop-filter:blur(3px); }
-html[data-theme] .tour-spot{ box-shadow:0 0 0 2px var(--fuji), 0 0 24px 2px var(--accent-glow), 0 0 0 9999px rgba(6,6,10,.42); }
-html[data-theme] .tour-card{
-  border:0; border-radius:max(var(--cap-r), 0px);
+/* ---------- photos ---------- */
+.pick{
+  position:relative; display:grid; place-items:center; width:100%; min-height:56px; margin:0;
+  border:0; border-radius:var(--r-md); color:var(--on-accent);
+  font-weight:700; font-size:15px; letter-spacing:.04em;
+  background:linear-gradient(180deg, rgba(255,255,255,.34), rgba(255,255,255,0) 52%), var(--fuji);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.55), inset 0 -1px 0 rgba(0,0,0,.14), inset 0 0 0 1px color-mix(in srgb, var(--fuji) 70%, #fff), 0 10px 24px -8px var(--accent-glow);
+  transition:transform .4s var(--spring);
+}
+.pick:hover{ transform:translateY(-1px); }
+.pick input{ position:absolute; inset:0; width:100%; height:100%; opacity:0; margin:0; cursor:pointer; font-size:16px; }
+.thumb-list{ display:flex; gap:10px; overflow-x:auto; padding:6px 6px 8px; margin:0 -6px; scroll-snap-type:x proximity; -webkit-overflow-scrolling:touch; }
+.thumb-list::-webkit-scrollbar{ height:4px; }
+.thumb-list::-webkit-scrollbar-thumb{ background:var(--line-strong); border-radius:4px; }
+.thumb-item{
+  position:relative; flex:none; width:60px; height:60px; border-radius:12px; cursor:pointer;
+  border:2px solid transparent; background:var(--g-well); scroll-snap-align:start;
+  box-shadow:inset 0 0 0 1px var(--g-hair), 0 4px 10px -4px rgba(0,0,0,.25);
+  transition:transform .35s var(--spring), border-color .15s;
+}
+.thumb-item img{ width:100%; height:100%; object-fit:cover; border-radius:9px; display:block; }
+.thumb-item.active{ transform:translateY(-2px); border-color:transparent; box-shadow:0 0 0 2px var(--fuji), 0 8px 16px -6px var(--accent-glow); }
+.thumb-del{
+  position:absolute; top:-6px; right:-6px; z-index:2; width:20px; height:20px; border:0; border-radius:50%;
+  display:grid; place-items:center; background:var(--fuji); color:#fff; font-size:11px; font-weight:bold; line-height:1; cursor:pointer;
+  box-shadow:0 0 0 2px var(--amb-base), 0 2px 6px rgba(0,0,0,.25);
+}
+.thumb-add{
+  position:relative; flex:none; width:60px; height:60px; border-radius:12px;
+  display:flex; align-items:center; justify-content:center;
+  border:2px dashed var(--g-edge); background:var(--g-well); color:var(--muted); font-size:20px; font-weight:bold; cursor:pointer;
+}
+.thumb-add input{ position:absolute; inset:0; width:100%; height:100%; opacity:0; cursor:pointer; }
+.thumb-add:hover{ border-color:var(--fuji); color:var(--ink); }
+.sync-box{
+  display:grid; grid-template-columns:1fr auto; gap:10px; align-items:end; padding:12px;
+  border-radius:var(--r-md); background:var(--g-well); box-shadow:inset 0 0 0 1px var(--g-hair);
+}
+#apply-sync-btn{ color:var(--fuji) !important; box-shadow:inset 0 0 0 1.5px var(--fuji) !important; }
+
+/* ---------- frame + ratio choices ---------- */
+.frames{ display:grid; grid-template-columns:repeat(5, minmax(0,1fr)); gap:8px; }
+.ratios{ display:flex; flex-wrap:wrap; gap:8px; }
+.frames button, .ratios button, .sides button{
+  position:relative; border:0; border-radius:var(--r-sm); font-weight:700; font-size:12.5px; padding:2px 6px;
+  color:var(--ink); background:var(--g-well);
+  box-shadow:inset 0 0 0 1px var(--g-hair), inset 0 1px 0 var(--g-rim-low);
+  transition:transform .4s var(--spring), box-shadow .25s ease, background-color .25s ease;
+}
+.frames button{ min-height:56px; overflow:hidden; isolation:isolate; }
+.ratios button{ flex:1 1 auto; min-height:42px; padding:2px 14px; display:inline-flex; align-items:center; justify-content:center; gap:6px; white-space:nowrap; }
+.sides{ display:grid; grid-template-columns:1fr 1fr; gap:8px; }
+.sides button{ min-height:42px; }
+.ig-icon{ width:16px; height:16px; flex:none; }
+.frames .w{ background:#f7f3ec; color:#2a2218; box-shadow:inset 0 0 0 1px rgba(42,34,24,.10), 0 2px 6px -2px rgba(0,0,0,.18); }
+.frames .k{ background:#111; color:#f6efe4; box-shadow:inset 0 0 0 1px #444, 0 2px 6px -2px rgba(0,0,0,.30); }
+.frames .t{ background:linear-gradient(90deg,#8a6a4a,#5a4032); color:#fff; box-shadow:inset 0 0 0 1px rgba(255,255,255,.18), 0 2px 6px -2px rgba(0,0,0,.25); }
+.frames .v{ background:#e8dfcb; color:#4a3b2c; box-shadow:inset 0 0 0 1px #a89f8b, 0 2px 6px -2px rgba(0,0,0,.18); }
+.frames .f{ background:#0d0d0d; color:#e09f3e; box-shadow:inset 0 0 0 1px #e09f3e, 0 2px 6px -2px rgba(0,0,0,.30); }
+.frames button::after{
+  content:""; position:absolute; inset:0; z-index:-1; pointer-events:none; border-radius:inherit;
+  background:linear-gradient(180deg, rgba(255,255,255,.42), rgba(255,255,255,.06) 48%, transparent 52%, rgba(255,255,255,.08));
+}
+.ratios button.on, .sides button.on{
+  background:radial-gradient(120% 100% at 50% 0%, var(--seg-on), color-mix(in srgb, var(--seg-on) 60%, transparent));
+  color:var(--seg-on-ink);
+  box-shadow:inset 0 1px 0 var(--g-rim), inset 0 0 0 1px var(--g-edge), 0 0 0 1.5px var(--fuji), 0 8px 18px -6px var(--accent-glow);
+}
+.frames button.on{
+  box-shadow:inset 0 0 0 1px rgba(255,255,255,.5), 0 0 0 2px var(--fuji), 0 10px 20px -8px var(--accent-glow);
+}
+.frames button.on, .ratios button.on, .sides button.on{ transform:scale(1.03); z-index:1; }
+html[data-theme="pixel"] .frames button, html[data-theme="pixel"] .ratios button, html[data-theme="pixel"] .sides button{ border-radius:0; }
+html[data-theme="pixel"] .ratios button.on, html[data-theme="pixel"] .sides button.on,
+html[data-theme="pixel"] .frames button.on{ transform:translate(-1px,-1px); box-shadow:inset 0 0 0 2px var(--fuji), 3px 3px 0 #000; }
+html[data-theme="pixel"] .frames button::after{ background:linear-gradient(180deg, rgba(255,255,255,.28) 0 40%, transparent 40%); }
+
+/* ---------- buttons ---------- */
+.pbtn{ transition:transform .4s var(--spring), box-shadow .2s ease, opacity .15s; }
+.pbtn:active, .frames button:active, .ratios button:active, .sides button:active, .tabs button:active{ transform:scale(.95); }
+.pbtn.ghost{
+  background:linear-gradient(180deg, var(--g-sheen), transparent 80%), var(--g-well);
+  box-shadow:inset 0 1px 0 var(--g-rim), inset 0 0 0 1px var(--g-edge), var(--g-shadow-sm);
+}
+.pbtn.red{
+  color:var(--on-accent);
+  background:linear-gradient(180deg, rgba(255,255,255,.34), rgba(255,255,255,0) 52%), var(--fuji);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.55), inset 0 -1px 0 rgba(0,0,0,.14), inset 0 0 0 1px color-mix(in srgb, var(--fuji) 70%, #fff), 0 10px 24px -8px var(--accent-glow);
+}
+html[data-theme="pixel"] .pbtn.red, html[data-theme="pixel"] .pick{ box-shadow:inset 0 2px 0 rgba(255,255,255,.35), 4px 4px 0 #000; }
+html[data-theme="pixel"] .pbtn.ghost{ box-shadow:inset 0 0 0 1px var(--g-edge), 3px 3px 0 #000; }
+.panel-actions{ display:flex; }
+.panel-actions .pbtn{ flex:1; }
+
+/* share + download dock: stays within reach while the panels scroll */
+.action-group{
+  position:sticky; bottom:calc(10px + var(--safe-b)); z-index:15;
+  display:grid; grid-template-columns:1fr 1fr; gap:8px; padding:8px;
+  border-radius:calc(var(--cap-r) + 4px);
+  background:var(--g-fill-hi);
+  -webkit-backdrop-filter:blur(var(--g-blur)) saturate(var(--g-sat));
+  backdrop-filter:blur(var(--g-blur)) saturate(var(--g-sat));
+  box-shadow:inset 0 1px 0 var(--g-rim), inset 0 0 0 1px var(--g-edge), var(--g-shadow);
+}
+.action-group .pbtn{ min-height:48px; }
+.action-group .full{ grid-column:1 / -1; }
+
+.shutter{ position:fixed; inset:0; background:#fff; opacity:0; pointer-events:none; z-index:40; }
+.shutter.go{ animation:flash .42s ease; }
+@keyframes flash{ 0%{opacity:0} 20%{opacity:1} 100%{opacity:0} }
+
+/* ---------- onboarding tour (glass) ---------- */
+.tour-dim{ background:rgba(6,6,10,.38); -webkit-backdrop-filter:blur(3px); backdrop-filter:blur(3px); }
+.tour-spot{ box-shadow:0 0 0 2px var(--fuji), 0 0 24px 2px var(--accent-glow), 0 0 0 9999px rgba(6,6,10,.42); }
+.tour-card{
+  border:0; border-radius:var(--cap-r);
   background:linear-gradient(180deg, var(--g-sheen), transparent 90px), var(--g-fill-hi);
   -webkit-backdrop-filter:blur(30px) saturate(1.8); backdrop-filter:blur(30px) saturate(1.8);
   box-shadow:inset 0 1px 0 var(--g-rim), inset 0 0 0 1px var(--g-edge), 0 24px 60px -12px rgba(0,0,0,.45);
 }
 
+/* ---------- desktop ---------- */
+@media (min-width:860px){
+  .editor-shell{ display:grid; grid-template-columns:minmax(0,1.1fr) minmax(380px,.9fr); gap:20px; align-items:start; }
+  body.banner-preview .editor-shell{ grid-template-columns:minmax(0,1fr) clamp(360px,30vw,440px); gap:24px; }
+  body.banner-preview .stage{ padding:10px; }
+  .stage{ position:sticky; top:calc(var(--header-h) + 20px); }
+  .stage>.editor-tip{ position:absolute; top:100%; left:0; right:0; margin:6px 0 0; padding:0; font-size:13px; line-height:1.5; text-align:center; pointer-events:none; }
+  body.preview-fullscreen{ overflow:hidden; }
+  #stage.desktop-fullscreen{
+    position:fixed; inset:0; z-index:70; margin:0; padding:48px 32px 52px; border:0; border-radius:0; box-sizing:border-box;
+    display:flex; align-items:center; justify-content:center; transform:none; contain:none; box-shadow:none;
+    background:color-mix(in srgb, var(--amb-base) 55%, transparent);
+    -webkit-backdrop-filter:blur(40px) saturate(1.6); backdrop-filter:blur(40px) saturate(1.6);
+  }
+  #stage.desktop-fullscreen .polaroid-container{ width:auto; max-width:none; flex:none; margin:0; animation:none; }
+  #stage.desktop-fullscreen #mainCanvas{ max-width:none; }
+  #stage.desktop-fullscreen .stage-toggle{ top:12px; right:16px; bottom:auto; width:36px; height:36px; }
+  #stage.desktop-fullscreen>.editor-tip{ top:auto; bottom:12px; left:48px; right:48px; margin:0; }
+}
+
+/* ---------- phones / tablets: preview docks under the header ---------- */
+@media (max-width:859px){
+  .stage{
+    position:sticky; z-index:10; top:calc(var(--header-h) + var(--safe-t) - 2px);
+    display:flex; justify-content:center; align-items:center;
+    margin:0 -6px; padding:12px 16px 40px; border-radius:26px;
+    background:radial-gradient(120% 70% at 50% 0%, var(--g-sheen), transparent 60%), var(--g-fill-hi);
+    -webkit-backdrop-filter:blur(18px) saturate(var(--g-sat)); backdrop-filter:blur(18px) saturate(var(--g-sat));
+    contain:paint; transform:translateZ(0);
+  }
+  body.banner-preview .stage{ padding:8px 8px 40px; }
+  .stage.collapsed{ padding-top:6px; padding-bottom:40px; }
+  .polaroid-container{ width:auto; max-width:min(78vw,320px); box-shadow:0 8px 18px rgba(42,36,30,.16); }
+  body.banner-preview .polaroid-container{ max-width:100%; width:auto; }
+  .stage.collapsed .polaroid-container{ max-width:120px; }
+  #mainCanvas{ width:auto; height:auto; max-width:100%; }
+  .stage>.editor-tip{ position:absolute; bottom:6px; left:12px; right:48px; margin:0; font-size:11px; line-height:1.3; pointer-events:none; }
+  .stage-toggle{ backdrop-filter:none; }
+  .brand-mark{ contain:strict; transform:translateZ(0); }
+  body.page-scrolling .brand-mark .bm-sheet{ animation-play-state:paused; }
+}
+@media (max-width:600px){
+  .top{ flex-wrap:wrap; }
+  .top .brand{ min-width:140px; }
+}
+@media (max-width:520px){
+  .top{ padding-inline:12px; }
+  .top .pbtn{ min-height:36px; padding-inline:12px; font-size:13px; }
+  .wrap{ padding:14px 12px calc(24px + var(--safe-b)); }
+  .tab-panel{ padding:14px; }
+  .frames button{ font-size:12px; }
+}
+
 /* browsers without backdrop-filter: make the glass opaque enough to read */
 @supports not ((backdrop-filter:blur(1px)) or (-webkit-backdrop-filter:blur(1px))){
-  html[data-theme] .setup-panel, html[data-theme] .control-panel, html[data-theme] .sync-box,
-  html[data-theme] .stage, html[data-theme] .tour-card, html[data-theme] .top::before{ background-color:var(--card); }
+  .card, .stage, .action-group, .tour-card, .top::before{ background-color:var(--card); }
 }
+
   </style>
 </head>
 <body>
@@ -960,129 +826,193 @@ html[data-theme] .tour-card{
 
   <div class="wrap">
     <main class="editor-shell">
-      <section class="setup-panel">
-        <div class="section-heading"><h3>照片與版型</h3><p>最多 20 張</p></div>
-        <label class="pick" id="mainPickLabel">選擇照片
-          <input id="file" type="file" multiple accept="image/jpeg,image/png,image/heic,image/heif,image/*" />
-        </label>
-        <div class="thumb-list" id="thumbList" style="display:none;"></div>
-        <p class="hint setup-help">選圖後請按「加入／完成」；點縮圖可切換，右上角可刪除。</p>
-        <div class="preset-grid">
-          <div><span class="preset-label">邊框樣式</span><div class="frames" id="frames">
-            <button class="w on" data-frame="white">白框</button><button class="k" data-frame="black">黑框</button><button class="t" data-frame="tint">取色</button><button class="v" data-frame="vintage">復古</button><button class="f" data-frame="film">底片</button>
-          </div></div>
-          <div><span class="preset-label">照片比例</span><div class="ratios" id="ratios">
-            <button class="on" data-aspect="orig">原圖</button><button data-aspect="mini">Mini</button><button data-aspect="square">方框</button><button data-aspect="wide">Wide</button><button data-aspect="banner">橫幅</button><button data-aspect="instagram" title="貼文 4:5"><svg class="ig-icon" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg><span>Instagram<br>貼文</span></button><button data-aspect="instagram-story" title="限時動態 9:16 · 1080 × 1920"><svg class="ig-icon" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg><span>Instagram<br>限時動態</span></button>
-          </div></div>
-        </div>
-      </section>
+
       <div class="stage collapsed" id="stage">
         <div class="polaroid-container"><canvas id="mainCanvas"></canvas></div>
         <p class="hint editor-tip">拖曳照片調整裁切，雙指或滾輪縮放。</p>
         <button type="button" class="stage-toggle" id="stageToggle" title="放大預覽" aria-label="放大預覽" aria-expanded="false" aria-controls="mainCanvas"><svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" focusable="false"><path d="M6 15L12 9L18 15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
       </div>
-      <div class="form">
-      <!-- 特定照片同步設定區塊 -->
-      <div class="sync-box" id="sync-container" style="display:none;">
-        <label class="field">同步設定來源
-          <select id="sync-source-select"></select>
-        </label>
-        <button class="pbtn ghost" id="apply-sync-btn" style="border-color: var(--fuji); color: var(--fuji);">套用設定</button>
-      </div>
 
-<section class="control-panel" id="text-settings"><div class="section-heading"><h3>文字資訊</h3><p>相機資料會自動帶入</p></div><section class="text-group"><div class="display-heading"><h4>顯示內容</h4><label id="shot-on-control" hidden><input id="shot-on" type="checkbox" checked> Shot on</label></div><div class="row2"><label class="field"><span id="camera-display-label">相機品牌／型號 顯示</span>
-          <select id="show-cam">
-            <option value="on" selected>開</option>
-            <option value="off">關</option>
-          </select>
-        </label><label class="field" id="exposure-display-field" style="display:none">快門／光圈／ISO 顯示
-          <select id="show-exp" disabled><option value="on">顯示</option><option value="off" selected>不顯示</option>
-          </select>
-        </label></div></section><section class="text-group" id="exif-row-1"><h4>相機資料</h4><div class="row2 camera-source-stack"><div class="camera-fields"><label class="field">相機品牌來源<select id="camera-brand"><option value="auto">自動帶入</option><option value="manual">手動輸入</option><option value="none">不顯示</option></select></label><label class="field" id="camera-brand-manual" style="display:none">手動輸入品牌<input id="camera-brand-text" placeholder="例如 FUJIFILM"></label></div><div class="camera-fields"><label class="field">相機型號來源<select id="camera-select"><option value="auto">自動帶入</option><option value="manual">手動輸入</option><option value="none">不顯示</option></select></label><label class="field" id="camera-manual-field" style="display:none">手動輸入型號<input id="cam" placeholder="例如 X-T50"></label></div></div><div id="lens-slot"><div id="lens-controls"><label class="field">鏡頭來源<select id="lens-source"><option value="auto">自動帶入</option><option value="manual">手動輸入</option><option value="none">不顯示</option></select></label><label class="field" id="lens-field">手動輸入鏡頭<input id="lens" placeholder="XF35mmF1.4 R"></label></div></div><label class="field">自訂備註 / 標題
-        <input id="note-text" placeholder="輸入隨想或地點...">
-      </label><p class="hint" id="note-layout-help" aria-live="polite"></p></section><section class="text-group"><h4>字體與外觀</h4><div class="row2"><label class="field">相機／鏡頭字型
-          <select id="font">
-            
-            <option value="serif">經典明體 (Noto Serif)</option>
-            <option value="mono">等寬數字 (Mono)</option>
-            <option value="hand">手寫英文 (Caveat)</option>
-            <option value="round">圓體 (Zen Maru)</option>
-            <option value="kiwi">溫潤明體 (Kiwi Maru)</option>
-            <option value="yuji">懷舊墨楷 (Yuji Syuku)</option>
-          <option value="chen">辰宇落雁 2.0（細體）</option>
-<option value="huninn">jf open 粉圓 2.1</option>
+      <aside class="dock" id="dock">
+        <div class="card">
+          <div class="tabs" role="tablist" aria-label="編輯項目">
+            <button type="button" role="tab" id="tab-photo" aria-controls="panel-photo" aria-selected="true" data-tab="photo">照片</button>
+            <button type="button" role="tab" id="tab-style" aria-controls="panel-style" aria-selected="false" tabindex="-1" data-tab="style">版型</button>
+            <button type="button" role="tab" id="tab-text" aria-controls="text-settings" aria-selected="false" tabindex="-1" data-tab="text">文字</button>
+            <button type="button" role="tab" id="tab-date" aria-controls="date-panel" aria-selected="false" tabindex="-1" data-tab="date">日期</button>
+          </div>
 
+          <!-- 照片 -->
+          <section class="tab-panel" id="panel-photo" role="tabpanel" aria-labelledby="tab-photo" data-panel="photo">
+            <div class="section-heading"><h3>選擇照片</h3><p>最多 20 張</p></div>
+            <div class="group">
+              <label class="pick" id="mainPickLabel">選擇照片
+                <input id="file" type="file" multiple accept="image/jpeg,image/png,image/heic,image/heif,image/*" />
+              </label>
+              <div class="thumb-list" id="thumbList" style="display:none;"></div>
+              <p class="hint setup-help">選圖後請按「加入／完成」；點縮圖可切換，右上角可刪除。</p>
+            </div>
+            <!-- 特定照片同步設定區塊 -->
+            <div class="sync-box" id="sync-container" style="display:none;">
+              <label class="field">同步設定來源
+                <select id="sync-source-select"></select>
+              </label>
+              <button class="pbtn ghost" id="apply-sync-btn">套用設定</button>
+            </div>
+          </section>
 
+          <!-- 版型 -->
+          <section class="tab-panel" id="panel-style" role="tabpanel" aria-labelledby="tab-style" data-panel="style" hidden>
+            <div class="group">
+              <h4>邊框樣式</h4>
+              <div class="frames" id="frames">
+                <button class="w on" data-frame="white">白框</button><button class="k" data-frame="black">黑框</button><button class="t" data-frame="tint">取色</button><button class="v" data-frame="vintage">復古</button><button class="f" data-frame="film">底片</button>
+              </div>
+            </div>
+            <div class="group">
+              <h4>照片比例</h4>
+              <div class="ratios" id="ratios">
+                <button class="on" data-aspect="orig">原圖</button><button data-aspect="mini">Mini</button><button data-aspect="square">方框</button><button data-aspect="wide">Wide</button><button data-aspect="banner">橫幅</button><button data-aspect="instagram" title="貼文 4:5"><svg class="ig-icon" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg><span>Instagram 貼文</span></button><button data-aspect="instagram-story" title="限時動態 9:16 · 1080 × 1920"><svg class="ig-icon" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg><span>Instagram 限時動態</span></button>
+              </div>
+            </div>
+            <div class="group panel-actions">
+              <button class="pbtn ghost sm" id="reset-crop">重設照片裁切</button>
+            </div>
+          </section>
 
-<option value="genryu-m">源流明體 TW（中等）</option>
-<option value="genryu-sb">源流明體 TW（半粗）</option>
-<option value="genryu-b">源流明體 TW（粗體）</option>
-<option value="genryu-h">源流明體 TW（特粗）</option></select>
-        </label><label class="field">相機／鏡頭／曝光資訊字體大小
-        <select id="size-left">
-            <option value="12">小</option>
-            <option value="14" selected>中</option>
-            <option value="18">大</option>
-            <option value="22">特大</option>
-          </select>
-      </label></div><div class="row2"><label class="field">自訂備註字型<select id="note-font">
-            
-            <option value="serif">經典明體 (Noto Serif)</option>
-            <option value="mono">等寬數字 (Mono)</option>
-            <option value="hand">手寫英文 (Caveat)</option>
-            <option value="round">圓體 (Zen Maru)</option>
-            <option value="kiwi">溫潤明體 (Kiwi Maru)</option>
-            <option value="yuji">懷舊墨楷 (Yuji Syuku)</option>
-          <option value="chen">辰宇落雁 2.0（細體）</option>
-<option value="huninn">jf open 粉圓 2.1</option>
+          <!-- 文字 -->
+          <section class="tab-panel" id="text-settings" role="tabpanel" aria-labelledby="tab-text" data-panel="text" hidden>
+            <div class="group">
+              <div class="group-head"><h4>顯示內容</h4><label class="check" id="shot-on-control" hidden><input id="shot-on" type="checkbox" checked> Shot on</label></div>
+              <div class="fields">
+                <label class="field"><span id="camera-display-label">相機品牌／型號 顯示</span>
+                  <select id="show-cam">
+                    <option value="on" selected>開</option>
+                    <option value="off">關</option>
+                  </select>
+                </label>
+                <label class="field" id="exposure-display-field" style="display:none">快門／光圈／ISO 顯示
+                  <select id="show-exp" disabled><option value="on">顯示</option><option value="off" selected>不顯示</option></select>
+                </label>
+              </div>
+            </div>
 
+            <div class="group" id="exif-row-1">
+              <h4>相機資料</h4>
+              <div class="fields">
+                <label class="field">品牌來源<select id="camera-brand"><option value="auto">自動帶入</option><option value="manual">手動輸入</option><option value="none">不顯示</option></select></label>
+                <label class="field" id="camera-brand-manual" style="display:none">手動輸入品牌<input id="camera-brand-text" placeholder="例如 FUJIFILM"></label>
+                <label class="field">型號來源<select id="camera-select"><option value="auto">自動帶入</option><option value="manual">手動輸入</option><option value="none">不顯示</option></select></label>
+                <label class="field" id="camera-manual-field" style="display:none">手動輸入型號<input id="cam" placeholder="例如 X-T50"></label>
+              </div>
+              <div id="lens-slot"><div class="fields" id="lens-controls">
+                <label class="field">鏡頭來源<select id="lens-source"><option value="auto">自動帶入</option><option value="manual">手動輸入</option><option value="none">不顯示</option></select></label>
+                <label class="field" id="lens-field">手動輸入鏡頭<input id="lens" placeholder="XF35mmF1.4 R"></label>
+              </div></div>
+            </div>
 
+            <div class="group">
+              <h4>自訂備註</h4>
+              <label class="field">備註 / 標題
+                <input id="note-text" placeholder="輸入隨想或地點...">
+              </label>
+              <p class="hint" id="note-layout-help" aria-live="polite"></p>
+            </div>
 
-<option value="genryu-m">源流明體 TW（中等）</option>
-<option value="genryu-sb">源流明體 TW（半粗）</option>
-<option value="genryu-b">源流明體 TW（粗體）</option>
-<option value="genryu-h">源流明體 TW（特粗）</option></select></label><label class="field">自訂備註字體大小<select id="note-size"><option value="12">小</option><option value="14" selected>中</option><option value="18">大</option><option value="22">特大</option></select></label></div><label class="field">字體顏色<input id="color" type="color" value="#000000"></label><p class="hint" id="font-status" role="status" aria-live="polite" style="display:none"></p></section></section>
-<details class="control-panel" id="date-panel">
-        <summary>日期戳與位置</summary>
-      <div class="row2">
-        <label class="field">日期戳
-          <select id="date-on">
-            <option value="off">關</option>
-            <option value="on">開</option>
-          </select>
-        </label>
-        <label class="field">日期字體大小
-          <select id="date-size">
-            <option value="10">小</option>
-            <option value="12" selected>中</option>
-            <option value="15">大</option>
-            <option value="18">特大</option>
-          </select>
-        </label>
-      </div>
+            <div class="group">
+              <h4>字體與外觀</h4>
+              <div class="fields">
+                <label class="field">相機／鏡頭字型
+                  <select id="font">
+                    <option value="serif">經典明體 (Noto Serif)</option>
+                    <option value="mono">等寬數字 (Mono)</option>
+                    <option value="hand">手寫英文 (Caveat)</option>
+                    <option value="round">圓體 (Zen Maru)</option>
+                    <option value="kiwi">溫潤明體 (Kiwi Maru)</option>
+                    <option value="yuji">懷舊墨楷 (Yuji Syuku)</option>
+                    <option value="chen">辰宇落雁 2.0（細體）</option>
+                    <option value="huninn">jf open 粉圓 2.1</option>
+                    <option value="genryu-m">源流明體 TW（中等）</option>
+                    <option value="genryu-sb">源流明體 TW（半粗）</option>
+                    <option value="genryu-b">源流明體 TW（粗體）</option>
+                    <option value="genryu-h">源流明體 TW（特粗）</option>
+                  </select>
+                </label>
+                <label class="field">相機／鏡頭／曝光字體大小
+                  <select id="size-left">
+                    <option value="12">小</option>
+                    <option value="14" selected>中</option>
+                    <option value="18">大</option>
+                    <option value="22">特大</option>
+                  </select>
+                </label>
+                <label class="field">備註字型
+                  <select id="note-font">
+                    <option value="serif">經典明體 (Noto Serif)</option>
+                    <option value="mono">等寬數字 (Mono)</option>
+                    <option value="hand">手寫英文 (Caveat)</option>
+                    <option value="round">圓體 (Zen Maru)</option>
+                    <option value="kiwi">溫潤明體 (Kiwi Maru)</option>
+                    <option value="yuji">懷舊墨楷 (Yuji Syuku)</option>
+                    <option value="chen">辰宇落雁 2.0（細體）</option>
+                    <option value="huninn">jf open 粉圓 2.1</option>
+                    <option value="genryu-m">源流明體 TW（中等）</option>
+                    <option value="genryu-sb">源流明體 TW（半粗）</option>
+                    <option value="genryu-b">源流明體 TW（粗體）</option>
+                    <option value="genryu-h">源流明體 TW（特粗）</option>
+                  </select>
+                </label>
+                <label class="field">備註字體大小
+                  <select id="note-size"><option value="12">小</option><option value="14" selected>中</option><option value="18">大</option><option value="22">特大</option></select>
+                </label>
+                <label class="field">字體顏色<input id="color" type="color" value="#000000"></label>
+              </div>
+              <p class="hint" id="font-status" role="status" aria-live="polite" style="display:none"></p>
+            </div>
 
-      <label class="field">日期<input id="date-text" placeholder="2026.09.07"></label>
-      <div class="sides" id="date-sides">
-        <button class="on" data-side="left">左側</button>
-        <button data-side="right">右側</button>
-      </div>
-      </details>
+            <div class="group panel-actions">
+              <button class="pbtn ghost sm" id="reset">重設文字位置</button>
+            </div>
+          </section>
 
-      <div class="action-group" id="action-group">
-        <div class="row2">
-          <button class="pbtn ghost sm" id="reset">重設文字位置</button>
-          <button class="pbtn ghost sm" id="reset-crop">重設照片裁切</button>
+          <!-- 日期 -->
+          <section class="tab-panel" id="date-panel" role="tabpanel" aria-labelledby="tab-date" data-panel="date" hidden>
+            <div class="group">
+              <div class="fields">
+                <label class="field">日期戳
+                  <select id="date-on">
+                    <option value="off">關</option>
+                    <option value="on">開</option>
+                  </select>
+                </label>
+                <label class="field">日期字體大小
+                  <select id="date-size">
+                    <option value="10">小</option>
+                    <option value="12" selected>中</option>
+                    <option value="15">大</option>
+                    <option value="18">特大</option>
+                  </select>
+                </label>
+              </div>
+              <label class="field">日期<input id="date-text" placeholder="2026.09.07"></label>
+            </div>
+            <div class="group">
+              <h4>日期位置</h4>
+              <div class="sides" id="date-sides">
+                <button class="on" data-side="left">左側</button>
+                <button data-side="right">右側</button>
+              </div>
+            </div>
+          </section>
         </div>
 
-        <div class="row2">
-          <button class="pbtn red" id="share">分享此張 (IG/LINE)</button>
+        <div class="action-group" id="action-group">
+          <button class="pbtn red" id="share">分享 (IG/LINE)</button>
           <button class="pbtn ghost" id="save">下載此張</button>
+          <button class="pbtn ghost full" id="save-all" style="display:none;">打包下載全部 (ZIP)</button>
         </div>
+      </aside>
 
-        <button class="pbtn ghost full" id="save-all" style="display:none;">打包下載全部 (ZIP)</button>
-      </div>
-      </div>
-      
     </main>
   </div>
 
@@ -2452,7 +2382,7 @@ $("#file").addEventListener("change", e => {
     stage.classList.toggle('desktop-fullscreen',on);document.body.classList.toggle('preview-fullscreen',on);
     if(on){
       previousFocus=document.activeElement;
-      for(const el of document.querySelectorAll('.top,.setup-panel,.form')){inertBefore.set(el,el.inert);el.inert=true;}
+      for(const el of document.querySelectorAll('.top,.dock')){inertBefore.set(el,el.inert);el.inert=true;}
       stage.setAttribute('role','dialog');stage.setAttribute('aria-modal','true');stage.setAttribute('aria-label','全螢幕相片預覽');
     }else{
       for(const [el,inert] of inertBefore)el.inert=inert;inertBefore.clear();
@@ -2526,6 +2456,30 @@ $("#file").addEventListener("change", e => {
   apply();
 })();
 
+// 編輯分頁（照片／版型／文字／日期）：只切換顯示，欄位與事件都不變
+(function bindTabs(){
+  const KEY='polaroid-room-tab';
+  const tabs=[...document.querySelectorAll('.tabs [role="tab"]')],panels=[...document.querySelectorAll('.tab-panel')];
+  if(!tabs.length)return;
+  function show(name,focus){
+    if(!tabs.some(t=>t.dataset.tab===name))name='photo';
+    tabs.forEach(t=>{const on=t.dataset.tab===name;t.setAttribute('aria-selected',String(on));t.tabIndex=on?0:-1;if(on&&focus)t.focus();});
+    panels.forEach(p=>{p.hidden=p.dataset.panel!==name;});
+    try{sessionStorage.setItem(KEY,name);}catch(e){}
+  }
+  tabs.forEach((t,i)=>{
+    t.addEventListener('click',()=>show(t.dataset.tab));
+    t.addEventListener('keydown',e=>{
+      const k=e.key,n=tabs.length;let j=-1;
+      if(k==='ArrowRight')j=(i+1)%n;else if(k==='ArrowLeft')j=(i-1+n)%n;else if(k==='Home')j=0;else if(k==='End')j=n-1;
+      if(j<0)return;e.preventDefault();show(tabs[j].dataset.tab,true);
+    });
+  });
+  window.polaroidShowTab=show;
+  let start='photo';try{start=sessionStorage.getItem(KEY)||'photo';}catch(e){}
+  show(start);
+})();
+
 syncUIFromState();prepareTextFonts(activeState);drawAll(false);
 
 
@@ -2566,11 +2520,11 @@ syncUIFromState();prepareTextFonts(activeState);drawAll(false);
   const steps=[
     { el:'.brand', title:'歡迎來到拍立得小房間', text:'把照片加上拍立得邊框、相機資訊，再下載或分享。全部都在瀏覽器裡完成，照片不會上傳。' },
     { el:'#theme-select', title:'切換主題', text:'工作桌、太空、日式、中式、像素、科幻，還有 OLED 全黑。選過會記住，下次打開還在。' },
-    { el:'#mainPickLabel', title:'選擇照片', text:'一次最多 20 張。選完後按系統的「加入／完成」。縮圖可點來切換，右上角叉叉可刪除。' },
-    { el:'#frames', title:'邊框樣式', text:'白框、黑框、取色、復古、底片。取色會跟照片配色。選好後右邊還能改比例。' },
-    { el:'#ratios', title:'照片比例', text:'原圖、Mini、方框、Wide、橫幅，以及 Instagram 貼文、限時動態。橫幅或限動時預覽會自動變大。' },
+    { el:'#mainPickLabel', tab:'photo', title:'選擇照片', text:'一次最多 20 張。選完後按系統的「加入／完成」。縮圖可點來切換，右上角叉叉可刪除。' },
+    { el:'#frames', tab:'style', title:'邊框樣式', text:'白框、黑框、取色、復古、底片。取色會跟照片配色。選好後還能改比例。' },
+    { el:'#ratios', tab:'style', title:'照片比例', text:'原圖、Mini、方框、Wide、橫幅，以及 Instagram 貼文、限時動態。橫幅或限動時預覽會自動變大。' },
     { el:'#stage', title:'預覽與裁切', text:'拖曳照片調整裁切。電腦用滾輪縮放，手機用雙指縮放。小螢幕右下角箭頭可把預覽收小。' },
-    { el:'#text-settings', title:'文字與相機資料', text:'品牌、型號、鏡頭可自動從 EXIF 帶入，也能手動打或隱藏。下面可改字體、大小和顏色。' },
+    { el:'#text-settings', tab:'text', title:'文字與相機資料', text:'品牌、型號、鏡頭可自動從 EXIF 帶入，也能手動打或隱藏。下面可改字體、大小和顏色。' },
     { el:'#action-group', title:'分享與下載', text:'單張可分享到 IG／LINE 或下載 PNG。選了多張會出現打包 ZIP。右上角「？」隨時可以再看一次教學。' }
   ];
 
@@ -2592,7 +2546,7 @@ syncUIFromState();prepareTextFonts(activeState);drawAll(false);
 
   function place(reveal=false){
     if(tour.hidden)return;
-    const step=steps[i],el=target(step),welcome=i===0;
+    const step=steps[i];if(step.tab&&window.polaroidShowTab)window.polaroidShowTab(step.tab);const el=target(step),welcome=i===0;
     title.textContent=step.title;body.textContent=step.text;
     stepLabel.textContent=(i+1)+' / '+steps.length;
     prevBtn.disabled=welcome;nextBtn.textContent=i===steps.length-1?'完成':'下一步';
