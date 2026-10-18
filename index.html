@@ -22,8 +22,8 @@
   </script>
   <title>拍立得小房間</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600&family=Noto+Sans+TC:wght@400;600;700&family=Noto+Serif+JP:wght@600&family=Noto+Serif+TC:wght@600;700&family=Share+Tech+Mono&family=Zen+Maru+Gothic:wght@500;700&family=Kiwi+Maru:wght@500&family=Yuji+Syuku&display=swap" rel="stylesheet" />
-  <script src="vendor/jszip.min.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600&family=Noto+Sans+TC:wght@400;600;700&family=Noto+Serif+JP:wght@600&family=Noto+Serif+TC:wght@600;700&family=Share+Tech+Mono&family=Zen+Maru+Gothic:wght@500;700&family=Kiwi+Maru:wght@500&family=Yuji+Syuku&display=swap" rel="stylesheet" media="print" onload="this.media='all'" />
+  <script defer src="vendor/jszip.min.js"></script>
   <style>
 @font-face { font-family:"ChenYuluoyan"; src:url("fonts/ChenYuluoyan-2.0-Thin.ttf") format("truetype"); font-style:normal; font-weight:400; font-display:swap; }
 @font-face { font-family:"OpenHuninn"; src:url("fonts/jf-openhuninn-2.1.ttf") format("truetype"); font-style:normal; font-weight:400; font-display:swap; }
@@ -410,10 +410,10 @@ body.banner-preview .wrap{ max-width:1680px; }
   box-shadow:inset 0 1px 0 var(--g-rim), inset 0 0 0 1px var(--g-edge), inset 0 -1px 0 var(--g-rim-low), var(--g-shadow);
 }
 .polaroid-container{
+  position:relative;
   width:fit-content; max-width:min(100%, 480px); margin-inline:auto;
   overflow:hidden; border-radius:6px;
   box-shadow:0 1px 2px rgba(0,0,0,.12), 0 22px 44px -12px rgba(0,0,0,.38);
-  animation:drop .5s cubic-bezier(.2,1.1,.3,1);
   background-image:
     linear-gradient(45deg, var(--check-a) 25%, transparent 25%),
     linear-gradient(-45deg, var(--check-a) 25%, transparent 25%),
@@ -425,7 +425,6 @@ body.banner-preview .wrap{ max-width:1680px; }
 }
 body.banner-preview .polaroid-container{ width:100%; max-width:100%; }
 #mainCanvas{ width:100%; height:auto; display:block; cursor:grab; touch-action:none; user-select:none; }
-@keyframes drop{ from{ opacity:0; transform:translateY(-18px) rotate(-4deg); } to{ opacity:1; transform:none; } }
 .editor-tip{ margin:0; padding:0 2px; }
 .stage-toggle{
   position:absolute; right:14px; bottom:8px; z-index:11; width:30px; height:30px;
@@ -446,7 +445,7 @@ body.banner-preview .polaroid-container{ width:100%; max-width:100%; }
   box-shadow:inset 0 1px 0 var(--g-rim), inset 0 0 0 1px var(--g-edge), inset 0 -1px 0 var(--g-rim-low), var(--g-shadow);
 }
 .tabs{
-  display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:4px;
+  display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:4px;
   margin:12px 12px 0; padding:4px; border-radius:calc(var(--r-md) + 2px);
   background:var(--g-well); box-shadow:inset 0 0 0 1px var(--g-hair);
 }
@@ -459,7 +458,7 @@ body.banner-preview .polaroid-container{ width:100%; max-width:100%; }
   background:var(--seg-on); color:var(--seg-on-ink);
   box-shadow:inset 0 1px 0 var(--g-rim), 0 1px 4px rgba(0,0,0,.14);
 }
-.tab-panel{ display:grid; gap:18px; padding:16px; }
+.tab-panel,.photo-panel{ display:grid; gap:18px; padding:16px; }
 .tab-panel[hidden]{ display:none; }
 .group{ display:grid; gap:10px; min-width:0; }
 .group + .group{ border-top:1px solid var(--g-hair); padding-top:16px; }
@@ -495,8 +494,8 @@ label.field{ display:grid; gap:6px; min-width:0; font-size:12px; font-weight:600
 .check[hidden]{ display:none; }
 #shot-on{ accent-color:var(--fuji); width:18px; height:18px; }
 /* JS hides optional fields with inert / disabled; collapse them instead of leaving a gap */
-#camera-brand-manual[inert], #camera-manual-field[inert], #lens-field[inert], #lens-controls[inert]{ display:none !important; }
-#exposure-display-field:has(#show-exp:disabled){ display:none !important; }
+
+
 
 /* ---------- photos ---------- */
 .pick{
@@ -536,7 +535,13 @@ label.field{ display:grid; gap:6px; min-width:0; font-size:12px; font-weight:600
   display:grid; grid-template-columns:1fr auto; gap:10px; align-items:end; padding:12px;
   border-radius:var(--r-md); background:var(--g-well); box-shadow:inset 0 0 0 1px var(--g-hair);
 }
-#apply-sync-btn{ color:var(--fuji) !important; box-shadow:inset 0 0 0 1.5px var(--fuji) !important; }
+.sync-box{grid-template-columns:minmax(0,1fr)}
+.thumb-rail{display:grid;grid-template-columns:28px minmax(0,1fr) 28px;gap:6px;align-items:center;min-width:0}
+.thumb-rail[hidden]{display:none}
+.thumb-rail .thumb-list{min-width:0;margin:0;flex-wrap:nowrap;scroll-snap-type:none;scroll-behavior:auto}
+.thumb-nav{min-height:44px;padding:0;border:0;border-radius:8px;background:var(--g-well);color:var(--ink);cursor:pointer}
+.thumb-nav:disabled{opacity:.3;cursor:default}
+.thumb-nav svg{width:20px;height:20px;vertical-align:middle}
 
 /* ---------- frame + ratio choices ---------- */
 .frames{ display:grid; grid-template-columns:repeat(5, minmax(0,1fr)); gap:8px; }
@@ -586,9 +591,9 @@ label.field{ display:grid; gap:6px; min-width:0; font-size:12px; font-weight:600
 .panel-actions{ display:flex; }
 .panel-actions .pbtn{ flex:1; }
 
-/* share + download dock: stays within reach while the panels scroll */
+/* Actions follow the settings in normal flow without covering the tabs. */
 .action-group{
-  position:sticky; bottom:calc(10px + var(--safe-b)); z-index:15;
+  position:relative; bottom:auto; z-index:15;
   display:grid; grid-template-columns:1fr 1fr; gap:8px; padding:8px;
   border-radius:calc(var(--cap-r) + 4px);
   background:var(--g-fill-hi);
@@ -616,9 +621,13 @@ label.field{ display:grid; gap:6px; min-width:0; font-size:12px; font-weight:600
 /* ---------- desktop ---------- */
 @media (min-width:860px){
   .editor-shell{ display:grid; grid-template-columns:minmax(0,1.1fr) minmax(380px,.9fr); gap:20px; align-items:start; }
+  #panel-photo{grid-column:2;grid-row:1}
+  .stage{grid-column:1;grid-row:1 / span 2}
+  .dock{grid-column:2;grid-row:2}
+  .editor-shell{grid-template-rows:auto 1fr}
   body.banner-preview .editor-shell{ grid-template-columns:minmax(0,1fr) clamp(360px,30vw,440px); gap:24px; }
   body.banner-preview .stage{ padding:10px; }
-  .stage{ position:sticky; top:calc(var(--header-h) + 20px); }
+  .stage{ position:relative; top:auto; }
   .stage>.editor-tip{ position:absolute; top:100%; left:0; right:0; margin:6px 0 0; padding:0; font-size:13px; line-height:1.5; text-align:center; pointer-events:none; }
   body.preview-fullscreen{ overflow:hidden; }
   #stage.desktop-fullscreen{
@@ -636,7 +645,7 @@ label.field{ display:grid; gap:6px; min-width:0; font-size:12px; font-weight:600
 /* ---------- phones / tablets: preview docks under the header ---------- */
 @media (max-width:859px){
   .stage{
-    position:sticky; z-index:10; top:calc(var(--header-h) + var(--safe-t) - 2px);
+    position:relative; z-index:0; top:auto;
     display:flex; justify-content:center; align-items:center;
     margin:0 -6px; padding:12px 16px 40px; border-radius:26px;
     background:radial-gradient(120% 70% at 50% 0%, var(--g-sheen), transparent 60%), var(--g-fill-hi);
@@ -671,6 +680,35 @@ label.field{ display:grid; gap:6px; min-width:0; font-size:12px; font-weight:600
   .card, .stage, .action-group, .tour-card, .top::before{ background-color:var(--card); }
 }
 
+
+/* Retained local controls and screen-resolution caption preview. */
+#previewCanvas{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
+.row2{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:8px}
+.text-group{display:grid;gap:12px;border-top:1px solid var(--line);padding-top:14px;margin-top:4px}
+#text-settings>.section-heading{margin-bottom:0}.text-group .hint{margin:0}.text-group h4{margin:0;font-size:13px}
+.text-group .row2{margin:0;align-items:start}#text-settings .field{min-width:0}
+#text-settings .field input,#text-settings .field select{min-width:0;width:100%}
+#exif-row-1{display:grid;gap:10px}#text-settings .camera-source-stack{grid-template-columns:minmax(0,1fr);gap:10px}
+.camera-fields,#lens-controls{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);align-items:end;gap:8px}
+#camera-brand-manual,#camera-manual-field,#lens-field{grid-column:2;grid-row:1;min-height:44px;font-size:0;gap:0}
+#camera-brand-text,#cam,#lens{font-size:14px}#lens-controls>label:first-child{grid-column:1;grid-row:1}
+.display-heading{display:flex;justify-content:space-between;align-items:center;gap:12px}
+#shot-on-control{font-size:13px;align-items:center;gap:6px}#shot-on-control:not([hidden]){display:flex}
+#ratios{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));grid-template-rows:52px 52px;gap:6px}
+#ratios button{min-width:0;width:100%;height:52px;padding:4px;white-space:normal;line-height:1.15}
+#ratios button.on{transform:none}#ratios button[data-aspect^="instagram"]{font-size:11.5px;gap:4px}
+.import-status{margin:0;font-size:12px;color:var(--muted)}
+.field input,.field select{scroll-margin-top:90px;scroll-margin-bottom:180px}
+@media(max-width:600px){#text-settings .row2:not(.camera-source-stack){grid-template-columns:minmax(0,1fr)}}
+@media(max-width:859px){
+ .lg-ambient{display:none}
+ .stage,.card,.action-group,.tour-card,.tour-dim,html[data-theme] .top::before{backdrop-filter:none;-webkit-backdrop-filter:none}
+ .stage,.card,.action-group,html[data-theme] .top::before{background:var(--card)}
+ .stage{transition:none;margin-bottom:0}
+ .action-group{scroll-margin-bottom:12px}
+ body.input-editing .stage{position:relative;top:auto}
+ body.input-editing .action-group{position:static}
+}
   </style>
 </head>
 <body>
@@ -720,6 +758,32 @@ label.field{ display:grid; gap:6px; min-width:0; font-size:12px; font-weight:600
 
   <div class="wrap">
     <main class="editor-shell">
+          <!-- 照片 -->
+          <section class="card photo-panel" id="panel-photo" aria-labelledby="photo-heading">
+            <div class="section-heading"><h3 id="photo-heading">選擇照片</h3><p>最多 20 張</p></div>
+            <div class="group">
+              <label class="pick" id="mainPickLabel">選擇照片
+                <input id="file" type="file" multiple accept="image/jpeg,image/png,image/heic,image/heif,image/*" />
+              </label>
+              <div class="thumb-rail" id="thumb-rail" hidden>
+                <button type="button" class="thumb-nav" id="thumb-prev" aria-label="向左捲動照片" aria-controls="thumbList" disabled><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m15 5-7 7 7 7" fill="none" stroke="currentColor" stroke-width="2"/></svg></button>
+                <div class="thumb-list" id="thumbList" style="display:none;"></div>
+                <button type="button" class="thumb-nav" id="thumb-next" aria-label="向右捲動照片" aria-controls="thumbList" disabled><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m9 5 7 7-7 7" fill="none" stroke="currentColor" stroke-width="2"/></svg></button>
+              </div>
+              <p class="import-status" id="import-status" role="status" aria-live="polite" hidden></p>
+              <p class="hint setup-help">選圖後請按「加入／完成」；點縮圖可切換，右上角可刪除。</p>
+            </div>
+            <!-- 特定照片同步設定區塊 -->
+            <div class="sync-box" id="sync-container" style="display:none;">
+              <label class="field">同步設定來源
+                <select id="sync-source-select"></select>
+              </label>
+              <div id="sync-source-preview" hidden style="min-width:0;align-items:center;gap:10px"><img id="sync-source-image" alt="來源照片" width="48" height="48" style="object-fit:cover;flex:none"><span id="sync-source-name" style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap"></span></div>
+              <p class="hint" id="sync-status" role="status" aria-live="polite"></p>
+            </div>
+          </section>
+
+
 
       <div class="stage collapsed" id="stage">
         <div class="polaroid-container"><canvas id="mainCanvas"></canvas></div>
@@ -730,30 +794,10 @@ label.field{ display:grid; gap:6px; min-width:0; font-size:12px; font-weight:600
       <aside class="dock" id="dock">
         <div class="card">
           <div class="tabs" role="tablist" aria-label="編輯項目">
-            <button type="button" role="tab" id="tab-photo" aria-controls="panel-photo" aria-selected="true" data-tab="photo">照片</button>
             <button type="button" role="tab" id="tab-style" aria-controls="panel-style" aria-selected="false" tabindex="-1" data-tab="style">版型</button>
             <button type="button" role="tab" id="tab-text" aria-controls="text-settings" aria-selected="false" tabindex="-1" data-tab="text">文字</button>
             <button type="button" role="tab" id="tab-date" aria-controls="date-panel" aria-selected="false" tabindex="-1" data-tab="date">日期</button>
           </div>
-
-          <!-- 照片 -->
-          <section class="tab-panel" id="panel-photo" role="tabpanel" aria-labelledby="tab-photo" data-panel="photo">
-            <div class="section-heading"><h3>選擇照片</h3><p>最多 20 張</p></div>
-            <div class="group">
-              <label class="pick" id="mainPickLabel">選擇照片
-                <input id="file" type="file" multiple accept="image/jpeg,image/png,image/heic,image/heif,image/*" />
-              </label>
-              <div class="thumb-list" id="thumbList" style="display:none;"></div>
-              <p class="hint setup-help">選圖後請按「加入／完成」；點縮圖可切換，右上角可刪除。</p>
-            </div>
-            <!-- 特定照片同步設定區塊 -->
-            <div class="sync-box" id="sync-container" style="display:none;">
-              <label class="field">同步設定來源
-                <select id="sync-source-select"></select>
-              </label>
-              <button class="pbtn ghost" id="apply-sync-btn">套用設定</button>
-            </div>
-          </section>
 
           <!-- 版型 -->
           <section class="tab-panel" id="panel-style" role="tabpanel" aria-labelledby="tab-style" data-panel="style" hidden>
@@ -766,7 +810,7 @@ label.field{ display:grid; gap:6px; min-width:0; font-size:12px; font-weight:600
             <div class="group">
               <h4>照片比例</h4>
               <div class="ratios" id="ratios">
-                <button class="on" data-aspect="orig">原圖</button><button data-aspect="mini">Mini</button><button data-aspect="square">方框</button><button data-aspect="wide">Wide</button><button data-aspect="banner">橫幅</button><button data-aspect="instagram" title="貼文 4:5"><svg class="ig-icon" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg><span>Instagram 貼文</span></button><button data-aspect="instagram-story" title="限時動態 9:16 · 1080 × 1920"><svg class="ig-icon" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg><span>Instagram 限時動態</span></button>
+                <button class="on" data-aspect="orig">原圖</button><button data-aspect="square">方框</button><button data-aspect="wide">Wide</button><button data-aspect="banner">橫幅</button><button data-aspect="instagram" title="貼文 4:5"><svg class="ig-icon" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg><span>Instagram 貼文</span></button><button data-aspect="instagram-story" title="限時動態 9:16 · 1080 × 1920"><svg class="ig-icon" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg><span>Instagram 限時動態</span></button>
               </div>
             </div>
             <div class="group panel-actions">
@@ -775,100 +819,58 @@ label.field{ display:grid; gap:6px; min-width:0; font-size:12px; font-weight:600
           </section>
 
           <!-- 文字 -->
-          <section class="tab-panel" id="text-settings" role="tabpanel" aria-labelledby="tab-text" data-panel="text" hidden>
-            <div class="group">
-              <div class="group-head"><h4>顯示內容</h4><label class="check" id="shot-on-control" hidden><input id="shot-on" type="checkbox" checked> Shot on</label></div>
-              <div class="fields">
-                <label class="field"><span id="camera-display-label">相機品牌／型號 顯示</span>
-                  <select id="show-cam">
-                    <option value="on" selected>開</option>
-                    <option value="off">關</option>
-                  </select>
-                </label>
-                <label class="field" id="exposure-display-field" style="display:none">快門／光圈／ISO 顯示
-                  <select id="show-exp" disabled><option value="on">顯示</option><option value="off" selected>不顯示</option></select>
-                </label>
-              </div>
-            </div>
+<section class="tab-panel" id="text-settings" role="tabpanel" aria-labelledby="tab-text" data-panel="text" hidden><div class="section-heading"><h3>文字資訊</h3><p>相機資料會自動帶入</p></div><section class="text-group"><div class="display-heading"><h4>顯示內容</h4><label id="shot-on-control" hidden><input id="shot-on" type="checkbox" checked> Shot on</label></div><div class="row2"><label class="field"><span id="camera-display-label">相機品牌／型號 顯示</span>
+          <select id="show-cam">
+            <option value="on" selected>開</option>
+            <option value="off">關</option>
+          </select>
+        </label><label class="field" id="exposure-display-field" style="display:none">快門／光圈／ISO 顯示
+          <select id="show-exp" disabled><option value="on">顯示</option><option value="off" selected>不顯示</option>
+          </select>
+        </label></div></section><section class="text-group" id="exif-row-1"><h4>相機資料</h4><div class="row2 camera-source-stack"><div class="camera-fields"><label class="field">相機品牌來源<select id="camera-brand"><option value="auto">自動帶入</option><option value="manual">手動輸入</option><option value="none">不顯示</option></select></label><label class="field" id="camera-brand-manual" style="display:none">手動輸入品牌<input id="camera-brand-text" placeholder="例如 FUJIFILM"></label></div><div class="camera-fields"><label class="field">相機型號來源<select id="camera-select"><option value="auto">自動帶入</option><option value="manual">手動輸入</option><option value="none">不顯示</option></select></label><label class="field" id="camera-manual-field" style="display:none">手動輸入型號<input id="cam" placeholder="例如 X-T50"></label></div></div><div id="lens-slot"><div id="lens-controls"><label class="field">鏡頭來源<select id="lens-source"><option value="auto">自動帶入</option><option value="manual">手動輸入</option><option value="none">不顯示</option></select></label><label class="field" id="lens-field">手動輸入鏡頭<input id="lens" placeholder="XF35mmF1.4 R"></label></div></div><label class="field">自訂備註 / 標題
+        <input id="note-text" placeholder="輸入隨想或地點...">
+      </label><p class="hint" id="note-layout-help" aria-live="polite"></p></section><section class="text-group"><h4>字體與外觀</h4><div class="row2"><label class="field">相機／鏡頭字型
+          <select id="font">
+            
+            <option value="serif">經典明體 (Noto Serif)</option>
+            <option value="mono">等寬數字 (Mono)</option>
+            <option value="hand">手寫英文 (Caveat)</option>
+            <option value="round">圓體 (Zen Maru)</option>
+            <option value="kiwi">溫潤明體 (Kiwi Maru)</option>
+            <option value="yuji">懷舊墨楷 (Yuji Syuku)</option>
+          <option value="chen">辰宇落雁 2.0（細體）</option>
+<option value="huninn">jf open 粉圓 2.1</option>
 
-            <div class="group" id="exif-row-1">
-              <h4>相機資料</h4>
-              <div class="fields">
-                <label class="field">品牌來源<select id="camera-brand"><option value="auto">自動帶入</option><option value="manual">手動輸入</option><option value="none">不顯示</option></select></label>
-                <label class="field" id="camera-brand-manual" style="display:none">手動輸入品牌<input id="camera-brand-text" placeholder="例如 FUJIFILM"></label>
-                <label class="field">型號來源<select id="camera-select"><option value="auto">自動帶入</option><option value="manual">手動輸入</option><option value="none">不顯示</option></select></label>
-                <label class="field" id="camera-manual-field" style="display:none">手動輸入型號<input id="cam" placeholder="例如 X-T50"></label>
-              </div>
-              <div id="lens-slot"><div class="fields" id="lens-controls">
-                <label class="field">鏡頭來源<select id="lens-source"><option value="auto">自動帶入</option><option value="manual">手動輸入</option><option value="none">不顯示</option></select></label>
-                <label class="field" id="lens-field">手動輸入鏡頭<input id="lens" placeholder="XF35mmF1.4 R"></label>
-              </div></div>
-            </div>
 
-            <div class="group">
-              <h4>自訂備註</h4>
-              <label class="field">備註 / 標題
-                <input id="note-text" placeholder="輸入隨想或地點...">
-              </label>
-              <p class="hint" id="note-layout-help" aria-live="polite"></p>
-            </div>
 
-            <div class="group">
-              <h4>字體與外觀</h4>
-              <div class="fields">
-                <label class="field">相機／鏡頭字型
-                  <select id="font">
-                    <option value="serif">經典明體 (Noto Serif)</option>
-                    <option value="mono">等寬數字 (Mono)</option>
-                    <option value="hand">手寫英文 (Caveat)</option>
-                    <option value="round">圓體 (Zen Maru)</option>
-                    <option value="kiwi">溫潤明體 (Kiwi Maru)</option>
-                    <option value="yuji">懷舊墨楷 (Yuji Syuku)</option>
-                    <option value="chen">辰宇落雁 2.0（細體）</option>
-                    <option value="huninn">jf open 粉圓 2.1</option>
-                    <option value="genryu-m">源流明體 TW（中等）</option>
-                    <option value="genryu-sb">源流明體 TW（半粗）</option>
-                    <option value="genryu-b">源流明體 TW（粗體）</option>
-                    <option value="genryu-h">源流明體 TW（特粗）</option>
-                  </select>
-                </label>
-                <label class="field">相機／鏡頭／曝光字體大小
-                  <select id="size-left">
-                    <option value="12">小</option>
-                    <option value="14" selected>中</option>
-                    <option value="18">大</option>
-                    <option value="22">特大</option>
-                  </select>
-                </label>
-                <label class="field">備註字型
-                  <select id="note-font">
-                    <option value="serif">經典明體 (Noto Serif)</option>
-                    <option value="mono">等寬數字 (Mono)</option>
-                    <option value="hand">手寫英文 (Caveat)</option>
-                    <option value="round">圓體 (Zen Maru)</option>
-                    <option value="kiwi">溫潤明體 (Kiwi Maru)</option>
-                    <option value="yuji">懷舊墨楷 (Yuji Syuku)</option>
-                    <option value="chen">辰宇落雁 2.0（細體）</option>
-                    <option value="huninn">jf open 粉圓 2.1</option>
-                    <option value="genryu-m">源流明體 TW（中等）</option>
-                    <option value="genryu-sb">源流明體 TW（半粗）</option>
-                    <option value="genryu-b">源流明體 TW（粗體）</option>
-                    <option value="genryu-h">源流明體 TW（特粗）</option>
-                  </select>
-                </label>
-                <label class="field">備註字體大小
-                  <select id="note-size"><option value="12">小</option><option value="14" selected>中</option><option value="18">大</option><option value="22">特大</option></select>
-                </label>
-                <label class="field">字體顏色<input id="color" type="color" value="#000000"></label>
-              </div>
-              <p class="hint" id="font-status" role="status" aria-live="polite" style="display:none"></p>
-            </div>
+<option value="genryu-m">源流明體 TW（中等）</option>
+<option value="genryu-sb">源流明體 TW（半粗）</option>
+<option value="genryu-b">源流明體 TW（粗體）</option>
+<option value="genryu-h">源流明體 TW（特粗）</option></select>
+        </label><label class="field">相機／鏡頭／曝光資訊字體大小
+        <select id="size-left">
+            <option value="12">小</option>
+            <option value="14" selected>中</option>
+            <option value="18">大</option>
+            <option value="22">特大</option>
+          </select>
+      </label></div><div class="row2"><label class="field">自訂備註字型<select id="note-font">
+            
+            <option value="serif">經典明體 (Noto Serif)</option>
+            <option value="mono">等寬數字 (Mono)</option>
+            <option value="hand">手寫英文 (Caveat)</option>
+            <option value="round">圓體 (Zen Maru)</option>
+            <option value="kiwi">溫潤明體 (Kiwi Maru)</option>
+            <option value="yuji">懷舊墨楷 (Yuji Syuku)</option>
+          <option value="chen">辰宇落雁 2.0（細體）</option>
+<option value="huninn">jf open 粉圓 2.1</option>
 
-            <div class="group panel-actions">
-              <button class="pbtn ghost sm" id="reset">重設文字位置</button>
-            </div>
-          </section>
 
+
+<option value="genryu-m">源流明體 TW（中等）</option>
+<option value="genryu-sb">源流明體 TW（半粗）</option>
+<option value="genryu-b">源流明體 TW（粗體）</option>
+<option value="genryu-h">源流明體 TW（特粗）</option></select></label><label class="field">自訂備註字體大小<select id="note-size"><option value="12">小</option><option value="14" selected>中</option><option value="18">大</option><option value="22">特大</option></select></label></div><label class="field">字體顏色<input id="color" type="color" value="#000000"></label><p class="hint" id="font-status" role="status" aria-live="polite" style="display:none"></p></section><div class="panel-actions"><button class="pbtn ghost sm" id="reset">重設文字位置</button></div></section>
           <!-- 日期 -->
           <section class="tab-panel" id="date-panel" role="tabpanel" aria-labelledby="tab-date" data-panel="date" hidden>
             <div class="group">
@@ -986,14 +988,25 @@ function refreshCameraDisplay(st){
  st.cameraParts=[{text:st.cameraBrand,mark:useLogo&&st.cameraBrandChoice==='auto'?brandKey:null},{text:st.cameraModel,mark:useLogo&&st.cameraModelChoice==='auto'?mark:null}].filter(x=>x.text);
 }
 function getCameraParts(st){return st.cameraParts||[];}
-const cameraMarkScratch=document.createElement('canvas');
-function drawCameraMark(ctx,mask,left,y,height,color) {
- const width=height*mask.width/mask.height,scale=3,pad=6,c=cameraMarkScratch;
- c.width=Math.ceil(width*scale)+pad*2;c.height=Math.ceil(height*scale)+pad*2;
- const g=c.getContext('2d');g.imageSmoothingEnabled=true;g.imageSmoothingQuality='high';
- g.drawImage(mask,pad,pad,width*scale,height*scale);
+// Tint at the source resolution once; retain at most 3 million cached pixels.
+const cameraMarkTints=new Map();
+let cameraMarkTintPixels=0;
+function tintedCameraMark(mask,color){
+ let entry=cameraMarkTints.get(mask);
+ if(entry){cameraMarkTints.delete(mask);cameraMarkTints.set(mask,entry);if(entry.color===color)return entry.canvas;}
+ const c=entry?.canvas||document.createElement('canvas');
+ if(!entry){c.width=mask.width;c.height=mask.height;}
+ const g=c.getContext('2d');g.globalCompositeOperation='copy';g.drawImage(mask,0,0);
  g.globalCompositeOperation='source-in';g.fillStyle=color;g.fillRect(0,0,c.width,c.height);
- ctx.drawImage(c,left-pad/scale,y-pad/scale,c.width/scale,c.height/scale);
+ if(entry){entry.color=color;return c;}
+ const pixels=c.width*c.height;
+ while(cameraMarkTintPixels+pixels>3000000&&cameraMarkTints.size){const oldest=cameraMarkTints.keys().next().value,old=cameraMarkTints.get(oldest).canvas;cameraMarkTintPixels-=old.width*old.height;cameraMarkTints.delete(oldest);}
+ if(pixels<=3000000){cameraMarkTints.set(mask,{canvas:c,color});cameraMarkTintPixels+=pixels;}
+ return c;
+}
+function drawCameraMark(ctx,mask,left,y,height,color) {
+  const width=height*mask.width/mask.height;
+  ctx.drawImage(tintedCameraMark(mask,color),left,y,width,height);
  if(mask.accent)ctx.drawImage(mask.accent,left,y,width,height);
 }
 function cameraMarkLayout(mark,height){
@@ -1111,6 +1124,62 @@ function drawOutputText(ctx,text,x,y,maxWidth){
  if(t.b===0&&t.c===0&&t.a&&t.d){x=(Math.round(x*t.a+t.e)-t.e)/t.a;y=(Math.round(y*t.d+t.f)-t.f)/t.d;}
  if(maxWidth===undefined)ctx.fillText(text,x,y);else ctx.fillText(text,x,y,maxWidth);
 }
+// The export canvas remains at its original size. Replay only the shared
+// caption drawing commands at screen resolution; never scale a text bitmap.
+const previewCanvas=document.createElement('canvas');
+previewCanvas.id='previewCanvas';previewCanvas.setAttribute('aria-hidden','true');previewCanvas.hidden=true;
+$('#mainCanvas').parentElement.appendChild(previewCanvas);
+let captionScene=null,previewWidth=0,previewHeight=0,previewFrame=0,previewLeft=0,previewTop=0;
+const captionMethods=new Set(['save','restore','beginPath','rect','clip','translate','scale','rotate','fillText','drawImage']);
+const captionProperties=['font','fillStyle','strokeStyle','textAlign','textBaseline','direction','globalAlpha','globalCompositeOperation','imageSmoothingEnabled','imageSmoothingQuality','filter','fontKerning','fontStretch','fontVariantCaps','letterSpacing','wordSpacing','textRendering'];
+function captureCaption(ctx,canvas){
+ if(exportingBatch)return ctx;
+ const scene={width:canvas.width,height:canvas.height,background:backgroundCache.canvas,initial:{},commands:[]};
+ for(const key of captionProperties)if(key in ctx)scene.initial[key]=ctx[key];
+ captionScene=scene;
+ queuePreview();
+ const methods=new Map();
+ return new Proxy(ctx,{
+  get(target,key){
+   const value=target[key];
+   if(typeof value!=='function')return value;
+   if(!methods.has(key))methods.set(key,(...args)=>{if(captionMethods.has(key))scene.commands.push([key,args]);return value.apply(target,args);});
+   return methods.get(key);
+  },
+  set(target,key,value){target[key]=value;scene.commands.push([key,value]);return true;}
+ });
+}
+function paintPreview(){
+ if(exportingBatch||!captionScene||!previewWidth||!previewHeight)return;
+ const scene=captionScene,canvas=$('#mainCanvas');
+ if(scene.width!==canvas.width||scene.height!==canvas.height)return;
+ // At most 4 MP (16 MB RGBA); DPR 3 covers phones without unbounded 4K buffers.
+ const density=Math.min(window.devicePixelRatio||1,3,Math.sqrt(4000000/(previewWidth*previewHeight)));
+ const w=Math.max(1,Math.round(previewWidth*density)),h=Math.max(1,Math.min(Math.round(previewHeight*density),Math.floor(4000000/w)));
+ // Keep one bitmap pixel mapped to one physical screen pixel. Fractional
+ // CSS widths/origins would otherwise resample the already-rasterized glyphs.
+ previewCanvas.style.width=(w/density)+'px';previewCanvas.style.height=(h/density)+'px';
+ const dpr=window.devicePixelRatio||1;
+ previewCanvas.style.left=((Math.round(previewLeft*dpr)/dpr)-previewLeft)+'px';
+ previewCanvas.style.top=((Math.round(previewTop*dpr)/dpr)-previewTop)+'px';
+ const ctx=previewCanvas.getContext('2d');
+ if(previewCanvas.width!==w||previewCanvas.height!==h){previewCanvas.width=w;previewCanvas.height=h;}
+ else if(ctx.reset)ctx.reset();else previewCanvas.width=w;
+ ctx.imageSmoothingEnabled=true;ctx.imageSmoothingQuality='high';
+ ctx.drawImage(scene.background,0,0,w,h);
+ ctx.save();ctx.scale(w/scene.width,h/scene.height);
+ for(const [key,value] of Object.entries(scene.initial))ctx[key]=value;
+ for(const [key,value] of scene.commands){if(key==='fillText')drawOutputText(ctx,...value);else if(captionMethods.has(key))ctx[key](...value);else ctx[key]=value;}
+ ctx.restore();previewCanvas.hidden=false;
+}
+function updatePreviewOrigin(){const r=$('#mainCanvas').getBoundingClientRect();previewLeft=r.left;previewTop=r.top;}
+function queuePreview(){if(!previewFrame)previewFrame=requestAnimationFrame(()=>{previewFrame=0;updatePreviewOrigin();paintPreview();});}
+new ResizeObserver(entries=>{
+ const r=entries[0].contentRect;
+ if(r.width!==previewWidth||r.height!==previewHeight){previewWidth=r.width;previewHeight=r.height;updatePreviewOrigin();paintPreview();}
+}).observe($('#mainCanvas'));
+window.addEventListener('resize',queuePreview,{passive:true});
+
 function textFont(key,size,weight=500) {
   return (LOCAL_FONTS[key] ? 400 : weight)+' '+size+'px '+(FONTS[key] || FONTS.sans);
 }
@@ -1174,7 +1243,7 @@ function createDefaultItemState() {
     color: "#000000",
     sizeLeft: "14",
     dateOn: "off",
-    dateSize: "12"
+    dateSize: "12", dateManual:false, autoDateText:""
   };
 }
 
@@ -1208,6 +1277,7 @@ function syncStateFromUI() {
 
 function syncUIFromState() {
   if (!activeState) return;
+  if(activeState.aspect==='mini')activeState.aspect='orig';
   activeState.font=usableFont(activeState.font);activeState.noteFont=usableFont(activeState.noteFont||activeState.font);
   migrateSources(activeState);
   const identity=getCameraIdentity(activeState);refreshCameraDisplay(activeState);
@@ -1271,26 +1341,37 @@ function toggleExifInputs() {
   $("#exif-row-1").style.display = "grid";
 }
 
+const syncSourceKeys=new WeakMap(),syncSources=new Map(),selectedSyncSources=new WeakMap();
+let nextSyncSourceKey=1;
 function updateSyncSelectOptions() {
   const syncContainer = $("#sync-container");
   const select = $("#sync-source-select");
+  syncSources.clear();select.replaceChildren(new Option('選擇來源照片…',''));
+  let removed=false;
+  for(const state of itemsList){const source=selectedSyncSources.get(state);if(source&&!itemsList.includes(source)){selectedSyncSources.delete(state);if(state===activeState)removed=true;}}
+  $('#sync-status').textContent=removed?'來源照片已刪除，請重新選擇。':'';
+  const source=selectedSyncSources.get(activeState),preview=$('#sync-source-preview');
+  preview.hidden=!source;preview.style.display=source?'flex':'none';
+  $('#sync-source-image').removeAttribute('src');$('#sync-source-name').textContent='';
+  if(source){$('#sync-source-image').src=source.thumbUrl;const name=source.originalFile?.name||'未命名照片';$('#sync-source-name').textContent=name;$('#sync-source-name').title=name;}
   
-  if (itemsList.length <= 1) {
+  if (itemsList.length <= 1 || currentIndex === 0) {
     syncContainer.style.display = "none";
     return;
   }
 
   syncContainer.style.display = "grid";
-  select.innerHTML = "";
 
-  itemsList.forEach((_, idx) => {
+  itemsList.forEach((state, idx) => {
     if (idx !== currentIndex) {
       const opt = document.createElement("option");
-      opt.value = idx;
-      opt.textContent = `第 ${idx + 1} 張照片`;
+      if(!syncSourceKeys.has(state))syncSourceKeys.set(state,'photo-'+nextSyncSourceKey++);
+      opt.value = syncSourceKeys.get(state);syncSources.set(opt.value,state);
+      opt.textContent = `第 ${idx + 1} 張：${state.originalFile?.name||'未命名照片'}`;
       select.appendChild(opt);
     }
   });
+  select.value=source?syncSourceKeys.get(source)||'':'';
 }
 
 
@@ -1360,7 +1441,7 @@ function drawFrameBackground(ctx,{totalW,totalH,sideMargin,safeBottom=0,bottomMa
 }
 let bannerTintSample=null;
 function drawBanner(){
- const st=activeState,g=bannerLayout(),canvas=$('#mainCanvas'),ctx=canvas.getContext('2d');if(canvas.width!==1920)canvas.width=1920;if(canvas.height!==1080)canvas.height=1080;
+ const st=activeState,g=bannerLayout(),canvas=$('#mainCanvas');let ctx=canvas.getContext('2d');if(canvas.width!==1920)canvas.width=1920;if(canvas.height!==1080)canvas.height=1080;
  const {sideMargin:x,topMargin:y,photoDim:photo}=g;
  const sampleKey=[photo.w,photo.h,st.crop.z,st.crop.x,st.crop.y].join('|');
  if(st.frameStyle==='tint'&&st.source&&(bannerTintSample?.source!==st.source||bannerTintSample.key!==sampleKey)){
@@ -1370,6 +1451,7 @@ function drawBanner(){
  if(backgroundCache?.source===st.source&&backgroundCache.key===bgKey)ctx.drawImage(backgroundCache.canvas,0,0);else{
  drawFrameBackground(ctx,{totalW:1920,totalH:1080,sideMargin:60},true);ctx.save();ctx.beginPath();ctx.rect(x,y,photo.w,photo.h);ctx.clip();if(st.source){const r=coverRect(photo.w,photo.h);ctx.drawImage(st.source,x+r.x,y+r.y,r.dw,r.dh);}else{ctx.fillStyle='#cfc6b8';ctx.fillRect(x,y,photo.w,photo.h);}ctx.restore();
  const layer=document.createElement('canvas');layer.width=1920;layer.height=1080;layer.getContext('2d').drawImage(canvas,0,0);backgroundCache={source:st.source,key:bgKey,canvas:layer};}
+ ctx=captureCaption(ctx,canvas);
  const rows=[];for(const row of g.rows){
  let size=row.size;ctx.font=textFont(g.font,size,500);
  if(Number(st.sizeLeft)===22){const measured=row.parts?row.parts.reduce((n,part)=>n+(part.mark&&logoMasks[part.mark]?cameraMarkLayout(part.mark,size).width:ctx.measureText(part.text).width),0)+Math.max(0,row.parts.length-1)*size*.45:ctx.measureText(row.text).width;
@@ -1392,14 +1474,72 @@ function drawBanner(){
  $('#note-layout-help').hidden=true;
 }
 
+function storyGeometry(){
+ const st=activeState,parts=st.showCam==='on'?getCameraParts(st):[];
+ const size=Math.round(fontSizeFor(st.font||'huninn',st.sizeLeft)*3);
+ const rowSizes=[];
+ if(parts.length)rowSizes.push(size*(parts.some(p=>p.mark)?.8:1));
+ if(!st.isPhone&&st.lens.trim())rowSizes.push(size*.82);
+ if(hasExposureData(st)&&st.showExp==='on')rowSizes.push(size*.7);
+ const noteSize=fontSizeFor(st.noteFont,st.noteSize)*3*.85;
+ const noteHeight=st.noteText.trim()?Math.ceil(noteSize*2.6)+12:0;
+ const captionHeight=Math.ceil(24+noteHeight+rowSizes.reduce((n,s)=>n+s*1.4+10,0));
+ const footerHeight=Math.max(180,captionHeight+24);
+ const maxW=1016,maxH=Math.max(100,1920-48-40-footerHeight);
+ const sw=st.source?.width||2,sh=st.source?.height||3;
+ const scale=Math.min(maxW/sw,maxH/sh),photoDim={w:sw*scale,h:sh*scale};
+ // Native aspect ratios avoid cutting subjects automatically. Extra height in
+ // landscape/square layouts becomes balanced outer space, not a cover crop.
+ const topMargin=48+Math.max(0,1920-48-40-photoDim.h-footerHeight)*.45;
+ return {photoDim,sideMargin:(1080-photoDim.w)/2,topMargin,bottomMargin:1920-topMargin-photoDim.h-40,safeBottom:40,totalW:1080,totalH:1920,captionHeight,noteHeight,noteSize};
+}
+function drawStoryCaption(ctx,g,rows,fontKey,textColor){
+ const st=activeState,x=g.sideMargin,w=g.photoDim.w,photoBottom=g.topMargin+g.photoDim.h;
+ let y=photoBottom+12;
+ ctx.save();ctx.fillStyle=textColor;ctx.textBaseline='top';
+ if(g.noteHeight){
+  const text=st.noteText.trim(),height=g.noteHeight-12;let size=g.noteSize,lines=[];
+  for(let attempt=0;attempt<20;attempt++){
+   ctx.font=textFont(st.noteFont||fontKey,size,500);lines=[];let line='';
+   for(const char of Array.from(text)){if(char==='\n'){lines.push(line);line='';}else if(line&&ctx.measureText(line+char).width>w){lines.push(line);line=char;}else line+=char;}
+   if(line)lines.push(line);
+   if(lines.length*size*1.3<=height)break;size*=.85;
+  }
+  ctx.save();ctx.beginPath();ctx.rect(x,y,w,height);ctx.clip();ctx.textAlign='left';
+  lines.forEach((line,i)=>drawOutputText(ctx,line,x,y+i*size*1.3,w));ctx.restore();y+=g.noteHeight;
+ }
+ // Center the complete information block in the remaining lower border.
+ // Keep the existing row heights/gaps and reserve the note band above it.
+ const infoHeight=rows.reduce((sum,row)=>sum+row.size*1.4,0)+Math.max(0,rows.length-1)*10;
+ const infoTop=g.noteHeight?y:photoBottom;
+ y=infoTop+(g.totalH-infoTop-infoHeight)/2;
+ ctx.textAlign='center';
+ for(const row of rows){
+  const height=row.size*1.4;
+  ctx.save();ctx.beginPath();ctx.rect(x,y,w,height);ctx.clip();ctx.font=textFont(fontKey,row.size,row.weight);
+  if(row.parts)drawCameraLine(ctx,row.parts,540,y+row.size*.1,row.size,textColor,fontKey,w*.96);
+  else drawOutputText(ctx,row.text,540,y+row.size*.1,w*.96);
+  ctx.restore();y+=height+10;
+ }
+ if(st.dateOn==='on'&&st.dateText.trim()){
+  // Date stays in the side border; fit both its thickness and its length.
+  const size=Math.min((Number(st.dateSize)||12)*3,g.sideMargin*.72);
+  ctx.font=textFont(fontKey,size,700);ctx.textBaseline='middle';ctx.textAlign='center';
+  const half=Math.min(ctx.measureText(st.dateText.trim()).width,g.photoDim.h*.92)/2;
+  const cy=Math.max(g.topMargin+half,Math.min(g.topMargin+g.photoDim.h-half,g.topMargin+st.datePos/100*g.photoDim.h));
+  ctx.translate(st.dateSide==='left'?g.sideMargin/2:1080-g.sideMargin/2,cy);ctx.rotate(Math.PI/2);
+  drawOutputText(ctx,st.dateText.trim(),0,0,g.photoDim.h*.92);
+ }
+ ctx.restore();
+ $('#note-layout-help').hidden=true;
+}
 function getTargetPhotoSize() {
   if(activeState?.aspect==='banner')return bannerLayout().photoDim;
-  if (activeState?.aspect === "instagram-story") return { w:980, h:1240 };
+  if (activeState?.aspect === "instagram-story") return storyGeometry().photoDim;
   if (activeState?.aspect === "instagram") return { w:1400, h:1645 };
   if (!activeState || !activeState.source) return { w: 1400, h: 1050 };
   let r = activeState.source.width / activeState.source.height;
-  if (activeState.aspect === "mini") r = 2 / 3;
-  else if (activeState.aspect === "square") r = 1;
+  if (activeState.aspect === "square") r = 1;
   else if (activeState.aspect === "wide") r = 3 / 2;
   
   const w = 1400;
@@ -1408,11 +1548,12 @@ function getTargetPhotoSize() {
 
 function getCardGeometry() {
   if(activeState?.aspect==='banner')return bannerLayout();
-  const photoDim=getTargetPhotoSize(),story=activeState?.aspect==='instagram-story';
-  const sideMargin=story?50:Math.round(photoDim.w*.05);
-  const topMargin=story?250:sideMargin;
-  const bottomMargin=story?180:Math.round(photoDim.w*(activeState?.aspect==='instagram'?.15:.22));
-  const safeBottom=story?250:0;
+  if(activeState?.aspect==='instagram-story')return storyGeometry();
+  const photoDim=getTargetPhotoSize();
+  const sideMargin=Math.round(photoDim.w*.05);
+  const topMargin=sideMargin;
+  const bottomMargin=Math.round(photoDim.w*(activeState?.aspect==='instagram'?.15:.22));
+  const safeBottom=0;
   return {photoDim,sideMargin,topMargin,bottomMargin,safeBottom,totalW:photoDim.w+sideMargin*2,totalH:topMargin+photoDim.h+bottomMargin+safeBottom};
 }
 
@@ -1435,12 +1576,14 @@ function queueColorPreview(){activeState.color=$('#color').value;if(!colorFrame&
 function drawAll(sync = true) {
   if (sync) syncStateFromUI();
   if(sync)prepareTextFonts(activeState);
-  if(pendingFontLoads)return;
+  if(pendingFontLoads&&activeState?.source)return;
   const canvas = $("#mainCanvas");
-  const ctx = canvas.getContext("2d");
+  canvas.style.touchAction='none';
+  let ctx = canvas.getContext("2d");
   
   if(activeState?.aspect==='banner'){drawBanner();return;}
-  const {photoDim,sideMargin,topMargin,bottomMargin,safeBottom,totalW,totalH}=getCardGeometry();
+  const geometry=getCardGeometry();
+  const {photoDim,sideMargin,topMargin,bottomMargin,safeBottom,totalW,totalH}=geometry;
   
   if(canvas.width!==totalW)canvas.width=totalW;
   if(canvas.height!==totalH)canvas.height=totalH;
@@ -1448,6 +1591,7 @@ function drawAll(sync = true) {
   ctx.clearRect(0, 0, totalW, totalH);
 
   if (!activeState || !activeState.source) {
+    captionScene=null;previewCanvas.hidden=true;
     ctx.fillStyle = "#f7f3ec";
     ctx.fillRect(0, 0, totalW, totalH);
     ctx.fillStyle = "#cfc6b8";
@@ -1456,14 +1600,14 @@ function drawAll(sync = true) {
   }
 
   const photoX=sideMargin,photoY=topMargin;
-  const backgroundKey=[activeState.frameStyle,activeState.aspect,totalW,totalH,activeState.crop.z,activeState.crop.x,activeState.crop.y].join('|');
+  const backgroundKey=[activeState.frameStyle,activeState.aspect,totalW,totalH,photoDim.w,photoDim.h,sideMargin,topMargin,activeState.crop.z,activeState.crop.x,activeState.crop.y].join('|');
   if(backgroundCache?.source===activeState.source && backgroundCache.key===backgroundKey){ctx.drawImage(backgroundCache.canvas,0,0);}else{
   if(activeState.frameStyle==='tint'){
    const sample=document.createElement('canvas');sample.width=photoDim.w;sample.height=photoDim.h;
    const sg=sample.getContext('2d'),r=coverRect(photoDim.w,photoDim.h);
    sg.drawImage(activeState.source,r.x,r.y,r.dw,r.dh);sampleTint(sg,0,0,photoDim.w,photoDim.h);
   }
-  drawFrameBackground(ctx,{totalW,totalH,sideMargin,safeBottom,bottomMargin});
+  drawFrameBackground(ctx,{totalW,totalH,sideMargin:activeState.aspect==='instagram-story'?40:sideMargin,safeBottom,bottomMargin});
 
 
   
@@ -1482,8 +1626,8 @@ function drawAll(sync = true) {
   const layer=document.createElement('canvas');layer.width=totalW;layer.height=totalH;layer.getContext('2d').drawImage(canvas,0,0);
   backgroundCache={source:activeState.source,key:backgroundKey,canvas:layer};
   }
+  ctx=captureCaption(ctx,canvas);
   const fontKey = activeState.font || "huninn";
-  const font = FONTS[fontKey] || FONTS.sans;
   const textColor = activeState.color;
 
   const sizeLeftBase = fontSizeFor(fontKey,activeState.sizeLeft);
@@ -1492,7 +1636,6 @@ function drawAll(sync = true) {
   ctx.fillStyle = textColor;
   ctx.textBaseline = "top";
 
-  const captionY = photoY + photoDim.h + Math.round(bottomMargin * 0.18);
 
   const showCam = activeState.showCam === "on";
   const lensText = !activeState.isPhone ? activeState.lens.trim() : "";
@@ -1508,39 +1651,13 @@ function drawAll(sync = true) {
   if(expText) rows.push({text:expText,size:fontSizeLeft*.7,weight:500});
 
   rows.forEach(row=>{if(row.logo)row.size*=.8;});
+  if(activeState.aspect==='instagram-story'){drawStoryCaption(ctx,geometry,rows,fontKey,textColor);return;}
   const rowGap=fontSizeLeft*(expText ? .25 : .4);
   const available=bottomMargin*(expText ? .82 : .58);
   const natural=rows.reduce((n,row)=>n+row.size,0)+Math.max(0,rows.length-1)*rowGap;
   const factor=Math.min(1,available/Math.max(1,natural));
   let currentY=photoY+photoDim.h+bottomMargin*(expText ? .49 : .46)-natural*factor/2;
   const centerWidth=photoDim.w*.92;
-  if(activeState.aspect==='instagram-story' && rows.length){
-    // Center visible glyphs in the lower caption area marked by the user.
-    // Keep 100 output pixels clear at the bottom for the reply interface.
-    const infoCenter=(photoY+photoDim.h+totalH-100)/2;
-    let visualTop=Infinity,visualBottom=-Infinity,offset=0;
-    for(const row of rows){
-      const size=row.size*factor;
-      ctx.font=textFont(row.fontKey||fontKey,size,row.weight);
-      let top,bottom;
-      if(row.parts){
-        const metrics=row.parts.map(part=>{
-          if(part.mark&&logoMasks[part.mark]){const box=cameraMarkLayout(part.mark,size);return {width:box.width,top:box.top,bottom:box.top+box.height};}
-          const m=ctx.measureText(part.text);return {width:m.width,top:-m.actualBoundingBoxAscent,bottom:m.actualBoundingBoxDescent};
-        });
-        const width=metrics.reduce((sum,m)=>sum+m.width,0)+Math.max(0,metrics.length-1)*size*.45;
-        const scale=Math.min(1,centerWidth/Math.max(1,width));
-        top=Math.min(...metrics.map(m=>m.top))*scale;
-        bottom=Math.max(...metrics.map(m=>m.bottom))*scale;
-      }else{
-        const m=ctx.measureText(row.text);top=-m.actualBoundingBoxAscent;bottom=m.actualBoundingBoxDescent;
-      }
-      visualTop=Math.min(visualTop,offset+top);
-      visualBottom=Math.max(visualBottom,offset+bottom);
-      offset+=size+rowGap*factor;
-    }
-    currentY=infoCenter-(visualTop+visualBottom)/2;
-  }
   const infoBounds=[];
   ctx.textAlign="center";
   for(const row of rows){
@@ -1718,11 +1835,39 @@ function parseTiff(buf, start){
   };
 }
 
+// Read JPEG metadata without copying the entire original photo into another Blob.
+async function readFileExif(file){
+ const head=new Uint8Array(await file.slice(0,2).arrayBuffer());
+ if(head[0]!==255||head[1]!==216)return {};
+ let offset=2;
+ while(offset+4<=file.size){
+  const h=new Uint8Array(await file.slice(offset,offset+4).arrayBuffer());
+  if(h[0]!==255||h[1]===218||h[1]===217)break;
+  const size=(h[2]<<8)|h[3];if(size<2||offset+2+size>file.size)break;
+  if(h[1]===225){
+   const segment=new Uint8Array(await file.slice(offset,offset+2+size).arrayBuffer());
+   if(String.fromCharCode(...segment.slice(4,10)).startsWith('Exif')){
+    const jpeg=new Uint8Array(segment.length+2);jpeg.set(head);jpeg.set(segment,2);return readExif(jpeg.buffer);
+   }
+  }
+  offset+=2+size;
+ }
+ return {};
+}
+async function makeThumbnail(source){
+ const c=document.createElement('canvas'),scale=Math.min(1,192/Math.max(source.width,source.height));
+ c.width=Math.max(1,Math.round(source.width*scale));c.height=Math.max(1,Math.round(source.height*scale));
+ // Resize off the main rendering path before uploading pixels to the thumbnail canvas.
+ let small;
+ try{small=await createImageBitmap(source,{resizeWidth:c.width,resizeHeight:c.height,resizeQuality:'high'});}catch(e){}
+ const g=c.getContext('2d');g.imageSmoothingQuality='high';g.drawImage(small||source,0,0,c.width,c.height);small?.close();
+ const blob=await new Promise(resolve=>c.toBlob(resolve,'image/jpeg',0.86));
+ if(!blob)throw Error('無法建立縮圖');return URL.createObjectURL(blob);
+}
 async function processSingleFile(file) {
   const itemState = createDefaultItemState();
-  const buf = await file.arrayBuffer();
   let meta = {};
-  try { meta = await readExif(buf); } catch(e) {}
+  try { meta = await readFileExif(file); } catch(e) {}
   itemState.originalFile=file;
   itemState.rawExif=Object.freeze({...meta});
   itemState.isPhone=isPhoneExif(meta);
@@ -1741,8 +1886,8 @@ async function processSingleFile(file) {
     if (m) itemState.dateText = m[1] + "." + m[2] + "." + m[3];
   }
 
-  const blob = new Blob([buf], { type: file.type || "image/jpeg" });
-  itemState.thumbUrl = URL.createObjectURL(blob);
+  itemState.autoDateText=itemState.dateText;
+  const blob = file;
   
   try {
   try {
@@ -1751,12 +1896,14 @@ async function processSingleFile(file) {
     try {
       itemState.source = await createImageBitmap(blob);
     } catch(e2) {
-      const url = itemState.thumbUrl;
-      const img = new Image();
-      await new Promise((res, rej) => { img.onload = res; img.onerror = rej; img.src = url; });
-      itemState.source = await createImageBitmap(img);
+      const url = URL.createObjectURL(file);
+      try{const img = new Image();
+       await new Promise((res, rej) => { img.onload = res; img.onerror = rej; img.src = url; });
+       itemState.source = await createImageBitmap(img);
+      }finally{URL.revokeObjectURL(url);}
     }
   }
+  itemState.thumbUrl = await makeThumbnail(itemState.source);
   return itemState;
   }catch(error){URL.revokeObjectURL(itemState.thumbUrl);itemState.source?.close?.();throw error;}
 }
@@ -1775,22 +1922,24 @@ async function appendFiles(files) {
 
   if(files.length>maxAllowed)alert("最多 20 張，僅加入前 "+maxAllowed+" 張。");
   const filesToAdd = Array.from(files).slice(0, maxAllowed);
-  const firstNewIndex=itemsList.length;
+  let displayed=false,processed=0;
+  const status=$('#import-status');status.hidden=false;
   for(const f of filesToAdd){
-    try {itemsList.push(await processSingleFile(f));}
-    catch(err){alert("無法讀取 "+f.name+"，請改用 JPEG 或 PNG。");}
+    status.textContent='正在加入照片 '+(++processed)+'／'+filesToAdd.length;
+    // Yield between full-resolution decodes so existing controls remain responsive.
+    await new Promise(resolve=>setTimeout(resolve,0));
+    try {
+      const next=await processSingleFile(f);itemsList.push(next);
+      if(!displayed||!activeState.source){
+        syncStateFromUI();currentIndex=itemsList.length-1;activeState=next;displayed=true;
+        syncUIFromState();prepareTextFonts(activeState);drawAll(false);
+        if(window.setPolaroidStageCollapsed)window.setPolaroidStageCollapsed(false);
+      }
+      renderThumbnails();
+    }catch(err){alert('無法讀取 '+f.name+'，請改用 JPEG 或 PNG。');}
   }
-
-  if (itemsList.length > 0) {
-    currentIndex = Math.min(firstNewIndex,itemsList.length-1);
-    activeState = itemsList[currentIndex];
-    renderThumbnails();
-    syncUIFromState();prepareTextFonts(activeState);drawAll(false);
-    if (window.setPolaroidStageCollapsed) window.setPolaroidStageCollapsed(false);
   }
-}
-
-  finally { addingFiles=false; }
+  finally { addingFiles=false;$('#import-status').hidden=true; }
 }
 
 function deletePhoto(idx, e) {
@@ -1816,12 +1965,45 @@ function deletePhoto(idx, e) {
   syncUIFromState();prepareTextFonts(activeState);drawAll(false);
 }
 
+const thumbnailNodes=new Map();
+let thumbScrollFrame=0;
+function updateThumbnailScroll(){
+ const list=$('#thumbList'),max=Math.max(0,list.scrollWidth-list.clientWidth);
+ $('#thumb-prev').disabled=list.scrollLeft<=1;
+ $('#thumb-next').disabled=list.scrollLeft>=max-1;
+}
+function revealSelectedThumbnail(){
+ const list=$('#thumbList'),node=thumbnailNodes.get(activeState);
+ if(node){const r=node.getBoundingClientRect(),view=list.getBoundingClientRect();
+  if(r.left<view.left+6)list.scrollLeft+=r.left-view.left-6;
+  else if(r.right>view.right-6)list.scrollLeft+=r.right-view.right+6;
+ }
+ updateThumbnailScroll();
+}
+$('#thumbList').addEventListener('scroll',()=>{
+ if(!thumbScrollFrame)thumbScrollFrame=requestAnimationFrame(()=>{thumbScrollFrame=0;updateThumbnailScroll();});
+},{passive:true});
+$('#thumbList').addEventListener('wheel',e=>{
+ // Leave native horizontal trackpad gestures and browser zoom untouched.
+ if(e.ctrlKey||e.deltaX!==0||!e.deltaY)return;
+ const list=e.currentTarget,max=list.scrollWidth-list.clientWidth;
+ if(max<=1||(e.deltaY<0?list.scrollLeft<=1:list.scrollLeft>=max-1))return;
+ const unit=e.deltaMode===1?16:e.deltaMode===2?list.clientWidth:1;
+ e.preventDefault();list.scrollLeft+=e.deltaY*unit;
+},{passive:false});
+new ResizeObserver(revealSelectedThumbnail).observe($('#thumbList'));
+for(const [id,direction] of [['thumb-prev',-1],['thumb-next',1]])$('#'+id).addEventListener('click',()=>{
+ const list=$('#thumbList');list.scrollBy({left:direction*Math.max(70,list.clientWidth*.8),behavior:'smooth'});
+});
 function renderThumbnails() {
   const container = $("#thumbList");
   const mainPickLabel = $("#mainPickLabel");
   const imageStatus = $("#imageStatus");
+  $('#thumb-rail').hidden=itemsList.length===0;
 
+  for(const [st,node] of thumbnailNodes){if(!itemsList.includes(st)){node.remove();thumbnailNodes.delete(st);}}
   if (itemsList.length === 0) {
+    container.replaceChildren();
     imageStatus.textContent = "尚未選取照片";
     container.style.display = "none";
     mainPickLabel.style.display = "grid";
@@ -1833,10 +2015,12 @@ function renderThumbnails() {
   imageStatus.textContent = `第 ${currentIndex + 1} 張／共 ${itemsList.length} 張`;
   mainPickLabel.style.display = "none";
   container.style.display = "flex";
-  container.innerHTML = "";
+  container.querySelector(".thumb-add")?.remove();
 
   itemsList.forEach((st, idx) => {
-    const div = document.createElement("div");
+    let div=thumbnailNodes.get(st);
+    if(div){div.classList.toggle('active',idx===currentIndex);return;}
+    div = document.createElement("div");thumbnailNodes.set(st,div);
     div.className = "thumb-item" + (idx === currentIndex ? " active" : "");
 
     const img = document.createElement("img");
@@ -1847,13 +2031,14 @@ function renderThumbnails() {
     delBtn.className = "thumb-del";
     delBtn.innerHTML = "✕";
     delBtn.title = "刪除照片";
-    delBtn.onclick = (e) => deletePhoto(idx, e);
+    delBtn.onclick = (e) => deletePhoto(itemsList.indexOf(st), e);
     div.appendChild(delBtn);
 
     div.onclick = () => {
+      const selected=itemsList.indexOf(st);if(selected<0||selected===currentIndex)return;
       syncStateFromUI();
-      currentIndex = idx;
-      activeState = itemsList[idx];
+      currentIndex = selected;
+      activeState = st;
       renderThumbnails();
       syncUIFromState();prepareTextFonts(activeState);drawAll(false);
     };
@@ -1861,6 +2046,7 @@ function renderThumbnails() {
     container.appendChild(div);
   });
 
+  itemsList.forEach((st,idx)=>{const node=thumbnailNodes.get(st);if(container.children[idx]!==node)container.insertBefore(node,container.children[idx]||null);});
   if (itemsList.length < 20) {
     const addBtn = document.createElement("div");
     addBtn.className = "thumb-add";
@@ -1878,6 +2064,7 @@ function renderThumbnails() {
 
   $("#save-all").style.display = itemsList.length > 1 ? "block" : "none";
   updateSyncSelectOptions();
+  requestAnimationFrame(revealSelectedThumbnail);
 }
 
 function downloadBlob(blob,name){
@@ -1972,30 +2159,30 @@ for(const type of ['input','change','click'])document.addEventListener(type,even
 
 function applySyncFromSelectedPhoto() {
   const select = $("#sync-source-select");
-  const targetIdx = Number(select.value);
-
-  if (isNaN(targetIdx) || !itemsList[targetIdx]) return;
-
-  const targetState = itemsList[targetIdx];
-
-  activeState.showCam = targetState.showCam;
-  activeState.showExp = hasExposureData(activeState) ? targetState.showExp : "off";
-  activeState.noteText = targetState.noteText;
-  activeState.dateOn = targetState.dateOn;
-  activeState.datePos = targetState.datePos;
-  activeState.dateSide = targetState.dateSide;
-  activeState.bannerDateSide = targetState.bannerDateSide || 'bottom';
-  activeState.dateSize = targetState.dateSize;
-  activeState.color = targetState.color;
-  activeState.font = targetState.font;
-  activeState.noteFont = targetState.noteFont || targetState.font;
-  activeState.noteSize = targetState.noteSize || "14";
-  activeState.sizeLeft = targetState.sizeLeft;
-  activeState.pos = { ...targetState.pos };
-
+  if(exportingBatch)return;
+  if(!select.value){selectedSyncSources.delete(activeState);updateSyncSelectOptions();return;}
+  const targetState=syncSources.get(select.value),targetIdx=itemsList.indexOf(targetState);
+  if(targetIdx<0||targetState===activeState||itemsList[currentIndex]!==activeState){updateSyncSelectOptions();return;}
+  // Explicit edit-only schema: never clone image/EXIF, derived identity or crop.
+  const fields=['frameStyle','tintColor','aspect','pos','dateSide','bannerDateSide','datePos',
+    'noteText','showCam','showExp','shotOn','font','noteFont','noteSize','color','sizeLeft',
+    'dateOn','dateSize','cameraBrandChoice','cameraModelChoice','lensChoice',
+    'manualBrand','manualModel','manualLens'];
+  migrateSources(targetState);
+  const defaults=createDefaultItemState();
+  for(const key of fields){const value=targetState[key]??defaults[key];if(value===undefined)delete activeState[key];else activeState[key]=typeof value==='object'?structuredClone(value):value;}
+  activeState.cameraBrand=activeState.cameraBrandChoice==='auto'?activeState.autoBrand||'':activeState.cameraBrandChoice==='manual'?activeState.manualBrand||'':'';
+  activeState.cameraModel=activeState.cameraModelChoice==='auto'?activeState.autoModel||'':activeState.cameraModelChoice==='manual'?activeState.manualModel||'':'';
+  activeState.lens=activeState.isPhone?'':activeState.lensChoice==='auto'?activeState.autoLens||'':activeState.lensChoice==='manual'?activeState.manualLens||'':'';
+  activeState.dateManual=targetState.dateManual===true;
+  activeState.dateText=activeState.dateManual?targetState.dateText:activeState.autoDateText||'';
+  if(!hasExposureData(activeState))activeState.showExp='off';
+  refreshCameraDisplay(activeState);selectedSyncSources.set(activeState,targetState);
   syncUIFromState();prepareTextFonts(activeState);drawAll(false);
+  $('#sync-status').textContent='已套用第 '+(targetIdx+1)+' 張照片的設定';
 }
 
+$('#date-text').addEventListener('input',()=>{if(activeState&&!exportingBatch)activeState.dateManual=true;});
 function toggleCameraManual() {
   $('#camera-brand-manual').style.display='grid';$('#camera-brand-manual').style.visibility=$('#camera-brand').value==='manual'?'visible':'hidden';$('#camera-brand-manual').inert=$('#camera-brand').value!=='manual';
   $('#camera-manual-field').style.display='grid';$('#camera-manual-field').style.visibility=$('#camera-select').value==='manual'?'visible':'hidden';$('#camera-manual-field').inert=$('#camera-select').value!=='manual';
@@ -2059,7 +2246,7 @@ document.querySelectorAll("#date-sides button").forEach(b => {
   };
 });
 
-$("#apply-sync-btn").onclick = applySyncFromSelectedPhoto;
+$("#sync-source-select").addEventListener('change',applySyncFromSelectedPhoto);
 $("#reset").onclick = () => { if (activeState) { activeState.pos = { left: 6, right: 6 }; activeState.datePos = 18; drawAll(); } };
 $("#reset-crop").onclick = () => { if (activeState) { activeState.crop = { z: 1, x: 0, y: 0 }; drawAll(); } };
 $("#save").onclick = exportCard;
@@ -2141,7 +2328,7 @@ $("#file").addEventListener("change", e => {
     else tap={x:point.clientX,y:point.clientY,moved:false,eligible:inPhoto(getCanvasCoords(e))&&Date.now()>wheelUntil};
     sx=point.clientX;sy=point.clientY;
     if (!activeState || !activeState.source) return;
-    if(activeState.aspect==='banner'&&!inPhoto(getCanvasCoords(e)))return;
+    if(['banner','instagram-story'].includes(activeState.aspect)&&!inPhoto(getCanvasCoords(e)))return;
     
     if (e.touches && e.touches.length >= 2) {
       pinching = true;
@@ -2276,7 +2463,7 @@ $("#file").addEventListener("change", e => {
     stage.classList.toggle('desktop-fullscreen',on);document.body.classList.toggle('preview-fullscreen',on);
     if(on){
       previousFocus=document.activeElement;
-      for(const el of document.querySelectorAll('.top,.dock')){inertBefore.set(el,el.inert);el.inert=true;}
+      for(const el of document.querySelectorAll('.top,.dock,#panel-photo')){inertBefore.set(el,el.inert);el.inert=true;}
       stage.setAttribute('role','dialog');stage.setAttribute('aria-modal','true');stage.setAttribute('aria-label','全螢幕相片預覽');
     }else{
       for(const [el,inert] of inertBefore)el.inert=inert;inertBefore.clear();
@@ -2345,18 +2532,29 @@ $("#file").addEventListener("change", e => {
   drawAll = function (...args) {
     origDrawAll.apply(this, args);
     apply();
+    // Caption preview is coalesced by captureCaption through requestAnimationFrame.
   };
 
   apply();
 })();
 
-// 編輯分頁（照片／版型／文字／日期）：只切換顯示，欄位與事件都不變
+
+document.addEventListener('focusin',event=>{
+ if(innerWidth>859||!event.target.matches('.dock input:not([type="file"]):not([type="color"]):not([type="checkbox"]),.dock textarea'))return;
+ document.body.classList.add('input-editing');
+ requestAnimationFrame(()=>event.target.scrollIntoView({block:'nearest'}));
+});
+document.addEventListener('focusout',()=>requestAnimationFrame(()=>{
+ if(!document.activeElement?.matches('.dock input:not([type="file"]):not([type="color"]):not([type="checkbox"]),.dock textarea'))document.body.classList.remove('input-editing');
+}));
+
+// 設定分頁（版型／文字／日期）：只切換顯示，欄位與事件都不變
 (function bindTabs(){
   const KEY='polaroid-room-tab';
   const tabs=[...document.querySelectorAll('.tabs [role="tab"]')],panels=[...document.querySelectorAll('.tab-panel')];
   if(!tabs.length)return;
   function show(name,focus){
-    if(!tabs.some(t=>t.dataset.tab===name))name='photo';
+    if(!tabs.some(t=>t.dataset.tab===name))name='style';
     tabs.forEach(t=>{const on=t.dataset.tab===name;t.setAttribute('aria-selected',String(on));t.tabIndex=on?0:-1;if(on&&focus)t.focus();});
     panels.forEach(p=>{p.hidden=p.dataset.panel!==name;});
     try{sessionStorage.setItem(KEY,name);}catch(e){}
@@ -2370,7 +2568,7 @@ $("#file").addEventListener("change", e => {
     });
   });
   window.polaroidShowTab=show;
-  let start='photo';try{start=sessionStorage.getItem(KEY)||'photo';}catch(e){}
+  let start='style';try{start=sessionStorage.getItem(KEY)||'style';}catch(e){}
   show(start);
 })();
 
@@ -2414,9 +2612,9 @@ syncUIFromState();prepareTextFonts(activeState);drawAll(false);
   const steps=[
     { el:'.brand', title:'歡迎來到拍立得小房間', text:'把照片加上拍立得邊框、相機資訊，再下載或分享。全部都在瀏覽器裡完成，照片不會上傳。' },
     { el:'#theme-select', title:'切換主題', text:'晨光、粉霧、海霧、夜光，還有全黑。選過會記住，下次打開還在。' },
-    { el:'#mainPickLabel', tab:'photo', title:'選擇照片', text:'一次最多 20 張。選完後按系統的「加入／完成」。縮圖可點來切換，右上角叉叉可刪除。' },
+    { el:'#mainPickLabel', title:'選擇照片', text:'一次最多 20 張。選完後按系統的「加入／完成」。縮圖可點來切換，右上角叉叉可刪除。' },
     { el:'#frames', tab:'style', title:'邊框樣式', text:'白框、黑框、取色、復古、底片。取色會跟照片配色。選好後還能改比例。' },
-    { el:'#ratios', tab:'style', title:'照片比例', text:'原圖、Mini、方框、Wide、橫幅，以及 Instagram 貼文、限時動態。橫幅或限動時預覽會自動變大。' },
+    { el:'#ratios', tab:'style', title:'照片比例', text:'原圖、方框、Wide、橫幅，以及 Instagram 貼文、限時動態。橫幅模式使用較大的預覽。' },
     { el:'#stage', title:'預覽與裁切', text:'拖曳照片調整裁切。電腦用滾輪縮放，手機用雙指縮放。小螢幕右下角箭頭可把預覽收小。' },
     { el:'#text-settings', tab:'text', title:'文字與相機資料', text:'品牌、型號、鏡頭可自動從 EXIF 帶入，也能手動打或隱藏。下面可改字體、大小和顏色。' },
     { el:'#action-group', title:'分享與下載', text:'單張可分享到 IG／LINE 或下載 PNG。選了多張會出現打包 ZIP。右上角「？」隨時可以再看一次教學。' }
@@ -2425,6 +2623,7 @@ syncUIFromState();prepareTextFonts(activeState);drawAll(false);
   let i=0, ticking=false;
 
   function target(step){
+    if(step.el==='#mainPickLabel'&&itemsList.length)return document.querySelector('#thumbList');
     return document.querySelector(step.el) || document.querySelector('.brand');
   }
 
@@ -2440,7 +2639,9 @@ syncUIFromState();prepareTextFonts(activeState);drawAll(false);
 
   function place(reveal=false){
     if(tour.hidden)return;
-    const step=steps[i];if(step.tab&&window.polaroidShowTab)window.polaroidShowTab(step.tab);const el=target(step),welcome=i===0;
+    const step=steps[i];
+    if(step.tab&&document.querySelector(`[data-panel="${step.tab}"]`)?.hidden)window.polaroidShowTab(step.tab);
+    const el=target(step),welcome=i===0;
     title.textContent=step.title;body.textContent=step.text;
     stepLabel.textContent=(i+1)+' / '+steps.length;
     prevBtn.disabled=welcome;nextBtn.textContent=i===steps.length-1?'完成':'下一步';
